@@ -22,12 +22,12 @@ Boston, MA  02111-1307  USA
 package org.game_controller; 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import processing.core.PApplet;
-
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.Rumbler;
@@ -57,7 +57,7 @@ public class ControlDevice implements Comparable<ControlDevice> {
 	/**
 	 * list containing the sticks on the device
 	 */
-	private final List<ControlStick> sticks = new ArrayList<ControlStick>();
+//	private final List<ControlStick> sticks = new ArrayList<ControlStick>();
 
 	/**
 	 * list containing the sliders on the device
@@ -79,10 +79,10 @@ public class ControlDevice implements Comparable<ControlDevice> {
 	 */
 	private final Map<String, ControlInput> inputNameMap = new HashMap<String, ControlInput>();
 
-	/**
-	 * to map the device generated input names and Controller inputs
-	 */
-	private final Map<String, String> inputAliasMap = new HashMap<String, String>();
+//	/**
+//	 * to map the device generated input names and Controller inputs
+//	 */
+//	private final Map<String, String> inputAliasMap = new HashMap<String, String>();
 
 	/**
 	 * A List with the buttons and Sliders available by the device
@@ -100,6 +100,9 @@ public class ControlDevice implements Comparable<ControlDevice> {
 	 */
 	private final String name;
 
+	
+	public final int hashID;
+	
 	/**
 	 * Instance to the PApplet where procontrol is running
 	 */
@@ -114,16 +117,21 @@ public class ControlDevice implements Comparable<ControlDevice> {
 		controller = i_controller;
 		parent = i_parent;
 		name = i_controller.getName();
-		setupDevice();
+		hashID = setupDevice();
 	}
 
 	/**
 	 * Loads the available Sliders, Sticks and Buttons for a device
 	 */
-	private void setupDevice(){
+	private int setupDevice(){
 		final Component[] components = controller.getComponents();
+		// Prepare for calculating hash id
+		List<String> hlist = new ArrayList<String>();
+		hlist.add(" " + name);
+		// Now identify all buttons and sliders
+		ControlInput input = null;
 		for (int i = 0; i < components.length; i++){
-			ControlInput input;
+			input = null;
 			if(components[i].isAnalog()){
 				if(components[i].isRelative()){
 					input = new ControlRelativeSlider(components[i]);
@@ -139,22 +147,28 @@ public class ControlDevice implements Comparable<ControlDevice> {
 				}
 				buttons.add((ControlButton)input);
 			} 
-			inputNameMap.put(input.getName(), input);
-		}
-
+			if(input != null){
+				inputNameMap.put(input.getName(), input);
+				hlist.add("#" + input.getName());
+			}
+		}  
 		inputs.addAll(sliders);
 		inputs.addAll(buttons);
-
-		if(sliders.size() % 2 == 0){
-			for(int i = 0; i < sliders.size(); i += 2){
-				ControlSlider sliderY = (ControlSlider)sliders.get(i);
-				ControlSlider sliderX = (ControlSlider)sliders.get(i+1);
-				sticks.add(new ControlStick(sliderX,sliderY));
-			}
-		}
-
 		rumblers = controller.getRumblers();
-		//System.out.println(rumblers.length);
+		// Calculate hashID
+		Collections.sort(hlist);
+		StringBuilder sb = new StringBuilder();
+		for(String s : hlist)
+			sb.append(s);
+		return sb.toString().hashCode();
+
+//		if(sliders.size() % 2 == 0){
+//			for(int i = 0; i < sliders.size(); i += 2){
+//				ControlSlider sliderY = (ControlSlider)sliders.get(i);
+//				ControlSlider sliderX = (ControlSlider)sliders.get(i+1);
+//				sticks.add(new ControlStick(sliderX,sliderY));
+//			}
+//		}
 	}
 
 	/**
@@ -270,16 +284,16 @@ public class ControlDevice implements Comparable<ControlDevice> {
 	 * @related printSliders ( )
 	 * @related printButtons ( )
 	 */
-	public void printSticks(){
-		if(sticks.size() > 0){
-			System.out.println("\n\t<<< Available sticks for "+ name + " >>>\n");
-			for (int i = 0; i < sticks.size(); i++){
-				System.out.print("\t" + i + ":\t");
-				System.out.println("'" + sticks.get(i).getName() + "'");
-			}
-			System.out.println();
-		}
-	}
+//	public void printSticks(){
+//		if(sticks.size() > 0){
+//			System.out.println("\n\t<<< Available sticks for "+ name + " >>>\n");
+//			for (int i = 0; i < sticks.size(); i++){
+//				System.out.print("\t" + i + ":\t");
+//				System.out.println("'" + sticks.get(i).getName() + "'");
+//			}
+//			System.out.println();
+//		}
+//	}
 	
 	public List<ControlInput> getInputs(){
 		return inputs;
@@ -395,9 +409,9 @@ public class ControlDevice implements Comparable<ControlDevice> {
 	 * @related getNumberOfButtons ( )
 	 * @related getStick ( )
 	 */
-	public int getNumberOfSticks(){
-		return sticks.size();
-	}
+//	public int getNumberOfSticks(){
+//		return sticks.size();
+//	}
 
 	/**
 	 * Use this method to get a stick. You can get a stick by its name or its
@@ -414,22 +428,22 @@ public class ControlDevice implements Comparable<ControlDevice> {
 	 * @related getButton ( )
 	 * @related getCoolieHat ( )
 	 */ 
-	public ControlStick getStick(final int i_stickNumb){ 
-		return sticks.get(i_stickNumb); 
-	} 
+//	public ControlStick getStick(final int i_stickNumb){ 
+//		return sticks.get(i_stickNumb); 
+//	} 
 
 	/**
 	 *  @param i_stickName String, name of the button to return
 	 */
-	public ControlStick getStick(final String i_stickName){
-		for (int i = 0; i < getNumberOfSticks(); i++){
-			ControlStick stick = sticks.get(i);
-			if (stick.getName().equals(i_stickName)){
-				return getStick(i);
-			}
-		}
-		throw new RuntimeException("There is no stick with the name " + i_stickName + ".");
-	}
+//	public ControlStick getStick(final String i_stickName){
+//		for (int i = 0; i < getNumberOfSticks(); i++){
+//			ControlStick stick = sticks.get(i);
+//			if (stick.getName().equals(i_stickName)){
+//				return getStick(i);
+//			}
+//		}
+//		throw new RuntimeException("There is no stick with the name " + i_stickName + ".");
+//	}
 
 	/**
 	 * Use this method to get a cooliehat. You can get a cooliehat by its name or its
