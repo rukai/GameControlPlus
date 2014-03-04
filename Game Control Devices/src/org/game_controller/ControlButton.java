@@ -55,6 +55,7 @@ public class ControlButton extends ControlInput{
 	ControlButton(final Component i_component, final PApplet i_parent){
 		super(i_component);
 		parent = i_parent;
+		inputType = BUTTON_TYPE;
 	}
 	
 	/**

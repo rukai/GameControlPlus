@@ -66,6 +66,7 @@ public class ControlSlider extends ControlInput{
 	 */
 	ControlSlider(final Component i_component){
 		super(i_component);
+		inputType = SLIDER_TYPE;
 	}
 	
 	/**

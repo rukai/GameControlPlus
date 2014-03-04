@@ -94,6 +94,7 @@ public class ControlCoolieHat extends ControlButton {
 	 */
 	ControlCoolieHat(final Component i_component, final PApplet i_parent){
 		super(i_component,i_parent);
+		inputType = HAT_TYPE;
 	}
 	
 	/**

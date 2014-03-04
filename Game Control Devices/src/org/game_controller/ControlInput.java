@@ -27,7 +27,7 @@ import net.java.games.input.Component;
  * Base class for input elements of a controller.
  * @invisible
  */
-public abstract class ControlInput{
+public abstract class ControlInput implements GCConstants {
 	/**
 	 * The current state of the input
 	 */
@@ -43,6 +43,11 @@ public abstract class ControlInput{
 	 * maybe different for different OS.
 	 */
 	private final String actualName;
+	
+	/**
+	 * One of BUTTON_TYPE, HAT_TYPE or SLIDER_TYPE
+	 */
+	protected int inputType;
 	
 	/**
 	 * Initializes a new Slider.

@@ -17,7 +17,7 @@ You should have received a copy of the GNU Lesser General
 Public License along with this library; if not, write to the
 Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 Boston, MA  02111-1307  USA
-*/
+ */
 
 package org.game_controller;
 
@@ -77,9 +77,9 @@ public class ControlIO implements Runnable {
 	 * List of the available devices
 	 */
 	private final List<ControlDevice> devices = new ArrayList<ControlDevice>();
-	
+
 	private final Thread thread;
-	
+
 	private boolean active = true;
 
 	/**
@@ -89,26 +89,19 @@ public class ControlIO implements Runnable {
 	private ControlIO(final PApplet i_parent){
 		environment = ControllerEnvironment.getEnvironment();
 		parent = i_parent;
+		// Scan for devices
+		final Controller[] controllers = environment.getControllers();
+		for (int i = 0; i < controllers.length; i++){
+			devices.add(new ControlDevice(controllers[i], parent));
+		}
+		// Set up applet
 		parent.registerMethod("dispose", this);
-		parent.registerMethod("pre", this);
-		devices.addAll(scanForDevices());
+		parent.registerMethod("updateDevices", this);
+
 		thread = new Thread(this);
 		thread.start();
 	}
 
-	/**
-	 * System scan returns mutable list 
-	 * 
-	 */
-	private List<ControlDevice> scanForDevices(){
-		final Controller[] controllers = environment.getControllers();
-		List<ControlDevice> currentDevices = new ArrayList<ControlDevice>();
-		for (int i = 0; i < controllers.length; i++){
-			currentDevices.add(new ControlDevice(controllers[i],parent));
-		}
-		return currentDevices;
-	}
-	
 	/**
 	 * Use this method to get a ControllIO instance.
 	 * @param i_parent PApplet, the application procontrol is running in
@@ -174,7 +167,7 @@ public class ControlIO implements Runnable {
 	public List<ControlDevice> getDevices(){
 		return devices;
 	}
-	
+
 	/**
 	 * Use this method to get a Device based on its number. This method will 'open'
 	 * the device so that you can use it. <br>
@@ -215,19 +208,32 @@ public class ControlIO implements Runnable {
 		}
 		throw new RuntimeException("There is no device with the name " + i_deviceName + ".");
 	}
-	
+
+	public ControlDevice getMatchedDevice(final Configuration config){
+		if(config != null){
+			for(ControlDevice cd : devices){
+				if(cd.available && cd.matches(config)){
+					System.out.println("Matched with -");
+					System.out.println("\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
+					return cd;
+				}
+			}
+		}
+		
+		return null;
+	}
 	/**
 	 * Updates the devices, to get the actual data before a new
 	 * frame is drawn
 	 * @invisible
 	 */
-	public void pre(){
+	public void updateDevices(){
 		for (int i = 0; i < devices.size(); i++)
 			devices.get(i).updateRelative();
 	}
 
 	/**
-	 * Controllers are now polled in a seperate thread to get independent from
+	 * Controllers are now polled in a separate thread to get independent from
 	 * the framerate of the sketch
 	 * @invisible
 	 */
@@ -236,11 +242,11 @@ public class ControlIO implements Runnable {
 			for (int i = 0; i < devices.size(); i++)
 				devices.get(i).update();
 			try {
-			    Thread.sleep  ( 10 );
+				Thread.sleep  ( 10 );
 			} catch ( InterruptedException e ) { }
 		}
 	}
-	
+
 	/**
 	 * <p>
 	 * Plug is a handy method to handle incoming button events. To create a plug
@@ -264,47 +270,47 @@ public class ControlIO implements Runnable {
 	 * @shortdesc Plugs a method to handle button events.
 	 */
 	public void plug(
-		final Object i_object, 
-		final String i_methodName, 
-		final int i_eventType,
-		final int i_intputDevice,
-		final int i_input
-	){
+			final Object i_object, 
+			final String i_methodName, 
+			final int i_eventType,
+			final int i_intputDevice,
+			final int i_input
+			){
 		ControlDevice device = getDevice(i_intputDevice);
 		device.plug(i_object,i_methodName,i_eventType,i_input);
 	}
-	
+
 	public void plug(
-		final String i_methodName, 
-		final int i_eventType,
-		final int i_intputDevice,
-		final int i_input
-	){
+			final String i_methodName, 
+			final int i_eventType,
+			final int i_intputDevice,
+			final int i_input
+			){
 		plug(parent,i_methodName,i_eventType,i_intputDevice,i_input);
 	}
-	
+
 	/**
 	 * 
 	 * @param i_intputDevice String: the name of the device that triggers the plug
 	 * @param i_input int: the name of the button that triggers the plug
 	 */
 	public void plug(
-		final Object i_object, 
-		final String i_methodName, 
-		final int i_eventType,
-		final String i_intputDevice,
-		final String i_input
-	){
+			final Object i_object, 
+			final String i_methodName, 
+			final int i_eventType,
+			final String i_intputDevice,
+			final String i_input
+			){
 		ControlDevice device = getDevice(i_intputDevice);
 		device.plug(i_object,i_methodName,i_eventType,i_input);
 	}
-	
+
 	public void plug(
-		final String i_methodName, 
-		final int i_eventType,
-		final String i_intputDevice,
-		final String i_input
-	){
+			final String i_methodName, 
+			final int i_eventType,
+			final String i_intputDevice,
+			final String i_input
+			){
 		plug(parent,i_methodName,i_eventType,i_intputDevice,i_input);
 	}
 }
