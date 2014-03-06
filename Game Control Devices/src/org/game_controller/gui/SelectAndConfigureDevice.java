@@ -10,7 +10,7 @@ import org.game_controller.ControlIO;
 
 import processing.core.PApplet;
 
-public class ControlConfigTool extends PApplet {
+public class SelectAndConfigureDevice extends PApplet {
 
 	ControlIO controlIO;
 	MLabel lblControls; 
@@ -22,14 +22,16 @@ public class ControlConfigTool extends PApplet {
 		M4P.messagesEnabled(false);                                                                             
 		M4P.setGlobalColorScheme(MCScheme.RED_SCHEME);
 		if(frame != null)
-			frame.setTitle("USB Game Controller Config Tool");
+			frame.setTitle("Select Game Device");
 		registerMethod("dispose", this);
 		controlIO = ControlIO.getInstance(this);
 		createSelectionInterface();
 		List<ControlDevice> devices = controlIO.getDevices();
 		// Add entries for devices added
-		for(ControlDevice d : devices)
-			deviceEntries.add(new UControlDeviceEntry(this, controlIO, d));
+		for(ControlDevice d : devices){
+			if(d.available && !d.getTypeName().equalsIgnoreCase("keyboard"))
+				deviceEntries.add(new UControlDeviceEntry(this, controlIO, d));
+		}
 		// Sort entries and reposition on screen
 		Collections.sort(deviceEntries);
 		for(int i = 0; i < deviceEntries.size(); i++)

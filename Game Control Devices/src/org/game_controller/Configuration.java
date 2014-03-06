@@ -1,6 +1,5 @@
 package org.game_controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +16,16 @@ public class Configuration implements GCConstants {
 		return new Configuration(app, gameInputs);
 	}
 	
+	public final String usage;
 	public final InputConfig[] gameInputs;
 	public int nbrMatched = 0;
 	
 	private Configuration(PApplet app, String[] inputs){
 		List<InputConfig> inputConfigs = new ArrayList<InputConfig>();
-		for(String s : inputs){
-			if(s.length() > 0)
-				inputConfigs.add(new InputConfig(s));
+		usage = inputs[0];
+		for(int i = 1; i < inputs.length; i++){
+			if(inputs[i].length() > 0)
+				inputConfigs.add(new InputConfig(inputs[i]));
 		}
 		gameInputs = inputConfigs.toArray(new InputConfig[inputConfigs.size()]);
 	}

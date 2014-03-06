@@ -59,7 +59,7 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 	 * This is used to show the device is available for selection by matching with
 	 * a configurations file.
 	 */
-	boolean available = true;
+	public boolean available = true;
 	
 	/**
 	 * list containing the sliders on the device

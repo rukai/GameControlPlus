@@ -213,15 +213,14 @@ public class ControlIO implements Runnable {
 		if(config != null){
 			for(ControlDevice cd : devices){
 				if(cd.available && cd.matches(config)){
-					System.out.println("Matched with -");
-					System.out.println("\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
+					System.out.println("Matched with \t\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
 					return cd;
 				}
 			}
 		}
-		
 		return null;
 	}
+	
 	/**
 	 * Updates the devices, to get the actual data before a new
 	 * frame is drawn

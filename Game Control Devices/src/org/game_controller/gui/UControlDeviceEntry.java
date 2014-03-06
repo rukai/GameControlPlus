@@ -25,12 +25,8 @@ public class UControlDeviceEntry implements Comparable<UControlDeviceEntry> {
 		displayName = new MLabel(papp, 36, 20, app.width-36, 20);
 		displayName.setText(device.getName() + "  [" + device.getTypeName() + "]");
 		displayName.setTextAlign(MAlign.LEFT, null);
-		if(!device.getTypeName().equalsIgnoreCase("Keyboard")) {
-			btnGoConfig = new MButton(app, 4, 24, 24, 14);
-			btnGoConfig.addEventHandler(this, "configClick");				
-		}
-		else
-			btnGoConfig = null;
+		btnGoConfig = new MButton(app, 4, 24, 24, 14);
+		btnGoConfig.addEventHandler(this, "configClick");				
 	}
 
 	public void setIndex(int index){
