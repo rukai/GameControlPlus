@@ -24,8 +24,6 @@
 package org.game_controller.gui;
 
 import java.awt.Color;
-import java.io.IOException;
-import java.io.InputStream;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -87,47 +85,11 @@ public class MCScheme implements MConstants {
 		if(palettes != null)
 			return;
 		// Load the image
-		PImage image = null;;
-		InputStream is = app.createInput("user_gui_palette.png");
-		if(is != null){
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			image = app.loadImage("user_gui_palette.png");
-			MMessenger.message(USER_COL_SCHEME, null);
-		}
-		else {
-			// User image not provided
-			image = app.loadImage("default_gui_palette.png");
-			// Added to 3.4 to hopefully fix problem with OpenProcessing
-			if(image == null)
-				image = new PImage((new javax.swing.ImageIcon(new MCScheme().getClass().getResource("/data/default_gui_palette.png"))).getImage());
-		}
-		// Now make the palletes
-		palettes = new int[16][16];
-		jpalettes = new Color[16][16];
-		for(int p = 0; p < 16; p++)
-			for(int c = 0; c < 16; c++){
-				int col =  image.get(c * 16 + 8, p * 16 + 8);
-				palettes[p][c] = col;
-				jpalettes[p][c] = new Color((col >> 16) & 0xff, (col >> 8) & 0xff, col & 0xff);
-			}
-	}
-
-	/**
-	 * This method is called by the G4P GUI Builder tool when there is no
-	 * sketch = no PApplet object to use
-	 */
-	public static void makeColorSchemes() {
-		// If the palettes have not been created then create them
-		// otherwise do nothing
-		if(palettes != null)
-			return;
-		// Load the image
-		PImage image = new PImage((new javax.swing.ImageIcon(new MCScheme().getClass().getResource("/data/default_gui_palette.png"))).getImage());
-		// Now make the palletes
+		PImage image = app.loadImage("default_gui_palette.png");
+		// Added to 3.4 to hopefully fix problem with OpenProcessing
+		if(image == null)
+			image = new PImage((new javax.swing.ImageIcon(new MCScheme().getClass().getResource("/data/default_gui_palette.png"))).getImage());
+		// Now make the palettes
 		palettes = new int[16][16];
 		jpalettes = new Color[16][16];
 		for(int p = 0; p < 16; p++)

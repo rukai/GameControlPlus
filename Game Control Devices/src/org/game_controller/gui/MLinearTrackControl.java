@@ -56,7 +56,7 @@ public abstract class MLinearTrackControl extends MValueControl {
 	protected int status = OFF_CONTROL;
 	
 	// For labels
-	protected StyledString[] labels;
+	protected MStyledString[] labels;
 	protected boolean labelsInvalid = true;
 
 	public MLinearTrackControl(PApplet theApplet, float p0, float p1, float p2, float p3) {
@@ -97,9 +97,9 @@ public abstract class MLinearTrackControl extends MValueControl {
 		for(String s : tickLabels)
 			if(s == null || s.length() == 0)
 				return;
-		labels = new StyledString[tickLabels.length];
+		labels = new MStyledString[tickLabels.length];
 		for(int i = 0; i < tickLabels.length; i++)
-			labels[i] = new StyledString(tickLabels[i]);
+			labels[i] = new MStyledString(tickLabels[i]);
 		stickToTicks = true;
 		nbrTicks = labels.length;
 		startLimit = 0;
@@ -278,7 +278,7 @@ public abstract class MLinearTrackControl extends MValueControl {
 		Graphics2D g2d = buffer.g2;
 		float px, py;
 		TextLayout line;
-		ssValue = new StyledString(getNumericDisplayString(getValueF()));
+		ssValue = new MStyledString(getNumericDisplayString(getValueF()));
 		line = ssValue.getLines(g2d).getFirst().layout;
 		float advance = line.getVisibleAdvance();
 		switch(textOrientation){
@@ -318,8 +318,8 @@ public abstract class MLinearTrackControl extends MValueControl {
 		float px, py;
 		TextLayout line;
 		if(limitsInvalid){
-			ssStartLimit = new StyledString(getNumericDisplayString(startLimit));
-			ssEndLimit = new StyledString(getNumericDisplayString(endLimit));
+			ssStartLimit = new MStyledString(getNumericDisplayString(startLimit));
+			ssEndLimit = new MStyledString(getNumericDisplayString(endLimit));
 			limitsInvalid = false;
 		}
 		switch(textOrientation){
@@ -377,8 +377,8 @@ public abstract class MLinearTrackControl extends MValueControl {
 		float px, py;
 		TextLayout line;
 		if(labelsInvalid){
-			ssStartLimit = new StyledString(getNumericDisplayString(startLimit));
-			ssEndLimit = new StyledString(getNumericDisplayString(endLimit));
+			ssStartLimit = new MStyledString(getNumericDisplayString(startLimit));
+			ssEndLimit = new MStyledString(getNumericDisplayString(endLimit));
 			limitsInvalid = false;
 		}
 		float deltaX = 1.0f / (nbrTicks - 1);

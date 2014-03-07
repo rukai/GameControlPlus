@@ -96,7 +96,7 @@ public class ControlIO implements Runnable {
 		}
 		// Set up applet
 		parent.registerMethod("dispose", this);
-		parent.registerMethod("updateDevices", this);
+		parent.registerMethod("pre", this);
 
 		thread = new Thread(this);
 		thread.start();
@@ -226,7 +226,7 @@ public class ControlIO implements Runnable {
 	 * frame is drawn
 	 * @invisible
 	 */
-	public void updateDevices(){
+	public void pre(){
 		for (int i = 0; i < devices.size(); i++)
 			devices.get(i).updateRelative();
 	}
@@ -238,6 +238,7 @@ public class ControlIO implements Runnable {
 	 */
 	public void run(){
 		while (active){
+//			System.out.println("ControlIO run() " + devices.size());
 			for (int i = 0; i < devices.size(); i++)
 				devices.get(i).update();
 			try {

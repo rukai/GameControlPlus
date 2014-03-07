@@ -1,27 +1,32 @@
 package org.game_controller.gui;
 
-//import g4p_controls.GAlign;
-//import g4p_controls.GButton;
-//import g4p_controls.GEvent;
-//import g4p_controls.GLabel;
-
+import org.game_controller.Configuration;
 import org.game_controller.ControlDevice;
 import org.game_controller.ControlIO;
 
 import processing.core.PApplet;
 
-public class UControlDeviceEntry implements Comparable<UControlDeviceEntry> {
+/**
+ * This class represents a single entry in the device selection screen.
+ * @author peter
+ *
+ */
+public class VDeviceSelectEntry implements Comparable<VDeviceSelectEntry> {
+	
 	public final PApplet app;
 	public final ControlIO controlIO;
 	public final ControlDevice device;
+	public final Configuration config;
+	// GUI stuff
 	public final MLabel displayName;
 	public final MButton btnGoConfig;
-	public UControlConfigWindow winCofig = null;
+	public VControlConfigWindow winCofig = null;
 
-	public UControlDeviceEntry(PApplet papp, ControlIO controlIO, ControlDevice dev){
+	public VDeviceSelectEntry(PApplet papp, ControlIO controlIO, ControlDevice dev, Configuration config){
 		this.app = papp;
 		this.controlIO = controlIO;
 		this.device = dev;
+		this.config = config;
 		displayName = new MLabel(papp, 36, 20, app.width-36, 20);
 		displayName.setText(device.getName() + "  [" + device.getTypeName() + "]");
 		displayName.setTextAlign(MAlign.LEFT, null);
@@ -36,13 +41,13 @@ public class UControlDeviceEntry implements Comparable<UControlDeviceEntry> {
 
 	public void configClick(MButton source, MEvent event) {
 		if(winCofig == null) {
-			winCofig = new UControlConfigWindow(app, this);
+			winCofig = new VControlConfigWindow(app, this);
 			source.setVisible(false);
 		}
 	}
 
 	@Override
-	public int compareTo(UControlDeviceEntry entry) {
+	public int compareTo(VDeviceSelectEntry entry) {
 		return device.compareTo(entry.device);
 	}
 }

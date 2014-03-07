@@ -1,17 +1,5 @@
 package org.game_controller.gui;
 
-//import g4p_controls.G4P;
-//import g4p_controls.GAlign;
-//import g4p_controls.GButton;
-//import g4p_controls.GEvent;
-//import g4p_controls.GLabel;
-//import g4p_controls.GTabManager;
-//import g4p_controls.GTextArea;
-//import g4p_controls.GTextField;
-//import g4p_controls.GWinApplet;
-//import g4p_controls.GWinData;
-//import g4p_controls.GWindow;
-
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.game_controller.Configuration;
 import org.game_controller.ControlButton;
 import org.game_controller.ControlCoolieHat;
 import org.game_controller.ControlDevice;
@@ -30,7 +19,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.event.MouseEvent;
 
-public class UControlConfigWindow implements PConstants, UConstants {
+public class VControlConfigWindow implements PConstants, VConstants {
 
 	static int nbrWindows = 0;
 
@@ -38,14 +27,16 @@ public class UControlConfigWindow implements PConstants, UConstants {
 
 	final ControlIO controlIO;
 
+	final Configuration config;
+	
 	private boolean active = false;
 
-	List<UBase> uiElements = new ArrayList<UBase>();
-	List<UConnector> uiConnections = new ArrayList<UConnector>();
+	List<VBase> uiElements = new ArrayList<VBase>();
+	List<VConnector> uiConnections = new ArrayList<VConnector>();
 
-	UConnector start = null;
-	UConnector end = null;
-	UConnector current = null;
+	VConnector start = null;
+	VConnector end = null;
+	VConnector current = null;
 
 	float scale;
 	final float input_UI_height;
@@ -61,7 +52,7 @@ public class UControlConfigWindow implements PConstants, UConstants {
 	final Font font;
 
 	private StringBuffer report;
-	List<UConnector> configConnections = new ArrayList<UConnector>();
+	List<VConnector> configConnections = new ArrayList<VConnector>();
 	private Set<String> keys = new TreeSet<String>();
 	private int errCount = 0;
 
@@ -78,8 +69,8 @@ public class UControlConfigWindow implements PConstants, UConstants {
 	 */
 	private void validateDescriptors(){
 		// Create a list of used descriptors
-		for(UConnector ui : uiConnections){
-			if(ui.type == UConnector.DESC && ui.conTo != null){
+		for(VConnector ui : uiConnections){
+			if(ui.type == VConnector.DESC && ui.conTo != null){
 				configConnections.add(ui);
 			}
 		}
@@ -88,18 +79,12 @@ public class UControlConfigWindow implements PConstants, UConstants {
 			return;
 		}
 		// We only get here if we have some connections configured
-		for(UConnector ui : configConnections){
-			UDescriptor descUI = (UDescriptor)ui.owner;
-			String inputName = ((UBaseInput)ui.conTo.owner).name;
-			String desc = descUI.txfDescription.getText();
-			String key = descUI.txfKey.getText();
+		for(VConnector ui : configConnections){
+			VDescriptor descUI = (VDescriptor)ui.owner;
+			String inputName = ((VBaseInput)ui.conTo.owner).name;
+			String desc = descUI.iconfig.description;
 			if(desc.length() == 0)
 				addToReport("No description for input: " + inputName + "\n", true);
-			if(key.length() == 0)
-				addToReport("No key for input: " + inputName + "\n", true);
-			else if(keys.contains(key))
-				addToReport("Duplicate key '" + key + "' on input: " + inputName + "\n", true);
-			keys.add(key);	
 		}
 	}
 
@@ -155,11 +140,11 @@ public class UControlConfigWindow implements PConstants, UConstants {
 	private String[] makeConfigLines() {
 		String[] data = new String[configConnections.size()];
 		int index = 0;
-		for(UConnector ui : configConnections){
-			UDescriptor descUI = (UDescriptor)ui.owner;
-			UBaseInput inputUI = (UBaseInput)ui.conTo.owner;
-			String desc = descUI.txfDescription.getText();
-			String key = descUI.txfKey.getText();
+		for(VConnector ui : configConnections){
+			VDescriptor descUI = (VDescriptor)ui.owner;
+			VBaseInput inputUI = (VBaseInput)ui.conTo.owner;
+			String desc = descUI.iconfig.description;
+			String key = descUI.iconfig.key;
 			String inputName = inputUI.name;
 			int typeID = inputUI.uiType;
 			float multiplier = inputUI.getMultiplier();
@@ -188,7 +173,7 @@ public class UControlConfigWindow implements PConstants, UConstants {
 
 	synchronized public void pre(MWinApplet appc, MWinData data) {
 		current = null;
-		for(UBase ui : uiElements){
+		for(VBase ui : uiElements){
 			ui.update();
 			ui.overWhat(appc.mouseX, appc.mouseY);
 		}
@@ -233,8 +218,8 @@ public class UControlConfigWindow implements PConstants, UConstants {
 		appc.rect(appc.width - PANEL_WIDTH, 0, PANEL_WIDTH, appc.height);
 		// Draw connections
 		appc.strokeWeight(3.5f);
-		for(UConnector c : uiConnections){
-			if(c.conTo != null && c.type == UConnector.DESC){
+		for(VConnector c : uiConnections){
+			if(c.conTo != null && c.type == VConnector.DESC){
 				appc.stroke(c.isOver ? HIGHLIGHT : CONNECTION);
 				appc.line(c.px,  c.py,  c.conTo.px,  c.conTo.py);
 			}
@@ -245,7 +230,7 @@ public class UControlConfigWindow implements PConstants, UConstants {
 			appc.line(start.px, start.py, appc.mouseX, appc.mouseY);
 		}
 		// Draw descriptors and inputs
-		for(UBase ui : uiElements)
+		for(VBase ui : uiElements)
 			ui.draw();
 	}
 
@@ -266,31 +251,29 @@ public class UControlConfigWindow implements PConstants, UConstants {
 	MTextField txfFilename;
 	MTextArea txaStatus;
 
-	public UControlConfigWindow(PApplet papp, UControlDeviceEntry entry){
+	public VControlConfigWindow(PApplet papp, VDeviceSelectEntry entry){
 		float px, py, pw;
 		device = entry.device;
-		device.open();
+		entry.device.open();
 		controlIO = entry.controlIO;
+		this.config = entry.config;
 		float spaceForInputs = ELEMENT_UI_GAP;
-		int nbrConnectors = 0;
+
 		// Scan through controls to calculate the window height needed
 		for(ControlInput input : device.getInputs()){
 			if(input instanceof ControlCoolieHat){
 				spaceForInputs += 5 * INPUT_UI_HEIGHT + ELEMENT_UI_GAP + 2;
-				nbrConnectors ++;
 			}
 			else  if(input instanceof ControlButton){
 				spaceForInputs += INPUT_UI_HEIGHT + ELEMENT_UI_GAP + 2;
-				nbrConnectors++;
 			}
 			else  if(input instanceof ControlSlider){
 				spaceForInputs += 4 * INPUT_UI_HEIGHT + ELEMENT_UI_GAP + 2;
-				nbrConnectors++;
 			}
 			else
 				System.out.println("Unknown input " + input);	
 		}
-		float spaceForDescs = nbrConnectors * (DESC_UI_HEIGHT + ELEMENT_UI_GAP + 2);
+		float spaceForDescs = config.nbrInputs() * (DESC_UI_HEIGHT + ELEMENT_UI_GAP + 2);
 		float spaceNeeded = Math.max(spaceForInputs, spaceForDescs);
 		spaceNeeded = Math.max(spaceNeeded, PANEL_HEIGHT);
 		// Now calculate window scaling and height
@@ -368,7 +351,7 @@ public class UControlConfigWindow implements PConstants, UConstants {
 		px = window.papplet.width - 10 - INPUT_UI_LENGTH - PANEL_WIDTH;
 		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForInputs) / 2; 
 		for(ControlInput input : device.getInputs()){
-			UBaseInput ui = UBaseInput.makeInputUI(this, input, px, py);
+			VBaseInput ui = VBaseInput.makeInputUI(this, input, px, py);
 			if(ui != null){
 				uiElements.add(ui);
 				py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
@@ -377,14 +360,14 @@ public class UControlConfigWindow implements PConstants, UConstants {
 		// Create and add descriptors to UI 
 		px = 10;
 		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForDescs) / 2; 
-		for(int i = 0; i < nbrConnectors; i++){
-			UDescriptor ui = new UDescriptor(this, px,py);
+		for(Configuration.InputConfig iconfig : config.gameInputs){
+			VDescriptor ui = new VDescriptor(this, px, py, iconfig);
 			uiElements.add(ui);
 			py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
 		}
 		// Now create list of connectors
-		for(UBase ui : uiElements)
-			for(UConnector c : ui.connectors)
+		for(VBase ui : uiElements)
+			for(VConnector c : ui.connectors)
 				uiConnections.add(c);
 		active = true;
 		window.papplet.loop();

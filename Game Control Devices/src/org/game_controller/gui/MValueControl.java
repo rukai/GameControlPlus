@@ -38,7 +38,7 @@ import processing.core.PApplet;
  */
 public abstract class MValueControl extends MAbstractControl {
 
-	protected StyledString ssStartLimit, ssEndLimit, ssValue;
+	protected MStyledString ssStartLimit, ssEndLimit, ssValue;
 
 	protected float startLimit = 0, endLimit = 1;
 	protected boolean showLimits = false;

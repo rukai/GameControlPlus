@@ -83,12 +83,6 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 			new HashMap<String, ControlInput>();
 
 	/**
-	 * to map the user defined names and Controller inputs
-	 */
-//	private final Map<String, ControlInput> inputAliasMap = 
-//			new HashMap<String, ControlInput>();
-
-	/**
 	 * A List with the buttons and sliders available by the device
 	 */
 	private final List<ControlInput> inputs = new ArrayList<ControlInput>();
@@ -178,8 +172,8 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 			else 
 				return false;
 		}
+		// Match found
 		inputNameMap.putAll(matchedInputs);
-		config.nbrMatched++;
 		available = false;
 		open();
 		return true;
@@ -510,11 +504,6 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 
 	public boolean equals(Object d){
 		boolean result = compareTo((ControlDevice)d) == 0;
-//		System.out.println("===========  equals  ================");
-//		System.out.println("#"+name);
-//		System.out.println("#"+d.name);
-//		System.out.println("Equal result " + result);
-		
 		return result;
 	}
 	
@@ -523,18 +512,6 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 		String s = name + ((Integer)buttons.size()).toString() + ((Integer)sliders.size()).toString() + ((Integer)rumblers.length).toString(); 
 		String ds = d.name + ((Integer)d.buttons.size()).toString() + ((Integer)d.sliders.size()).toString() + ((Integer)d.rumblers.length).toString(); 
 		int result = s.compareToIgnoreCase(ds);
-//		System.out.println("================================================");
-//		System.out.println("#"+d);
-//		System.out.println("#"+ds);
-//		System.out.println("Compare result " + result);
-
-		
-//		int result = name.compareToIgnoreCase(d.name);
-//		System.out.println("===========  compareTo  ================");
-//		System.out.println("#"+name);
-//		System.out.println("#"+d.name);
-//		System.out.println("Compare result " + result);
         return result;
-
 	}
 }

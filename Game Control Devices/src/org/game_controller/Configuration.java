@@ -18,7 +18,6 @@ public class Configuration implements GCConstants {
 	
 	public final String usage;
 	public final InputConfig[] gameInputs;
-	public int nbrMatched = 0;
 	
 	private Configuration(PApplet app, String[] inputs){
 		List<InputConfig> inputConfigs = new ArrayList<InputConfig>();
@@ -28,6 +27,10 @@ public class Configuration implements GCConstants {
 				inputConfigs.add(new InputConfig(inputs[i]));
 		}
 		gameInputs = inputConfigs.toArray(new InputConfig[inputConfigs.size()]);
+	}
+	
+	public int nbrInputs(){
+		return gameInputs.length;
 	}
 	
 	public class InputConfig {
@@ -50,6 +53,4 @@ public class Configuration implements GCConstants {
 			tolerance = Float.parseFloat(part[6]);
 		}
 	}
-	
-	
 }

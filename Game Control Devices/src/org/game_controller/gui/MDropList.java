@@ -66,8 +66,8 @@ public class MDropList extends MTextBase {
 	private MButton showList;
 
 	protected String[] items;
-	protected StyledString[] sitems;
-	protected StyledString selText;
+	protected MStyledString[] sitems;
+	protected MStyledString selText;
 
 	protected int selItem = 0;
 	protected int startItem = 0;
@@ -177,17 +177,17 @@ public class MDropList extends MTextBase {
 			return;
 		// We have at least one item for the droplist
 		items = list;
-		sitems = new StyledString[list.length];
+		sitems = new MStyledString[list.length];
 		// Create styled strings for display
 		for(int i = 0; i < list.length; i++)
-			sitems[i] = new StyledString(list[i]);
+			sitems[i] = new MStyledString(list[i]);
 		// Force selected value into valid range
 		selItem = PApplet.constrain(selected, 0, list.length - 1);
 		startItem = (selItem >= dropListMaxSize) ? selItem - dropListMaxSize + 1 : 0;
 		// Make selected item bold
 		sitems[selItem].addAttribute(WEIGHT, WEIGHT_BOLD);
 		// Create separate styled string for display area
-		selText = new StyledString(this.items[selItem]);
+		selText = new MStyledString(this.items[selItem]);
 		dropListActualSize = Math.min(list.length, dropListMaxSize);
 		if((list.length > dropListActualSize)){
 			float filler = ((float)dropListMaxSize)/list.length;
@@ -208,10 +208,10 @@ public class MDropList extends MTextBase {
 		if(selected >=0 && selected < sitems.length){
 			selItem = selected;
 			startItem = (selItem >= dropListMaxSize) ? selItem - dropListMaxSize + 1 : 0;
-			for(StyledString s : sitems)
+			for(MStyledString s : sitems)
 				s.clearAttributes();
 			sitems[selItem].addAttribute(WEIGHT, WEIGHT_BOLD);
-			selText = new StyledString(this.items[selItem]);			
+			selText = new MStyledString(this.items[selItem]);			
 			bufferInvalid = true;
 		}
 	}

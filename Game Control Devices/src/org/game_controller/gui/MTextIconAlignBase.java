@@ -58,9 +58,9 @@ public abstract class MTextIconAlignBase extends MTextAlign {
 		if(text == null || text.length() == 0 )
 			text = " ";
 		if(iconW == 0)
-			stext = new StyledString(text, (int) width - TPAD2);
+			stext = new MStyledString(text, (int) width - TPAD2);
 		else
-			stext = new StyledString(text, (int) width - iconW - TPAD4);
+			stext = new MStyledString(text, (int) width - iconW - TPAD4);
 		bufferInvalid = true;
 	}
 

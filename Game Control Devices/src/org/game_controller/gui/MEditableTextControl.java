@@ -23,8 +23,8 @@
 
 package org.game_controller.gui;
 
-import org.game_controller.gui.StyledString.TextLayoutHitInfo;
-import org.game_controller.gui.StyledString.TextLayoutInfo;
+import org.game_controller.gui.MStyledString.TextLayoutHitInfo;
+import org.game_controller.gui.MStyledString.TextLayoutInfo;
 
 import java.awt.Font;
 import java.awt.font.TextAttribute;
@@ -49,7 +49,7 @@ public abstract class MEditableTextControl extends MTextBase {
 
 	MTabManager tabManager = null;
 
-	protected StyledString defaultText = null;
+	protected MStyledString defaultText = null;
 	// The width to break a line
 	protected int wrapWidth = Integer.MAX_VALUE;
 
@@ -110,7 +110,7 @@ public abstract class MEditableTextControl extends MTextBase {
 		if(stext.length() > 0){
 			int tl = stext.getPlainText().trim().length();
 			if(tl == 0)
-				stext = new StyledString("", wrapWidth);
+				stext = new MStyledString("", wrapWidth);
 		}
 		keepCursorInView = true;
 		bufferInvalid = true;
@@ -149,7 +149,7 @@ public abstract class MEditableTextControl extends MTextBase {
 		if(focusIsWith != this){
 			dragging = false;
 			if(stext == null || stext.length() == 0)
-				stext = new StyledString(" ", wrapWidth);
+				stext = new MStyledString(" ", wrapWidth);
 			//			text = stext.getPlainText();
 			LinkedList<TextLayoutInfo> lines = stext.getLines(buffer.g2);
 			startTLHI = new TextLayoutHitInfo(lines.getFirst(), null);
@@ -175,7 +175,7 @@ public abstract class MEditableTextControl extends MTextBase {
 		if(dtext == null || dtext.length() == 0)
 			defaultText = null;
 		else {
-			defaultText = new StyledString(dtext, wrapWidth);
+			defaultText = new MStyledString(dtext, wrapWidth);
 			defaultText.addAttribute(M4P.POSTURE, M4P.POSTURE_OBLIQUE);
 		}
 		bufferInvalid = true;
@@ -215,7 +215,7 @@ public abstract class MEditableTextControl extends MTextBase {
 	 * Get the styled text in the control
 	 * @return the text with styling
 	 */
-	public StyledString getStyledText(){
+	public MStyledString getStyledText(){
 		return stext;
 	}
 
@@ -699,7 +699,7 @@ public abstract class MEditableTextControl extends MTextBase {
 		else {
 			stext.startIdx = stext.endIdx = -1;
 		}
-		StyledString.save(winApp, stext, fname);
+		MStyledString.save(winApp, stext, fname);
 		return true;
 	}
 
@@ -711,7 +711,7 @@ public abstract class MEditableTextControl extends MTextBase {
 	 * @return true if loaded successfully else false
 	 */
 	public boolean loadText(String fname){
-		StyledString ss = StyledString.load(winApp, fname);
+		MStyledString ss = MStyledString.load(winApp, fname);
 		if(ss == null)
 			return false;
 		setStyledText(ss);

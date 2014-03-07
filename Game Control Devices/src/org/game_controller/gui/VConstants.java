@@ -1,6 +1,6 @@
 package org.game_controller.gui;
 
-public interface UConstants {
+public interface VConstants {
 
 	final float INPUT_UI_HEIGHT	= 24;
 	final float DESC_UI_HEIGHT	= 30;
@@ -22,10 +22,10 @@ public interface UConstants {
 	// UI element type IDs
 	final int UI_BUTTON			= 0x01;
 	final int UI_COOLIEHAT		= 0x02;
-	final int UI_SLIDER			= 0x04;
-	final int UI_DESCRIPTOR		= 0x10;
+	final int UI_SLIDER			= 0x03;
+	final int UI_DESCRIPTOR		= 0x04;
 	
-	
+	final int[] UI_E_BACK		= new int[] { 0, 0xFFFFD0D0, 0xFFD0FFD0, 0xFFD0D0FF, 0xFFFFD0D0 };
 	
 	final int BACKGROUND			= 0xFFF0FFF0;
 	final int PANEL					= 0xFF208020;
@@ -37,7 +37,7 @@ public interface UConstants {
 	final int TEXTFILL				= 0xFF000080;
 	final int PRESSED				= 0xFFFF3030;
 	final int RELEASED				= 0xFF802020;
-	final int INDICATOR				= 0xFFE0E0FF;
+//	final int INDICATOR				= 0xFFE0E0FF;
 	final int SLIDER_CURSOR			= 0xFFFF4040;
 
 

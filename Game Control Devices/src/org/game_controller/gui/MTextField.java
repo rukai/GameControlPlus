@@ -24,8 +24,8 @@
 package org.game_controller.gui;
 
 import org.game_controller.gui.MHotSpot.HSrect;
-import org.game_controller.gui.StyledString.TextLayoutHitInfo;
-import org.game_controller.gui.StyledString.TextLayoutInfo;
+import org.game_controller.gui.MStyledString.TextLayoutHitInfo;
+import org.game_controller.gui.MStyledString.TextLayoutInfo;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -140,7 +140,7 @@ public class MTextField extends MEditableTextControl {
 	 * have been removed.
 	 * @param ss
 	 */
-	public void setStyledText(StyledString ss){
+	public void setStyledText(MStyledString ss){
 		stext = ss.convertToSingleLineText();
 		stext.getLines(buffer.g2);
 		if(stext.getNbrLines() > 0){
@@ -169,7 +169,7 @@ public class MTextField extends MEditableTextControl {
 	public void setText(String text){
 		if(text == null)
 			text = "";
-		setStyledText(new StyledString(text, Integer.MAX_VALUE));
+		setStyledText(new MStyledString(text, Integer.MAX_VALUE));
 	}
 
 	/**
@@ -270,7 +270,7 @@ public class MTextField extends MEditableTextControl {
 				}
 				dragging = false;
 				if(stext == null || stext.length() == 0){
-					stext = new StyledString(" ", wrapWidth);
+					stext = new MStyledString(" ", wrapWidth);
 					stext.getLines(buffer.g2);
 				}
 				endTLHI = stext.calculateFromXY(buffer.g2, ox + ptx, oy + pty);

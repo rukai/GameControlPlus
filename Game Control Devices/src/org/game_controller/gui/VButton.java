@@ -2,19 +2,21 @@ package org.game_controller.gui;
 
 import org.game_controller.ControlButton;
 
-public class UButton extends UBaseInput {
+public class VButton extends VBaseInput {
 
 	ControlButton button;
 	
 	boolean isPressed;
 	
-	public UButton(UControlConfigWindow ccw, ControlButton pbutton, float x, float y){
+	public VButton(VControlConfigWindow ccw, ControlButton pbutton, float x, float y){
 		super(ccw, x, y, 1, 1);
 		uiType = UI_BUTTON;
 		inputTypeName = "BUTTON";
 		button = pbutton;
 		name = button.getName();
 		namePos = 20 + (int)(ccw.input_UI_length - 20 - app.textWidth(name)) / 2;
+		backCol = UI_E_BACK[uiType];
+		fontBaseLine = (ccw.desc_UI_height + ccw.fontSize) / 2;
 	}
 	
 	public void update(){

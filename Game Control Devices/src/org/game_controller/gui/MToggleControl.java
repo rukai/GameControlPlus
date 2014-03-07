@@ -24,7 +24,7 @@
 package org.game_controller.gui;
 
 import org.game_controller.gui.MHotSpot.HSrect;
-import org.game_controller.gui.StyledString.TextLayoutInfo;
+import org.game_controller.gui.MStyledString.TextLayoutInfo;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

@@ -64,7 +64,7 @@ import processing.core.PApplet;
  * @author Peter Lager
  *
  */
-public final class StyledString implements MConstantsInternal, Serializable {
+public final class MStyledString implements MConstantsInternal, Serializable {
 
 	private static final long serialVersionUID = 8380395122026579368L;
 
@@ -109,7 +109,7 @@ public final class StyledString implements MConstantsInternal, Serializable {
 	 * 
 	 * @param startText
 	 */
-	public StyledString(String startText){
+	public MStyledString(String startText){
 		plainText = removeSingleSpacingFromPlainText(startText);
 		spacer = getParagraghSpacer(1); //  safety
 		// Get rid of any EOLs
@@ -125,7 +125,7 @@ public final class StyledString implements MConstantsInternal, Serializable {
 	 * @param startText
 	 * @param wrapWidth
 	 */
-	public StyledString(String startText, int wrapWidth){
+	public MStyledString(String startText, int wrapWidth){
 		if(wrapWidth > 0 && wrapWidth < Integer.MAX_VALUE)
 			this.wrapWidth = wrapWidth;
 		plainText = (wrapWidth == Integer.MAX_VALUE) ? removeSingleSpacingFromPlainText(startText) : removeDoubleSpacingFromPlainText(startText);
@@ -145,7 +145,7 @@ public final class StyledString implements MConstantsInternal, Serializable {
 	 * @param as
 	 * @return the converted string
 	 */
-	StyledString convertToSingleLineText(){
+	MStyledString convertToSingleLineText(){
 		// Make sure we have something to work with.
 		if(styledText == null || plainText == null){
 			plainText = "";
@@ -904,7 +904,7 @@ public final class StyledString implements MConstantsInternal, Serializable {
 	 * @param ss the styled string
 	 * @param fname 
 	 */
-	public static void save(PApplet papp, StyledString ss, String fname){
+	public static void save(PApplet papp, MStyledString ss, String fname){
 		OutputStream os;
 		ObjectOutputStream oos;
 		try {
@@ -924,14 +924,14 @@ public final class StyledString implements MConstantsInternal, Serializable {
 	 * @param papp
 	 * @param fname the filename of the StyledString
 	 */
-	public static StyledString load(PApplet papp, String fname){
-		StyledString ss = null;
+	public static MStyledString load(PApplet papp, String fname){
+		MStyledString ss = null;
 		InputStream is;
 		ObjectInputStream ios;	
 		try {
 			is = papp.createInput(fname);
 			ios = new ObjectInputStream(is);
-			ss = (StyledString) ios.readObject();
+			ss = (MStyledString) ios.readObject();
 			is.close();
 			ios.close();
 		} catch (IOException e) {

@@ -8,32 +8,21 @@ import org.game_controller.ControlSlider;
 
 import processing.core.PApplet;
 
-public class USlider extends UBaseInput {
+public class VSlider extends VBaseInput {
 
 	ControlSlider slider;
-	MTextField txfMultiplier;
-	MTextField txfTolerance;
 
 	float tolerance = 0, value = 0, multiplier = 1;
 
-	public USlider(UControlConfigWindow ccw, ControlSlider pbutton, float x, float y) {
+	public VSlider(VControlConfigWindow ccw, ControlSlider pbutton, float x, float y) {
 		super(ccw, x, y, 1, 4);
 		uiType = UI_SLIDER;
 		inputTypeName = "SLIDER";
 		slider = pbutton;
-		float fieldHeight = ccw.input_UI_height * ccw.scale;
-		txfMultiplier = new MTextField(app, x + 100, y + ccw.input_UI_height, 80, fieldHeight, M4P.SCROLLBARS_NONE);
-		txfMultiplier.setFont(ccw.font);
-		txfMultiplier.setText("1");
-		txfMultiplier.addEventHandler(this, "multiplier_set");
-		ccw.tabManager.addControl(txfMultiplier);
-		txfTolerance = new MTextField(app, x + 100, y + 2 * ccw.input_UI_height, 80, fieldHeight, M4P.SCROLLBARS_NONE);
-		txfTolerance.setFont(ccw.font);
-		txfTolerance.setText("0");
-		txfTolerance.addEventHandler(this, "tolerance_set");
-		ccw.tabManager.addControl(txfTolerance);
 		name = slider.getName();
 		namePos = 20 + (int)(ccw.input_UI_length - 20 - app.textWidth(name)) / 2;
+		backCol = UI_E_BACK[uiType];
+		fontBaseLine = (ccw.desc_UI_height + ccw.fontSize) / 2;
 	}
 
 	public float getMultiplier(){
@@ -87,8 +76,8 @@ public class USlider extends UBaseInput {
 		app.translate(px, py);
 
 		drawBackground();
-		app.text("Multiplier", 10, ccw.input_UI_height + ccw.fontSize);
-		app.text("Tolerance", 10, 2 * ccw.input_UI_height + ccw.fontSize);
+		app.text("Multiplier  " + multiplier, 10, ccw.input_UI_height + ccw.fontSize);
+		app.text("Tolerance   " + tolerance, 10, 2 * ccw.input_UI_height + ccw.fontSize);
 		// Slider variables
 		float sLeft = 10, sRight = ccw.input_UI_length - 10;
 		float sTop = 1 + 3 * ccw.input_UI_height;

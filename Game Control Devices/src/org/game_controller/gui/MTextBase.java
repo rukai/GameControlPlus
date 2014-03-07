@@ -42,7 +42,7 @@ public abstract class MTextBase extends MAbstractControl {
 	
 
 	/** The styled text used by this control */
-	public StyledString stext = null;
+	public MStyledString stext = null;
 	
 	protected Font localFont = M4P.globalFont;
 	
@@ -67,7 +67,7 @@ public abstract class MTextBase extends MAbstractControl {
 	public void setText(String text){
 		if(text == null || text.length() == 0 )
 			text = " ";
-		stext = new StyledString(text, Integer.MAX_VALUE);
+		stext = new MStyledString(text, Integer.MAX_VALUE);
 		bufferInvalid = true;
 	}
 	
@@ -78,7 +78,7 @@ public abstract class MTextBase extends MAbstractControl {
 	 * @return true if loaded successfully else false
 	 */
 	public boolean loadText(String fname){
-		StyledString ss = StyledString.load(winApp, fname);
+		MStyledString ss = MStyledString.load(winApp, fname);
 		if(ss != null){
 			setStyledText(ss);
 			stext.startIdx = stext.endIdx = -1;
@@ -97,7 +97,7 @@ public abstract class MTextBase extends MAbstractControl {
 	public boolean saveText(String fname){
 		if(stext != null){
 			stext.startIdx = stext.endIdx = -1;
-			StyledString.save(winApp, stext, fname);
+			MStyledString.save(winApp, stext, fname);
 			return true;
 		}
 		return false;
@@ -120,7 +120,7 @@ public abstract class MTextBase extends MAbstractControl {
 	 * Allows the user to provide their own styled text for this component
 	 * @param ss
 	 */
-	public void setStyledText(StyledString ss){
+	public void setStyledText(MStyledString ss){
 		if(ss != null) {
 			stext = ss;
 			stext.setWrapWidth((int)width - TPAD2);
@@ -176,7 +176,7 @@ public abstract class MTextBase extends MAbstractControl {
 	 * Get the text used for this control.
 	 * @return the displayed text without styling
 	 */
-	public StyledString getStyledText(){
+	public MStyledString getStyledText(){
 		return stext;
 	}
 	

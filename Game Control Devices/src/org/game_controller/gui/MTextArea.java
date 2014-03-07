@@ -24,8 +24,8 @@
 package org.game_controller.gui;
 
 import org.game_controller.gui.MHotSpot.HSrect;
-import org.game_controller.gui.StyledString.TextLayoutHitInfo;
-import org.game_controller.gui.StyledString.TextLayoutInfo;
+import org.game_controller.gui.MStyledString.TextLayoutHitInfo;
+import org.game_controller.gui.MStyledString.TextLayoutInfo;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -170,7 +170,7 @@ public class MTextArea extends MEditableTextControl {
 		if(dtext == null || dtext.length() == 0)
 			defaultText = null;
 		else {
-			defaultText = new StyledString(dtext, wrapWidth);
+			defaultText = new MStyledString(dtext, wrapWidth);
 			defaultText.addAttribute(M4P.POSTURE, M4P.POSTURE_OBLIQUE);
 		}
 		bufferInvalid = true;
@@ -198,7 +198,7 @@ public class MTextArea extends MEditableTextControl {
 	 */
 	public void setText(String text, int wrapWidth){
 //		this.wrapWidth = wrapWidth;
-		setStyledText(new StyledString(text, wrapWidth));
+		setStyledText(new MStyledString(text, wrapWidth));
 		bufferInvalid = true;
 	}
 
@@ -271,7 +271,7 @@ public class MTextArea extends MEditableTextControl {
 	 * Set the styled text to be displayed.
 	 * 
 	 */
-	public void setStyledText(StyledString st){
+	public void setStyledText(MStyledString st){
 		stext = st;
 		if(stext.getWrapWidth() == Integer.MAX_VALUE)
 			stext.setWrapWidth(wrapWidth);
@@ -838,7 +838,7 @@ public class MTextArea extends MEditableTextControl {
 				}
 				dragging = false;
 				if(stext == null || stext.length() == 0){
-					stext = new StyledString(" ", wrapWidth);
+					stext = new MStyledString(" ", wrapWidth);
 					stext.getLines(buffer.g2);
 				}
 				endTLHI = stext.calculateFromXY(buffer.g2, ox + ptx, oy + pty);

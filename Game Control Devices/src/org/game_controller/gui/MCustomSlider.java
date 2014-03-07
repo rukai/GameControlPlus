@@ -129,9 +129,9 @@ public class MCustomSlider extends MLinearTrackControl {
 		z = Z_SLIPPY;
 
 		epsilon = 0.98f / trackLength;
-		ssStartLimit = new StyledString("0.00");
-		ssEndLimit = new StyledString("1.00");
-		ssValue = new StyledString("0.50");
+		ssStartLimit = new MStyledString("0.00");
+		ssEndLimit = new MStyledString("1.00");
+		ssValue = new MStyledString("0.50");
 
 		// Now register control with applet
 		createEventHandler(M4P.sketchApplet, "handleSliderEvents", 
