@@ -11,22 +11,20 @@ import processing.core.PApplet;
  * @author peter
  *
  */
-public class VDeviceSelectEntry implements Comparable<VDeviceSelectEntry> {
-	
+public class LDeviceSelectEntry implements Comparable<LDeviceSelectEntry> {
+
 	public final PApplet app;
 	public final ControlIO controlIO;
 	public final ControlDevice device;
-	public final Configuration config;
 	// GUI stuff
 	public final MLabel displayName;
 	public final MButton btnGoConfig;
-	public VControlConfigWindow winCofig = null;
+	public LControlConfigWindow winCofig = null;
 
-	public VDeviceSelectEntry(PApplet papp, ControlIO controlIO, ControlDevice dev, Configuration config){
+	public LDeviceSelectEntry(PApplet papp, ControlIO controlIO, ControlDevice dev){
 		this.app = papp;
 		this.controlIO = controlIO;
 		this.device = dev;
-		this.config = config;
 		displayName = new MLabel(papp, 36, 20, app.width-36, 20);
 		displayName.setText(device.getName() + "  [" + device.getTypeName() + "]");
 		displayName.setTextAlign(MAlign.LEFT, null);
@@ -41,13 +39,13 @@ public class VDeviceSelectEntry implements Comparable<VDeviceSelectEntry> {
 
 	public void configClick(MButton source, MEvent event) {
 		if(winCofig == null) {
-			winCofig = new VControlConfigWindow(app, this);
+			winCofig = new LControlConfigWindow(app, this);
 			source.setVisible(false);
 		}
 	}
 
 	@Override
-	public int compareTo(VDeviceSelectEntry entry) {
+	public int compareTo(LDeviceSelectEntry entry) {
 		return device.compareTo(entry.device);
 	}
 }

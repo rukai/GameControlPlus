@@ -8,13 +8,13 @@ import org.game_controller.ControlSlider;
 
 import processing.core.PApplet;
 
-public class VSlider extends VBaseInput {
+public class LSlider extends LBaseInput {
 
 	ControlSlider slider;
 
 	float tolerance = 0, value = 0, multiplier = 1;
 
-	public VSlider(VControlConfigWindow ccw, ControlSlider pbutton, float x, float y) {
+	public LSlider(LControlConfigWindow ccw, ControlSlider pbutton, float x, float y) {
 		super(ccw, x, y, 1, 4);
 		uiType = UI_SLIDER;
 		inputTypeName = "SLIDER";

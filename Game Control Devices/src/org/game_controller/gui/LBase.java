@@ -3,9 +3,9 @@ package org.game_controller.gui;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
-public abstract class VBase implements  PConstants, VConstants {
+public abstract class LBase implements  PConstants, LConstants {
 
-	protected VControlConfigWindow ccw;
+	protected LControlConfigWindow ccw;
 	protected final PApplet app;
 
 	// DESC or INPUT
@@ -18,17 +18,17 @@ public abstract class VBase implements  PConstants, VConstants {
 	
 	int backCol;
 
-	final VConnector[] connectors;
+	final LConnector[] connectors;
 	
 	boolean isOver = false;
 	
-	VBase(VControlConfigWindow ccw, float x, float y, int nbr_connects){
+	LBase(LControlConfigWindow ccw, float x, float y, int nbr_connects){
 		this.ccw = ccw;
 		app = ccw.window.papplet;
 		UI_HEIGHT = ccw.desc_UI_height;
 		px = x;
 		py = y;
-		connectors = new VConnector[nbr_connects];
+		connectors = new LConnector[nbr_connects];
 	}
 	
 	protected abstract void drawConnectors();

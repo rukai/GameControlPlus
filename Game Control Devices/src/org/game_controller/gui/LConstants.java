@@ -1,6 +1,6 @@
 package org.game_controller.gui;
 
-public interface VConstants {
+public interface LConstants {
 
 	final float INPUT_UI_HEIGHT	= 24;
 	final float DESC_UI_HEIGHT	= 30;

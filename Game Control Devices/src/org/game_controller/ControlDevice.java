@@ -56,6 +56,11 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 	private final Controller controller;
 
 	/**
+	 * Instance to the PApplet where procontrol is running
+	 */
+	private final PApplet parent;
+
+	/**
 	 * This is used to show the device is available for selection by matching with
 	 * a configurations file.
 	 */
@@ -98,11 +103,6 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 	 */
 	private final String name;
 	
-	/**
-	 * Instance to the PApplet where procontrol is running
-	 */
-	private final PApplet parent;
-
 	/**
 	 * Initializes a new device by the given Controller
 	 * 

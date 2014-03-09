@@ -2,13 +2,13 @@ package org.game_controller.gui;
 
 import org.game_controller.ControlButton;
 
-public class VButton extends VBaseInput {
+public class LButton extends LBaseInput {
 
 	ControlButton button;
 	
 	boolean isPressed;
 	
-	public VButton(VControlConfigWindow ccw, ControlButton pbutton, float x, float y){
+	public LButton(LControlConfigWindow ccw, ControlButton pbutton, float x, float y){
 		super(ccw, x, y, 1, 1);
 		uiType = UI_BUTTON;
 		inputTypeName = "BUTTON";

@@ -3,14 +3,14 @@ package org.game_controller.gui;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
-public class VConnector implements PConstants, VConstants {
+public class LConnector implements PConstants, LConstants {
 
 	static final int INPUT = 0x01;
 	static final int DESC = 0x02;
 
 	private final PApplet app;
-	final VBase owner;
-	VConnector conTo = null;
+	final LBase owner;
+	LConnector conTo = null;
 	
 	public final int conNo;
 	boolean isOver = false;
@@ -20,11 +20,11 @@ public class VConnector implements PConstants, VConstants {
 	// Absolute position on screen
 	final float px, py;
 
-	public VConnector(PApplet papp, VBase owner, int conNo, float x, float y, float size){
+	public LConnector(PApplet papp, LBase owner, int conNo, float x, float y, float size){
 		app = papp;
 		this.owner = owner;
 		this.conNo = conNo;
-		type = (owner instanceof VDescriptor) ? DESC : INPUT;
+		type = (owner instanceof LDescriptor) ? DESC : INPUT;
 		px = x;
 		py = y;
 		this.size = size;
@@ -33,7 +33,6 @@ public class VConnector implements PConstants, VConstants {
 
 	public void draw(float deltaY){
 		app.pushMatrix();
-//		app.pushStyle();
 		app.translate(0, deltaY);
 		if(type == INPUT)
 			app.scale(-1, 1);
@@ -46,11 +45,10 @@ public class VConnector implements PConstants, VConstants {
 		app.line(0, 0, hsize, 0);
 		app.line(0, 0, 0, size);
 		app.line(0, size, hsize, size);
-//		app.popStyle();
 		app.popMatrix();	
 	}
 		
-	public boolean isOver(VControlConfigWindow ccw, float mx, float my){
+	public boolean isOver(LControlConfigWindow ccw, float mx, float my){
 		isOver = (Math.abs(mx-px) <= hsize && Math.abs(my-py) <= hsize);
 		if(isOver) 
 			ccw.current = this;

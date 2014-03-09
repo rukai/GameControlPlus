@@ -5,17 +5,17 @@ import org.game_controller.ControlCoolieHat;
 import org.game_controller.ControlInput;
 import org.game_controller.ControlSlider;
 
-public abstract class VBaseInput extends VBase {
+public abstract class LBaseInput extends LBase {
 
 
-	public static VBaseInput makeInputUI(VControlConfigWindow ccw, ControlInput input, float x, float y) {
-		VBaseInput obj = null;
+	public static LBaseInput makeInputUI(LControlConfigWindow ccw, ControlInput input, float x, float y) {
+		LBaseInput obj = null;
 		if(input instanceof ControlCoolieHat)
-			obj = new VCoolieHat(ccw, (ControlCoolieHat) input, x, y);
+			obj = new LCoolieHat(ccw, (ControlCoolieHat) input, x, y);
 		else  if(input instanceof ControlButton)
-			obj = new VButton(ccw, (ControlButton) input, x, y);
+			obj = new LButton(ccw, (ControlButton) input, x, y);
 		else  if(input instanceof ControlSlider)
-			obj = new VSlider(ccw, (ControlSlider) input, x, y);
+			obj = new LSlider(ccw, (ControlSlider) input, x, y);
 		return obj;
 	}
 
@@ -32,10 +32,10 @@ public abstract class VBaseInput extends VBase {
 		return 0;
 	}
 
-	public VBaseInput(VControlConfigWindow ccw, float x, float y, int nbr_connects, int nbrLines){
+	public LBaseInput(LControlConfigWindow ccw, float x, float y, int nbr_connects, int nbrLines){
 		super(ccw, x, y, nbr_connects);
 		for(int cn = 0; cn < connectors.length; cn++)
-			connectors[cn]= new VConnector(app, this, cn, 
+			connectors[cn]= new LConnector(app, this, cn, 
 					px - ccw.connector_size_r, // x
 					py + (cn + 0/5f) * ccw.input_UI_height + ccw.connector_size_r, //y
 					ccw.connector_size_d); // size

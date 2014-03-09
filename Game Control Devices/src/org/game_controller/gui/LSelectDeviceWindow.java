@@ -11,26 +11,34 @@ import org.game_controller.ControlIO;
 import processing.core.PApplet;
 import processing.event.MouseEvent;
 
-public class VSelectDeviceWindow {
 
-	
+/**
+ * This creates the device select entry window.
+ * @author peter
+ *
+ */
+public class LSelectDeviceWindow {
+
+	public static Configuration config;
+
 	MWindow window;
 	
 	PApplet app;
 	ControlIO controlIO;
 
 	String filename;
-	Configuration config;
-	List<VDeviceSelectEntry> deviceEntries =  new ArrayList<VDeviceSelectEntry>();
+//	Configuration config;
+	List<LDeviceSelectEntry> deviceEntries =  new ArrayList<LDeviceSelectEntry>();
 	
 	
-	public VSelectDeviceWindow(PApplet app, String configFilename){
+	public LSelectDeviceWindow(PApplet app, String configFilename){
 		M4P.messagesEnabled(false);
 		this.app = app;
 		filename = configFilename;
-		config = Configuration.makeConfiguration(app, filename);
+		LSelectDeviceWindow.config = Configuration.makeConfiguration(app, filename);
+		String title = "Select device for " + LSelectDeviceWindow.config.usage;
 		this.controlIO = ControlIO.getInstance(app);
-		window = new MWindow(app, "Select device for " + config.usage, 80, 40, 500, 400, false, PApplet.JAVA2D);
+		window = new MWindow(app, title, 80, 40, 500, 400, false, PApplet.JAVA2D);
 		window.setResizable(false);
 		window.addDrawHandler(this, "draw");
 		window.addMouseHandler(this, "mouse");
@@ -41,7 +49,7 @@ public class VSelectDeviceWindow {
 		// Add entries for devices added
 		for(ControlDevice d : devices){
 			if(d.available && !d.getTypeName().equalsIgnoreCase("keyboard"))
-				deviceEntries.add(new VDeviceSelectEntry(window.papplet, controlIO, d, config));
+				deviceEntries.add(new LDeviceSelectEntry(window.papplet, controlIO, d));
 		}
 		// Sort entries and reposition on screen
 		Collections.sort(deviceEntries);

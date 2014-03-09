@@ -6,7 +6,7 @@ package org.game_controller.gui;
 
 import org.game_controller.ControlCoolieHat;
 
-public class VCoolieHat extends VBaseInput {
+public class LCoolieHat extends LBaseInput {
 
 	ControlCoolieHat button;
 
@@ -16,7 +16,7 @@ public class VCoolieHat extends VBaseInput {
 	final String[] itext = { "left", "right", "up", "down" };
 
 
-	public VCoolieHat(VControlConfigWindow ccw, ControlCoolieHat pbutton, float x, float y) {
+	public LCoolieHat(LControlConfigWindow ccw, ControlCoolieHat pbutton, float x, float y) {
 		super(ccw, x, y, 1, 5);
 		uiType = UI_COOLIEHAT;
 		inputTypeName = "HAT";

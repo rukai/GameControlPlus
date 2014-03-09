@@ -3,18 +3,18 @@ package org.game_controller.gui;
 import org.game_controller.Configuration.InputConfig;
 
 
-public class VDescriptor extends VBase {
+public class LDescriptor extends LBase {
 
 
 	InputConfig iconfig;
-	VBaseInput source = null;
+	LBaseInput source = null;
 	int conID = 0;
 	
-	public VDescriptor(VControlConfigWindow ccw, float x, float y, InputConfig iconfig) {
+	public LDescriptor(LControlConfigWindow ccw, float x, float y, InputConfig iconfig) {
 		super(ccw, x ,y, 1);
 		this.iconfig = iconfig;
 		for(int cn = 0; cn < connectors.length; cn++)
-			connectors[cn]= new VConnector(app, this, cn, 
+			connectors[cn]= new LConnector(app, this, cn, 
 					px + ccw.desc_UI_length + ccw.connector_size_r, // x
 					py + (cn + 0/5f) * ccw.desc_UI_height + ccw.connector_size_r, //y
 					ccw.connector_size_d); // size

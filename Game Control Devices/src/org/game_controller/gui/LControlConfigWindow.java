@@ -3,7 +3,9 @@ package org.game_controller.gui;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,24 +21,29 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.event.MouseEvent;
 
-public class VControlConfigWindow implements PConstants, VConstants {
+public class LControlConfigWindow implements PConstants, LConstants {
 
-	static int nbrWindows = 0;
+//	static int nbrWindows = 0;
 
 	private final ControlDevice device;
-
+	
 	final ControlIO controlIO;
 
 	final Configuration config;
 	
 	private boolean active = false;
 
-	List<VBase> uiElements = new ArrayList<VBase>();
-	List<VConnector> uiConnections = new ArrayList<VConnector>();
+	List<LBase> uiElements = new ArrayList<LBase>();
+	List<LConnector> uiConnections = new ArrayList<LConnector>();
 
-	VConnector start = null;
-	VConnector end = null;
-	VConnector current = null;
+	private StringBuffer report;
+	List<LConnector> configConnections = new ArrayList<LConnector>();
+	private Map<String, LBaseInput> devInpKeys = new HashMap<String, LBaseInput>();
+	private int errCount = 0;
+
+	LConnector start = null;
+	LConnector end = null;
+	LConnector current = null;
 
 	float scale;
 	final float input_UI_height;
@@ -51,11 +58,6 @@ public class VControlConfigWindow implements PConstants, VConstants {
 	final float fontSize;
 	final Font font;
 
-	private StringBuffer report;
-	List<VConnector> configConnections = new ArrayList<VConnector>();
-	private Set<String> keys = new TreeSet<String>();
-	private int errCount = 0;
-
 	private boolean dragging = false;
 
 	private void addToReport(String line, boolean isError){
@@ -69,8 +71,8 @@ public class VControlConfigWindow implements PConstants, VConstants {
 	 */
 	private void validateDescriptors(){
 		// Create a list of used descriptors
-		for(VConnector ui : uiConnections){
-			if(ui.type == VConnector.DESC && ui.conTo != null){
+		for(LConnector ui : uiConnections){
+			if(ui.type == LConnector.DESC && ui.conTo != null){
 				configConnections.add(ui);
 			}
 		}
@@ -79,9 +81,9 @@ public class VControlConfigWindow implements PConstants, VConstants {
 			return;
 		}
 		// We only get here if we have some connections configured
-		for(VConnector ui : configConnections){
-			VDescriptor descUI = (VDescriptor)ui.owner;
-			String inputName = ((VBaseInput)ui.conTo.owner).name;
+		for(LConnector ui : configConnections){
+			LDescriptor descUI = (LDescriptor)ui.owner;
+			String inputName = ((LBaseInput)ui.conTo.owner).name;
 			String desc = descUI.iconfig.description;
 			if(desc.length() == 0)
 				addToReport("No description for input: " + inputName + "\n", true);
@@ -95,7 +97,7 @@ public class VControlConfigWindow implements PConstants, VConstants {
 	 */
 	private boolean verifyConfig(boolean chain){
 		configConnections.clear();
-		keys.clear();
+
 		report = new StringBuffer();
 		errCount = 0;
 
@@ -121,8 +123,6 @@ public class VControlConfigWindow implements PConstants, VConstants {
 			addToReport("Name for configuration file required\n", true);
 		}
 		else {
-			if(!filename.endsWith(".c_config"))
-				filename += ".c_config";
 			//==================================================================================================
 			// Will eventually need to use sketch data path
 			//==================================================================================================
@@ -140,9 +140,9 @@ public class VControlConfigWindow implements PConstants, VConstants {
 	private String[] makeConfigLines() {
 		String[] data = new String[configConnections.size()];
 		int index = 0;
-		for(VConnector ui : configConnections){
-			VDescriptor descUI = (VDescriptor)ui.owner;
-			VBaseInput inputUI = (VBaseInput)ui.conTo.owner;
+		for(LConnector ui : configConnections){
+			LDescriptor descUI = (LDescriptor)ui.owner;
+			LBaseInput inputUI = (LBaseInput)ui.conTo.owner;
 			String desc = descUI.iconfig.description;
 			String key = descUI.iconfig.key;
 			String inputName = inputUI.name;
@@ -173,7 +173,7 @@ public class VControlConfigWindow implements PConstants, VConstants {
 
 	synchronized public void pre(MWinApplet appc, MWinData data) {
 		current = null;
-		for(VBase ui : uiElements){
+		for(LBase ui : uiElements){
 			ui.update();
 			ui.overWhat(appc.mouseX, appc.mouseY);
 		}
@@ -218,8 +218,8 @@ public class VControlConfigWindow implements PConstants, VConstants {
 		appc.rect(appc.width - PANEL_WIDTH, 0, PANEL_WIDTH, appc.height);
 		// Draw connections
 		appc.strokeWeight(3.5f);
-		for(VConnector c : uiConnections){
-			if(c.conTo != null && c.type == VConnector.DESC){
+		for(LConnector c : uiConnections){
+			if(c.conTo != null && c.type == LConnector.DESC){
 				appc.stroke(c.isOver ? HIGHLIGHT : CONNECTION);
 				appc.line(c.px,  c.py,  c.conTo.px,  c.conTo.py);
 			}
@@ -230,7 +230,7 @@ public class VControlConfigWindow implements PConstants, VConstants {
 			appc.line(start.px, start.py, appc.mouseX, appc.mouseY);
 		}
 		// Draw descriptors and inputs
-		for(VBase ui : uiElements)
+		for(LBase ui : uiElements)
 			ui.draw();
 	}
 
@@ -251,12 +251,12 @@ public class VControlConfigWindow implements PConstants, VConstants {
 	MTextField txfFilename;
 	MTextArea txaStatus;
 
-	public VControlConfigWindow(PApplet papp, VDeviceSelectEntry entry){
+	public LControlConfigWindow(PApplet papp, LDeviceSelectEntry entry){
 		float px, py, pw;
 		device = entry.device;
 		entry.device.open();
 		controlIO = entry.controlIO;
-		this.config = entry.config;
+		this.config = LSelectDeviceWindow.config;
 		float spaceForInputs = ELEMENT_UI_GAP;
 
 		// Scan through controls to calculate the window height needed
@@ -298,7 +298,7 @@ public class VControlConfigWindow implements PConstants, VConstants {
 
 		// CREATE THE WINDOW
 		String title = "'" + device.getName() + "'  [" + device.getTypeName() + " on " + device.getPortTypeName() + "]"; 
-		window = new MWindow(papp, title, 80 + nbrWindows * 40, 100 + nbrWindows * 30, 1020, winHeight, false, M4P.JAVA2D);
+		window = new MWindow(papp, title, 80, 100, 1020, winHeight, false, M4P.JAVA2D);
 		window.setResizable(false);
 		window.addDrawHandler(this, "draw");
 		window.addMouseHandler(this, "mouse");
@@ -306,32 +306,35 @@ public class VControlConfigWindow implements PConstants, VConstants {
 		window.papplet.noLoop();
 		tabManager = new MTabManager();
 		M4P.setCursor(CROSS, window);	
-		nbrWindows++;
 
 		// Create the control panel
 		px = window.papplet.width - PANEL_WIDTH + 10;
 		pw = PANEL_WIDTH - 20;
 		py = 10;
-		MLabel lblFilenamePrompt = new MLabel(window.papplet, px, py, pw, 20, "Filename for this configuration");
+		MLabel lblFilenamePrompt = new MLabel(window.papplet, px, py, pw, 20, "Config. for: " + config.usage);
 		lblFilenamePrompt.setTextAlign(MAlign.LEFT, null);
 		lblFilenamePrompt.setLocalColorScheme(M4P.GREEN_SCHEME);
 		lblFilenamePrompt.setTextBold();
 		lblFilenamePrompt.setOpaque(true);
-		py += 22;
-		txfFilename = new MTextField(window.papplet, px, py, pw, 20);
-		txfFilename.setLocalColorScheme(M4P.GREEN_SCHEME);
-		txfFilename.setDefaultText("Enter a filename for this configuration");
-		py += 22;
-		MButton btnVerify = new MButton(window.papplet, px, py, (pw-10)/2, 20);
+		py += 26;
+		float bw = (pw - 20)/3;
+		MButton btnClearStatus = new MButton(window.papplet, px, py, bw, 20);
+		btnClearStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
+		btnClearStatus.setText("Clear Status");
+		btnClearStatus.addEventHandler(this, "clear_click");
+		
+		MButton btnVerify = new MButton(window.papplet, px + (pw - bw)/2, py, bw, 20);
 		btnVerify.setLocalColorScheme(M4P.GREEN_SCHEME);
 		btnVerify.setText("Verify");
 		btnVerify.addEventHandler(this, "verify_click");
-		MButton btnSave = new MButton(window.papplet, px + pw / 2 + 5, py, (pw-10)/2, 20);
+		
+		MButton btnSave = new MButton(window.papplet, px + pw - bw, py, bw, 20);
 		btnSave.setLocalColorScheme(M4P.GREEN_SCHEME);
 		btnSave.setText("Save");
 		btnSave.addEventHandler(this, "save_click");
+
 		py += 26;
-		MLabel lblStatus = new MLabel(window.papplet, px, py, pw, 20, "VERIFY / SAVE STUS REPORT");
+		MLabel lblStatus = new MLabel(window.papplet, px, py, pw, 20, "VERIFY / SAVE STATUS REPORT");
 		lblStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
 		lblStatus.setTextBold();
 		lblStatus.setOpaque(true);
@@ -340,35 +343,36 @@ public class VControlConfigWindow implements PConstants, VConstants {
 		txaStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
 		txaStatus.setDefaultText("Verify / save status report");
 		py += txaStatus.getHeight() + 2;
-		MButton btnClearStatus = new MButton(window.papplet, px, py, (pw-10)/2, 20);
-		btnClearStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
-		btnClearStatus.setText("Clear Status");
-		btnClearStatus.addEventHandler(this, "clear_click");
-
-		nbrWindows++;
-		// Create and add inputs to UI 
+		
+		// Create and add device inputs to UI 
 		window.papplet.textSize(fontSize);
 		px = window.papplet.width - 10 - INPUT_UI_LENGTH - PANEL_WIDTH;
 		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForInputs) / 2; 
 		for(ControlInput input : device.getInputs()){
-			VBaseInput ui = VBaseInput.makeInputUI(this, input, px, py);
+			LBaseInput ui = LBaseInput.makeInputUI(this, input, px, py);
 			if(ui != null){
 				uiElements.add(ui);
 				py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
+				devInpKeys.put(ui.name, ui);
 			}
 		}
-		// Create and add descriptors to UI 
+		
+		// Create and add configuration to UI 
 		px = 10;
 		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForDescs) / 2; 
 		for(Configuration.InputConfig iconfig : config.gameInputs){
-			VDescriptor ui = new VDescriptor(this, px, py, iconfig);
+			LDescriptor ui = new LDescriptor(this, px, py, iconfig);
 			uiElements.add(ui);
 			py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
 		}
+		
 		// Now create list of connectors
-		for(VBase ui : uiElements)
-			for(VConnector c : ui.connectors)
+		for(LBase ui : uiElements)
+			for(LConnector c : ui.connectors)
 				uiConnections.add(c);
+		
+		// Now add permissable connections from config
+		
 		active = true;
 		window.papplet.loop();
 	}
