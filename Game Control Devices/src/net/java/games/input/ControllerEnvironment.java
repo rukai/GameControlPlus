@@ -100,6 +100,11 @@ public abstract class ControllerEnvironment{
 	static protected final byte os = getOS();
 
 	/**
+	 * Platform specific word size i.e. 32 or 64. If 0 (zero) then it is unknow
+	 */
+	static protected final byte wordsize = getWordSize();
+	
+	/**
 	 * Folder to the native libs
 	 */
 	//private static final File pluginFolder = getPlugInFolder();
@@ -132,6 +137,23 @@ public abstract class ControllerEnvironment{
 			return LINUX;
 		}else{
 			return OTHER;
+		}
+	}
+
+	/**
+	 * Returns the platform word size. <br>
+	 * 32 - for 32 bit OS
+	 * 64 - for 64 bit OS
+	 * 0 - unknown
+	 */
+	private static byte getWordSize(){
+		String nbits = System.getProperty("sun.arch.data.model");
+		if (nbits.indexOf("32") != -1){
+			return 32;
+		}else if (nbits.indexOf("64") != -1){
+			return 64;
+		}else {
+			return 0;
 		}
 	}
 

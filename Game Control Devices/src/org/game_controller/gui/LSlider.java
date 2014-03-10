@@ -12,7 +12,7 @@ public class LSlider extends LBaseInput {
 
 	ControlSlider slider;
 
-	float tolerance = 0, value = 0, multiplier = 1;
+	protected float tolerance = 0, value = 0, multiplier = 1;
 
 	public LSlider(LControlConfigWindow ccw, ControlSlider pbutton, float x, float y) {
 		super(ccw, x, y, 1, 4);
@@ -25,12 +25,20 @@ public class LSlider extends LBaseInput {
 		fontBaseLine = (ccw.desc_UI_height + ccw.fontSize) / 2;
 	}
 
+	public float getTolerance(){
+		return tolerance;
+	}
+
+	public void setTolerance(float t){
+		slider.setTolerance(t);
+	}
+
 	public float getMultiplier(){
 		return multiplier;
 	}
 
-	public float getTolerance(){
-		return tolerance;
+	public void setMultiplier(float m){
+		slider.setMultiplier(m);
 	}
 
 

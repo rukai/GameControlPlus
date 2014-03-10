@@ -37,7 +37,6 @@ public interface LConstants {
 	final int TEXTFILL				= 0xFF000080;
 	final int PRESSED				= 0xFFFF3030;
 	final int RELEASED				= 0xFF802020;
-//	final int INDICATOR				= 0xFFE0E0FF;
 	final int SLIDER_CURSOR			= 0xFFFF4040;
 
 

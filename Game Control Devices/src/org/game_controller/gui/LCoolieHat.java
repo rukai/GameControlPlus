@@ -10,7 +10,8 @@ public class LCoolieHat extends LBaseInput {
 
 	ControlCoolieHat button;
 
-	float x, y, value, multiplier = 1;
+	protected float value = 0, multiplier = 1;
+	protected float x, y;
 
 	final boolean[] indicators = new boolean[4];
 	final String[] itext = { "left", "right", "up", "down" };
@@ -27,6 +28,14 @@ public class LCoolieHat extends LBaseInput {
 		fontBaseLine = (ccw.desc_UI_height + ccw.fontSize) / 2;
 	}
 
+	public float getMultiplier(){
+		return multiplier;
+	}
+
+	public void setMultiplier(float m){
+		button.setMultiplier(m);
+	}
+	
 	@Override
 	public void update(){
 		value = button.getValue();

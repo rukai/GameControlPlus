@@ -20,14 +20,13 @@ import processing.event.MouseEvent;
 public class LSelectDeviceWindow {
 
 	public static Configuration config;
-
+	public static String filename;
+	
 	MWindow window;
 	
 	PApplet app;
 	ControlIO controlIO;
 
-	String filename;
-//	Configuration config;
 	List<LDeviceSelectEntry> deviceEntries =  new ArrayList<LDeviceSelectEntry>();
 	
 	

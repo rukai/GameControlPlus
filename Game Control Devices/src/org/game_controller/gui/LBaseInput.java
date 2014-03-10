@@ -19,13 +19,23 @@ public abstract class LBaseInput extends LBase {
 		return obj;
 	}
 
-	String name;
 	int namePos;
 	// BUTTON, HAT, SLIDER
 	String inputTypeName = "";
 
+	
+	public float getValue(){
+		return 0;
+	}
+
 	public float getMultiplier(){
 		return 0;
+	}
+	
+	public void setTolerance(float t){
+	}
+
+	public void setMultiplier(float m){
 	}
 
 	public float getTolerance(){
@@ -50,7 +60,6 @@ public abstract class LBaseInput extends LBase {
 		app.rect(0, 0, ccw.input_UI_length,  UI_HEIGHT);
 		app.fill(TEXTFILL);
 		app.text(name, namePos, fontBaseLine);
-
 	}
 
 	protected void drawConnectors(){

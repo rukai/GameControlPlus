@@ -8,14 +8,15 @@ public abstract class LBase implements  PConstants, LConstants {
 	protected LControlConfigWindow ccw;
 	protected final PApplet app;
 
-	// DESC or INPUT
+	String name;
+
+	// UI_BUTTON, UI_COOLIEHAT, UI_SLIDER or UI_DESCRIPTOR	
 	int uiType;
 	
-	float UI_HEIGHT; // = ccw.desc_UI_height;
-	
-	float fontBaseLine;
 	final float px, py;
 	
+	float UI_HEIGHT;
+	float fontBaseLine;
 	int backCol;
 
 	final LConnector[] connectors;
@@ -29,6 +30,10 @@ public abstract class LBase implements  PConstants, LConstants {
 		px = x;
 		py = y;
 		connectors = new LConnector[nbr_connects];
+	}
+	
+	public int getNbrOfConnectors(){
+		return connectors.length;
 	}
 	
 	protected abstract void drawConnectors();

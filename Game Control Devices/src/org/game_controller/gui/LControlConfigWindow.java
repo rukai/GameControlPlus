@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.game_controller.Configuration;
 import org.game_controller.ControlButton;
@@ -23,71 +21,73 @@ import processing.event.MouseEvent;
 
 public class LControlConfigWindow implements PConstants, LConstants {
 
-//	static int nbrWindows = 0;
 
 	private final ControlDevice device;
-	
+
 	final ControlIO controlIO;
 
 	final Configuration config;
-	
+	final String filename;
+
 	private boolean active = false;
 
 	List<LBase> uiElements = new ArrayList<LBase>();
 	List<LConnector> uiConnections = new ArrayList<LConnector>();
 
 	private StringBuffer report;
-	List<LConnector> configConnections = new ArrayList<LConnector>();
+	//	List<LConnector> configConnections = new ArrayList<LConnector>();
 	private Map<String, LBaseInput> devInpKeys = new HashMap<String, LBaseInput>();
+	private Map<String, LDescriptor> descriptors = new HashMap<String, LDescriptor>();
+
 	private int errCount = 0;
 
-	LConnector start = null;
-	LConnector end = null;
-	LConnector current = null;
 
-	float scale;
-	final float input_UI_height;
-	final float desc_UI_height;
-	final float element_UI_gap;
-	final float input_UI_length;
-	final float desc_UI_length;
-	final float textfield_gap;
-	final float indicator_d;
-	final float connector_size_r;  // radius
-	final float connector_size_d;  // diameter
-	final float fontSize;
-	final Font font;
+	private void addConfigToGUI(float spaceNeeded, float spaceForDescs, float spaceForInputs){
+		float px, py;
+		// Create and add device inputs to UI 
+		px = window.papplet.width - 10 - INPUT_UI_LENGTH - PANEL_WIDTH;
+		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForInputs) / 2; 
 
-	private boolean dragging = false;
+		for(ControlInput input : device.getInputs()){
+			LBaseInput ui = LBaseInput.makeInputUI(this, input, px, py);
+			if(ui != null){
+				uiElements.add(ui);
+				py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
+				devInpKeys.put(ui.name, ui);
+			}
+		}
 
+		// Create and add descriptors to UI 
+		px = 10;
+		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForDescs) / 2; 
+		for(Configuration.InputConfig iconfig : config.gameInputs){
+			LDescriptor ui = new LDescriptor(this, px, py, iconfig);
+			uiElements.add(ui);
+			descriptors.put(ui.name, ui);
+			py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
+		}
+
+		// Now create list of connectors
+		for(LBase ui : uiElements)
+			for(LConnector c : ui.connectors)
+				uiConnections.add(c);
+	}
+
+	private void makeExistingConnections(){
+		for(Configuration.InputConfig iconfig : config.gameInputs){
+			LBaseInput di = devInpKeys.get(iconfig.deviceInputName);
+			if(di != null && iconfig.type == di.uiType && iconfig.inputConNo < di.getNbrOfConnectors()){
+				LDescriptor descUI = descriptors.get(iconfig.key);
+				descUI.connectors[0].conTo = di.connectors[iconfig.inputConNo];
+				di.connectors[iconfig.inputConNo].conTo = descUI.connectors[0];
+				di.setMultiplier(iconfig.multiplier);
+				di.setTolerance(iconfig.tolerance);
+			}
+		}
+	}
 	private void addToReport(String line, boolean isError){
 		report.append(line);
 		if(isError) errCount++;
-	}
-
-	/**
-	 * This method will check for any errors / omissions in all
-	 * used descriptors.
-	 */
-	private void validateDescriptors(){
-		// Create a list of used descriptors
-		for(LConnector ui : uiConnections){
-			if(ui.type == LConnector.DESC && ui.conTo != null){
-				configConnections.add(ui);
-			}
-		}
-		if(configConnections.size() == 0){
-			addToReport("Empty configuration!\n", true);
-			return;
-		}
-		// We only get here if we have some connections configured
-		for(LConnector ui : configConnections){
-			LDescriptor descUI = (LDescriptor)ui.owner;
-			String inputName = ((LBaseInput)ui.conTo.owner).name;
-			String desc = descUI.iconfig.description;
-			if(desc.length() == 0)
-				addToReport("No description for input: " + inputName + "\n", true);
-		}
 	}
 
 	/**
@@ -96,13 +96,21 @@ public class LControlConfigWindow implements PConstants, LConstants {
 	 * @return
 	 */
 	private boolean verifyConfig(boolean chain){
-		configConnections.clear();
-
 		report = new StringBuffer();
-		errCount = 0;
+		for(Configuration.InputConfig iconfig : config.gameInputs){
+			LDescriptor descUI = descriptors.get(iconfig.key);
+			LConnector con = descUI.connectors[0].conTo;
+			if(con != null){
+				iconfig.deviceInputName = con.owner.name;
+				iconfig.inputConNo = con.conNo;
+				iconfig.multiplier = ((LBaseInput)con.owner).getMultiplier();
+				iconfig.tolerance = ((LBaseInput)con.owner).getTolerance();
+			}
+			else {
+				addToReport("No input assigned to: " + descUI.name + "\n", true);
 
-		validateDescriptors();
-
+			}	
+		}
 		if(errCount > 0)
 			addToReport("VERIFY - " + errCount + " errors found\n", false);
 		else
@@ -118,18 +126,13 @@ public class LControlConfigWindow implements PConstants, LConstants {
 			txaStatus.setText(report.toString());
 			return;
 		}
-		String filename = txfFilename.getText();
-		if(filename.length() == 0){
-			addToReport("Name for configuration file required\n", true);
-		}
-		else {
-			//==================================================================================================
-			// Will eventually need to use sketch data path
-			//==================================================================================================
-			File file = new File(filename);
-			String[] lines = makeConfigLines();
-			PApplet.saveStrings(file, lines);
-		}
+		//==================================================================================================
+		// Will eventually need to use sketch data path
+		//==================================================================================================
+		File file = new File(filename);
+		String[] lines = makeConfigLines();
+		PApplet.saveStrings(file, lines);
+
 		if(errCount > 0)
 			addToReport("SAVE - failed\n", false);
 		else
@@ -138,21 +141,11 @@ public class LControlConfigWindow implements PConstants, LConstants {
 	}
 
 	private String[] makeConfigLines() {
-		String[] data = new String[configConnections.size()];
-		int index = 0;
-		for(LConnector ui : configConnections){
-			LDescriptor descUI = (LDescriptor)ui.owner;
-			LBaseInput inputUI = (LBaseInput)ui.conTo.owner;
-			String desc = descUI.iconfig.description;
-			String key = descUI.iconfig.key;
-			String inputName = inputUI.name;
-			int typeID = inputUI.uiType;
-			float multiplier = inputUI.getMultiplier();
-			float tolerance = inputUI.getTolerance();
-			String type = inputUI.inputTypeName;
-			data[index] = key + SEPARATOR + desc + SEPARATOR + typeID + SEPARATOR + type;
-			data[index] += SEPARATOR + inputName + SEPARATOR + multiplier + SEPARATOR + tolerance;
-			index++;
+		String[] data = new String[config.gameInputs.length + 1];
+		data[0] = config.usage;
+		int index = 1;
+		for(Configuration.InputConfig iconfig : config.gameInputs){
+			data[index++] = iconfig.toString();
 		}
 		return data;
 	}
@@ -191,17 +184,24 @@ public class LControlConfigWindow implements PConstants, LConstants {
 			}
 			break;
 		case MouseEvent.RELEASE:
-			if(current != null && start != null && current.type != start.type){
-				end = current;
-				current = null;
-				dragging = false;
-				if(start.conTo != null)
-					start.conTo.conTo = null;
-				if(end.conTo != null)
-					end.conTo.conTo = null;
-				start.conTo = end;
-				end.conTo = start;			
+			if(current != null && start != null){
+				// Make sure the device input is the right type for the descriptor
+				int type0 = current.owner.uiType == UI_DESCRIPTOR ? ((LDescriptor)current.owner).iconfig.type : current.owner.uiType;
+				int type1 = start.owner.uiType == UI_DESCRIPTOR ? ((LDescriptor)start.owner).iconfig.type : start.owner.uiType;
+				System.out.println("Start = " + type1 + "   Current = " + type0);
+				if(type0 == type1){
+					end = current;
+					current = null;
+
+					if(start.conTo != null)
+						start.conTo.conTo = null;
+					if(end.conTo != null)
+						end.conTo.conTo = null;
+					start.conTo = end;
+					end.conTo = start;		
+				}
 			}
+			dragging = false;
 			break;
 		case MouseEvent.DRAG:
 
@@ -253,6 +253,7 @@ public class LControlConfigWindow implements PConstants, LConstants {
 
 	public LControlConfigWindow(PApplet papp, LDeviceSelectEntry entry){
 		float px, py, pw;
+		filename = LSelectDeviceWindow.filename;
 		device = entry.device;
 		entry.device.open();
 		controlIO = entry.controlIO;
@@ -322,17 +323,14 @@ public class LControlConfigWindow implements PConstants, LConstants {
 		btnClearStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
 		btnClearStatus.setText("Clear Status");
 		btnClearStatus.addEventHandler(this, "clear_click");
-		
 		MButton btnVerify = new MButton(window.papplet, px + (pw - bw)/2, py, bw, 20);
 		btnVerify.setLocalColorScheme(M4P.GREEN_SCHEME);
 		btnVerify.setText("Verify");
 		btnVerify.addEventHandler(this, "verify_click");
-		
 		MButton btnSave = new MButton(window.papplet, px + pw - bw, py, bw, 20);
 		btnSave.setLocalColorScheme(M4P.GREEN_SCHEME);
 		btnSave.setText("Save");
 		btnSave.addEventHandler(this, "save_click");
-
 		py += 26;
 		MLabel lblStatus = new MLabel(window.papplet, px, py, pw, 20, "VERIFY / SAVE STATUS REPORT");
 		lblStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
@@ -343,36 +341,12 @@ public class LControlConfigWindow implements PConstants, LConstants {
 		txaStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
 		txaStatus.setDefaultText("Verify / save status report");
 		py += txaStatus.getHeight() + 2;
-		
-		// Create and add device inputs to UI 
+
 		window.papplet.textSize(fontSize);
-		px = window.papplet.width - 10 - INPUT_UI_LENGTH - PANEL_WIDTH;
-		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForInputs) / 2; 
-		for(ControlInput input : device.getInputs()){
-			LBaseInput ui = LBaseInput.makeInputUI(this, input, px, py);
-			if(ui != null){
-				uiElements.add(ui);
-				py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
-				devInpKeys.put(ui.name, ui);
-			}
-		}
-		
-		// Create and add configuration to UI 
-		px = 10;
-		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForDescs) / 2; 
-		for(Configuration.InputConfig iconfig : config.gameInputs){
-			LDescriptor ui = new LDescriptor(this, px, py, iconfig);
-			uiElements.add(ui);
-			py += ui.UI_HEIGHT + ELEMENT_UI_GAP;
-		}
-		
-		// Now create list of connectors
-		for(LBase ui : uiElements)
-			for(LConnector c : ui.connectors)
-				uiConnections.add(c);
-		
-		// Now add permissable connections from config
-		
+
+		addConfigToGUI(spaceNeeded, spaceForDescs, spaceForInputs);
+		makeExistingConnections();
+
 		active = true;
 		window.papplet.loop();
 	}
@@ -380,4 +354,25 @@ public class LControlConfigWindow implements PConstants, LConstants {
 	void close(){
 		window.forceClose();
 	}
+
+
+	LConnector start = null;
+	LConnector end = null;
+	LConnector current = null;
+
+	final float scale;
+	final float input_UI_height;
+	final float desc_UI_height;
+	final float element_UI_gap;
+	final float input_UI_length;
+	final float desc_UI_length;
+	final float textfield_gap;
+	final float indicator_d;
+	final float connector_size_r;  // radius
+	final float connector_size_d;  // diameter
+	final float fontSize;
+	final Font font;
+
+	private boolean dragging = false;
+
 }

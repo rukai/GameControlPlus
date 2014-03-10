@@ -54,7 +54,10 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment {
 
 	static{
 		if (isSupported()){
-			System.loadLibrary("jinput-dx8");
+			if(wordsize == 64)
+				System.loadLibrary("jinput-dx8_64");
+			else
+				System.loadLibrary("jinput-dx8");
 		}
 	}
 	

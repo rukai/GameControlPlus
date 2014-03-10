@@ -13,6 +13,7 @@ public class LDescriptor extends LBase {
 	public LDescriptor(LControlConfigWindow ccw, float x, float y, InputConfig iconfig) {
 		super(ccw, x ,y, 1);
 		this.iconfig = iconfig;
+		name = iconfig.key;
 		for(int cn = 0; cn < connectors.length; cn++)
 			connectors[cn]= new LConnector(app, this, cn, 
 					px + ccw.desc_UI_length + ccw.connector_size_r, // x

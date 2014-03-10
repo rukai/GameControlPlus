@@ -39,6 +39,7 @@ public class Configuration implements GCConstants {
 		public int type;
 		public String typeName;
 		public String deviceInputName;
+		public int inputConNo;
 		public float multiplier;
 		public float tolerance;
 		
@@ -49,8 +50,21 @@ public class Configuration implements GCConstants {
 			type = Integer.parseInt(part[2]);
 			typeName = part[3];
 			deviceInputName = part[4];
-			multiplier = Float.parseFloat(part[5]);
-			tolerance = Float.parseFloat(part[6]);
+			inputConNo = Integer.parseInt(part[5]);
+			multiplier = Float.parseFloat(part[6]);
+			tolerance = Float.parseFloat(part[7]);
+		}
+		
+		public String toString(){
+			StringBuilder sb = new StringBuilder(key + SEPARATOR);
+			sb.append(description + SEPARATOR);
+			sb.append(type + SEPARATOR);
+			sb.append(typeName + SEPARATOR);
+			sb.append(deviceInputName + SEPARATOR);
+			sb.append(inputConNo + SEPARATOR);
+			sb.append(multiplier + SEPARATOR);
+			sb.append(tolerance);
+			return sb.toString();
 		}
 	}
 }
