@@ -11,7 +11,7 @@ import processing.core.PApplet;
  * @author peter
  *
  */
-public class LDeviceSelectEntry implements Comparable<LDeviceSelectEntry> {
+public class LSelectEntry implements Comparable<LSelectEntry> {
 
 	public final PApplet app;
 	public final ControlIO controlIO;
@@ -19,10 +19,12 @@ public class LDeviceSelectEntry implements Comparable<LDeviceSelectEntry> {
 	// GUI stuff
 	public final MLabel displayName;
 	public final MButton btnGoConfig;
-	public LDeviceConfigWindow winCofig = null;
-
-	public LDeviceSelectEntry(MWindow window, ControlIO controlIO, ControlDevice dev){
-		this.app = window.papplet;
+	public LConfigUI winCofig = null;
+	LSelectUI selWindow;
+	
+	public LSelectEntry(LSelectUI selWindow, ControlIO controlIO, ControlDevice dev){
+		this.selWindow = selWindow;
+		this.app = selWindow.window.papplet;
 		this.controlIO = controlIO;
 		this.device = dev;
 		displayName = new MLabel(app, 36, 20, app.width-36, 20);
@@ -39,13 +41,13 @@ public class LDeviceSelectEntry implements Comparable<LDeviceSelectEntry> {
 
 	public void configClick(MButton source, MEvent event) {
 		if(winCofig == null) {
-			winCofig = new LDeviceConfigWindow(app, this);
-			source.setVisible(false);
+			winCofig = new LConfigUI(app, this);
+			selWindow.finishedWith();     
 		}
 	}
 
 	@Override
-	public int compareTo(LDeviceSelectEntry entry) {
+	public int compareTo(LSelectEntry entry) {
 		return device.compareTo(entry.device);
 	}
 }

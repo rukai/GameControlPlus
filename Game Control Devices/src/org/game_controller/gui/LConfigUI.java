@@ -19,7 +19,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.event.MouseEvent;
 
-public class LDeviceConfigWindow implements PConstants, LConstants {
+public class LConfigUI implements PConstants, LConstants {
 
 
 	private final ControlDevice device;
@@ -83,6 +83,7 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 			}
 		}
 	}
+	
 	private void addToReport(String line, boolean isError){
 		report.append(line);
 		if(isError) errCount++;
@@ -118,11 +119,11 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 		return errCount == 0;
 	}
 
-	private void saveConfig(){
+	private boolean saveConfig(){
 		if(!verifyConfig(true)){
 			addToReport("SAVE - abandoned\n", false);
 			txaStatus.setText(report.toString());
-			return;
+			return false;
 		}
 		//==================================================================================================
 		// Will eventually need to use sketch data path
@@ -130,10 +131,7 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 		File file = new File(config.filename);
 		String[] lines = makeConfigLines();
 		PApplet.saveStrings(file, lines);
-		ControlIO.configuredDevice = device;
-		ControlIO.configurating = false;
-		
-		window.forceClose();
+		return true;
 //		if(errCount > 0)
 //			addToReport("SAVE - failed\n", false);
 //		else
@@ -156,8 +154,16 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 	}
 
 
-	public void save_click(MButton button, MEvent event) { 
-		saveConfig();
+	public void use_device_click(MButton button, MEvent event) { 
+		if(saveConfig()){
+			controlIO.finishedConfig(device);
+			window.forceClose();
+		}
+	}
+
+	public void quit_click(MButton button, MEvent event) { 
+		controlIO.finishedConfig(null);
+		window.forceClose();
 	}
 
 
@@ -185,23 +191,34 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 			}
 			break;
 		case MouseEvent.RELEASE:
-			if(current != null && start != null){
+			if(current != null && start != null && current.type != start.type){
+				LConnector descCon = (current.type == DESC) ? current : start;
+				LDescriptor descUI = ((LDescriptor)descCon.owner);
+				LConnector inputCon = (start.type == INPUT) ? start : current;
+				LBaseInput inputUI = ((LBaseInput)inputCon.owner);
 				// Make sure the device input is the right type for the descriptor
-				int type0 = current.owner.uiType == UI_DESCRIPTOR ? ((LDescriptor)current.owner).iconfig.type : current.owner.uiType;
-				int type1 = start.owner.uiType == UI_DESCRIPTOR ? ((LDescriptor)start.owner).iconfig.type : start.owner.uiType;
-				System.out.println("Start = " + type1 + "   Current = " + type0);
+				int type0 = ((LDescriptor)descCon.owner).iconfig.type;
+				int type1 = inputCon.owner.uiType;
+//				int type0 = current.owner.uiType == UI_DESCRIPTOR ? ((LDescriptor)current.owner).iconfig.type : current.owner.uiType;
+//				int type1 = start.owner.uiType == UI_DESCRIPTOR ? ((LDescriptor)start.owner).iconfig.type : start.owner.uiType;
+//				System.out.println("Start = " + type1 + "   Current = " + type0);
 				if(type0 == type1){
+					// Remove any existing connection
 					end = current;
 					current = null;
-
 					if(start.conTo != null)
 						start.conTo.conTo = null;
 					if(end.conTo != null)
 						end.conTo.conTo = null;
+					// Add new connection
 					start.conTo = end;
-					end.conTo = start;		
+					end.conTo = start;
+					descUI.iconfig.deviceInputName = inputUI.name;		// Not sure if needed look at makeConfigLines
+   					inputUI.setMultiplier(descUI.iconfig.multiplier);
+					inputUI.setTolerance(descUI.iconfig.tolerance);
 				}
 			}
+			current = start = null;
 			dragging = false;
 			break;
 		case MouseEvent.DRAG:
@@ -252,13 +269,12 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 	MTextField txfFilename;
 	MTextArea txaStatus;
 
-	public LDeviceConfigWindow(PApplet papp, LDeviceSelectEntry entry){
+	public LConfigUI(PApplet papp, LSelectEntry entry){
 		float px, py, pw;
-//		filename = LSelectDeviceWindow.filename;
 		device = entry.device;
 		entry.device.open();
 		controlIO = entry.controlIO;
-		this.config = LSelectDeviceWindow.config;
+		this.config = LSelectUI.config;
 		float spaceForInputs = ELEMENT_UI_GAP;
 
 		// Scan through controls to calculate the window height needed
@@ -330,8 +346,8 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 		btnVerify.addEventHandler(this, "verify_click");
 		MButton btnSave = new MButton(window.papplet, px + pw - bw, py, bw, 20);
 		btnSave.setLocalColorScheme(M4P.GREEN_SCHEME);
-		btnSave.setText("Save");
-		btnSave.addEventHandler(this, "save_click");
+		btnSave.setText("USE");
+		btnSave.addEventHandler(this, "use_device_click");
 		py += 26;
 		MLabel lblStatus = new MLabel(window.papplet, px, py, pw, 20, "VERIFY / SAVE STATUS REPORT");
 		lblStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
@@ -341,8 +357,13 @@ public class LDeviceConfigWindow implements PConstants, LConstants {
 		txaStatus = new MTextArea(window.papplet, px, py, pw, 140, M4P.SCROLLBARS_VERTICAL_ONLY);
 		txaStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
 		txaStatus.setDefaultText("Verify / save status report");
-		py += txaStatus.getHeight() + 2;
-
+		py += txaStatus.getHeight() + 4;
+		MButton btnQuit = new MButton(window.papplet, px, py, pw, 20);
+		btnQuit.setLocalColorScheme(M4P.RED_SCHEME);
+		btnQuit.setText("CANCEL CONFIGURATION AND EXIT");
+		btnQuit.addEventHandler(this, "quit_click");
+		py += 22;
+		System.out.println("Panel height = "  + py);
 		window.papplet.textSize(fontSize);
 
 		addConfigToGUI(spaceNeeded, spaceForDescs, spaceForInputs);

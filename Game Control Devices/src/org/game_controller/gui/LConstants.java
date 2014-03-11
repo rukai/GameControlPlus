@@ -13,6 +13,9 @@ public interface LConstants {
 	final float CONNECTOR_SIZE_R	= 10; // radius
 	final float CONNECTOR_SIZE_R2	= CONNECTOR_SIZE_R * CONNECTOR_SIZE_R ; // radius squared
 	final float CONNECTOR_SIZE_D	= 2 * CONNECTOR_SIZE_R ; // radius
+	// Connector type
+	final int INPUT 			= 0x01;
+	final int DESC 				= 0x02;
 
 	final float FONT_SIZE 		= 12;
 

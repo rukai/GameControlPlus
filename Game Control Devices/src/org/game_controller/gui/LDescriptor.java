@@ -10,7 +10,7 @@ public class LDescriptor extends LBase {
 	LBaseInput source = null;
 	int conID = 0;
 	
-	public LDescriptor(LDeviceConfigWindow ccw, float x, float y, InputConfig iconfig) {
+	public LDescriptor(LConfigUI ccw, float x, float y, InputConfig iconfig) {
 		super(ccw, x ,y, 1);
 		this.iconfig = iconfig;
 		name = iconfig.key;

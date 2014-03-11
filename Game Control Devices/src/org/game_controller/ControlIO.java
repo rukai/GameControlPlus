@@ -24,11 +24,11 @@ package org.game_controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.game_controller.gui.LDeviceSelectEntry;
-import org.game_controller.gui.LSelectDeviceWindow;
-
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
+
+import org.game_controller.gui.LSelectUI;
+
 import processing.core.PApplet;
 
 /**
@@ -70,12 +70,12 @@ public class ControlIO implements Runnable {
 	 * 
 	 */
 	public static ControlDevice configuredDevice = null;
-	
+
 	/**
 	 * 
 	 */
 	public static boolean configurating = false;
-	
+
 	/**
 	 * Holds the environment of JInput
 	 */
@@ -95,7 +95,7 @@ public class ControlIO implements Runnable {
 
 	private boolean active = true;
 
-	
+
 	/**
 	 * Initialise the ControllIO instance
 	 * @param i_parent
@@ -223,32 +223,41 @@ public class ControlIO implements Runnable {
 		throw new RuntimeException("There is no device with the name " + i_deviceName + ".");
 	}
 
-	
+
 	public ControlDevice getMatchedDevice(final Configuration config){
 		if(config != null){
 			for(ControlDevice cd : devices){
 				if(cd.available && cd.matches(config)){
 					System.out.println("Matched with \t\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
+					configuredDevice = cd;
+					configuredDevice.available = false;
+					configurating = false;
 					return cd;
 				}
-				else {
-					configurating = true;
-					configuredDevice = null;
-					LSelectDeviceWindow lsd = new LSelectDeviceWindow(parent, config);
-					while(configurating){
-						try {
-							Thread.sleep(50);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					
+			}
+			// We have scanned the control devices and not found a match
+			configurating = true;
+			configuredDevice = null;
+			new LSelectUI(parent, config);
+			while(configurating){
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
+			ControlDevice selected = configuredDevice;
+			configuredDevice = null;            
+			return selected;	
 		}
 		return null;
 	}
+
+	public void finishedConfig(ControlDevice dev){
+		configuredDevice = dev;
+		configurating = false;
+	}
+	
 	
 	/**
 	 * Updates the devices, to get the actual data before a new
@@ -267,7 +276,7 @@ public class ControlIO implements Runnable {
 	 */
 	public void run(){
 		while (active){
-//			System.out.println("ControlIO run() " + devices.size());
+			//			System.out.println("ControlIO run() " + devices.size());
 			for (int i = 0; i < devices.size(); i++)
 				devices.get(i).update();
 			try {

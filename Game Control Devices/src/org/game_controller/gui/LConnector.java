@@ -5,8 +5,6 @@ import processing.core.PConstants;
 
 public class LConnector implements PConstants, LConstants {
 
-	static final int INPUT = 0x01;
-	static final int DESC = 0x02;
 
 	private final PApplet app;
 	final LBase owner;
@@ -48,7 +46,7 @@ public class LConnector implements PConstants, LConstants {
 		app.popMatrix();	
 	}
 		
-	public boolean isOver(LDeviceConfigWindow ccw, float mx, float my){
+	public boolean isOver(LConfigUI ccw, float mx, float my){
 		isOver = (Math.abs(mx-px) <= hsize && Math.abs(my-py) <= hsize);
 		if(isOver) 
 			ccw.current = this;

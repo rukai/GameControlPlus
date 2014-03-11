@@ -8,7 +8,7 @@ public class LButton extends LBaseInput {
 	
 	boolean isPressed;
 	
-	public LButton(LDeviceConfigWindow ccw, ControlButton pbutton, float x, float y){
+	public LButton(LConfigUI ccw, ControlButton pbutton, float x, float y){
 		super(ccw, x, y, 1, 1);
 		uiType = UI_BUTTON;
 		inputTypeName = "BUTTON";
