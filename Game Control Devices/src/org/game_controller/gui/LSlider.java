@@ -14,7 +14,7 @@ public class LSlider extends LBaseInput {
 
 	protected float tolerance = 0, value = 0, multiplier = 1;
 
-	public LSlider(LControlConfigWindow ccw, ControlSlider pbutton, float x, float y) {
+	public LSlider(LDeviceConfigWindow ccw, ControlSlider pbutton, float x, float y) {
 		super(ccw, x, y, 1, 4);
 		uiType = UI_SLIDER;
 		inputTypeName = "SLIDER";

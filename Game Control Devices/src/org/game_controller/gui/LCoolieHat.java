@@ -17,7 +17,7 @@ public class LCoolieHat extends LBaseInput {
 	final String[] itext = { "left", "right", "up", "down" };
 
 
-	public LCoolieHat(LControlConfigWindow ccw, ControlCoolieHat pbutton, float x, float y) {
+	public LCoolieHat(LDeviceConfigWindow ccw, ControlCoolieHat pbutton, float x, float y) {
 		super(ccw, x, y, 1, 5);
 		uiType = UI_COOLIEHAT;
 		inputTypeName = "HAT";

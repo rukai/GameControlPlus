@@ -48,7 +48,7 @@ public class LConnector implements PConstants, LConstants {
 		app.popMatrix();	
 	}
 		
-	public boolean isOver(LControlConfigWindow ccw, float mx, float my){
+	public boolean isOver(LDeviceConfigWindow ccw, float mx, float my){
 		isOver = (Math.abs(mx-px) <= hsize && Math.abs(my-py) <= hsize);
 		if(isOver) 
 			ccw.current = this;

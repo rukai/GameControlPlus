@@ -8,23 +8,25 @@ import processing.core.PApplet;
 public class Configuration implements GCConstants {
 
 	public static Configuration makeConfiguration(PApplet app, String filename){
-		String[] gameInputs = app.loadStrings(filename);
-		if(gameInputs == null){
+		String[] configLines = app.loadStrings(filename);
+		if(configLines == null){
 			System.out.println("Unable to find configuration file " + filename);
 			return null;
 		}
-		return new Configuration(app, gameInputs);
+		return new Configuration(app, configLines, filename);
 	}
 	
+	public final String filename;
 	public final String usage;
 	public final InputConfig[] gameInputs;
 	
-	private Configuration(PApplet app, String[] inputs){
+	private Configuration(PApplet app, String[] lines, String filename){
 		List<InputConfig> inputConfigs = new ArrayList<InputConfig>();
-		usage = inputs[0];
-		for(int i = 1; i < inputs.length; i++){
-			if(inputs[i].length() > 0)
-				inputConfigs.add(new InputConfig(inputs[i]));
+		this.filename = filename;
+		usage = lines[0];
+		for(int i = 1; i < lines.length; i++){
+			if(lines[i].length() > 0)
+				inputConfigs.add(new InputConfig(lines[i]));
 		}
 		gameInputs = inputConfigs.toArray(new InputConfig[inputConfigs.size()]);
 	}

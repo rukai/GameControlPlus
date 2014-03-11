@@ -24,6 +24,9 @@ package org.game_controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.game_controller.gui.LDeviceSelectEntry;
+import org.game_controller.gui.LSelectDeviceWindow;
+
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import processing.core.PApplet;
@@ -64,6 +67,16 @@ public class ControlIO implements Runnable {
 	static private ControlIO instance;
 
 	/**
+	 * 
+	 */
+	public static ControlDevice configuredDevice = null;
+	
+	/**
+	 * 
+	 */
+	public static boolean configurating = false;
+	
+	/**
 	 * Holds the environment of JInput
 	 */
 	public final ControllerEnvironment environment;
@@ -82,6 +95,7 @@ public class ControlIO implements Runnable {
 
 	private boolean active = true;
 
+	
 	/**
 	 * Initialise the ControllIO instance
 	 * @param i_parent
@@ -209,12 +223,27 @@ public class ControlIO implements Runnable {
 		throw new RuntimeException("There is no device with the name " + i_deviceName + ".");
 	}
 
+	
 	public ControlDevice getMatchedDevice(final Configuration config){
 		if(config != null){
 			for(ControlDevice cd : devices){
 				if(cd.available && cd.matches(config)){
 					System.out.println("Matched with \t\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
 					return cd;
+				}
+				else {
+					configurating = true;
+					configuredDevice = null;
+					LSelectDeviceWindow lsd = new LSelectDeviceWindow(parent, config);
+					while(configurating){
+						try {
+							Thread.sleep(50);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					
 				}
 			}
 		}

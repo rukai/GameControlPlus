@@ -8,7 +8,7 @@ import org.game_controller.ControlSlider;
 public abstract class LBaseInput extends LBase {
 
 
-	public static LBaseInput makeInputUI(LControlConfigWindow ccw, ControlInput input, float x, float y) {
+	public static LBaseInput makeInputUI(LDeviceConfigWindow ccw, ControlInput input, float x, float y) {
 		LBaseInput obj = null;
 		if(input instanceof ControlCoolieHat)
 			obj = new LCoolieHat(ccw, (ControlCoolieHat) input, x, y);
@@ -42,7 +42,7 @@ public abstract class LBaseInput extends LBase {
 		return 0;
 	}
 
-	public LBaseInput(LControlConfigWindow ccw, float x, float y, int nbr_connects, int nbrLines){
+	public LBaseInput(LDeviceConfigWindow ccw, float x, float y, int nbr_connects, int nbrLines){
 		super(ccw, x, y, nbr_connects);
 		for(int cn = 0; cn < connectors.length; cn++)
 			connectors[cn]= new LConnector(app, this, cn, 

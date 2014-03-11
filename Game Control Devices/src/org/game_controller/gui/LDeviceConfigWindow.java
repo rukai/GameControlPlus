@@ -19,7 +19,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.event.MouseEvent;
 
-public class LControlConfigWindow implements PConstants, LConstants {
+public class LDeviceConfigWindow implements PConstants, LConstants {
 
 
 	private final ControlDevice device;
@@ -27,18 +27,16 @@ public class LControlConfigWindow implements PConstants, LConstants {
 	final ControlIO controlIO;
 
 	final Configuration config;
-	final String filename;
 
 	private boolean active = false;
 
 	List<LBase> uiElements = new ArrayList<LBase>();
 	List<LConnector> uiConnections = new ArrayList<LConnector>();
 
-	private StringBuffer report;
-	//	List<LConnector> configConnections = new ArrayList<LConnector>();
 	private Map<String, LBaseInput> devInpKeys = new HashMap<String, LBaseInput>();
 	private Map<String, LDescriptor> descriptors = new HashMap<String, LDescriptor>();
 
+	private StringBuffer report;
 	private int errCount = 0;
 
 
@@ -129,15 +127,18 @@ public class LControlConfigWindow implements PConstants, LConstants {
 		//==================================================================================================
 		// Will eventually need to use sketch data path
 		//==================================================================================================
-		File file = new File(filename);
+		File file = new File(config.filename);
 		String[] lines = makeConfigLines();
 		PApplet.saveStrings(file, lines);
-
-		if(errCount > 0)
-			addToReport("SAVE - failed\n", false);
-		else
-			addToReport("SAVE - successful", false);
-		txaStatus.setText(report.toString());
+		ControlIO.configuredDevice = device;
+		ControlIO.configurating = false;
+		
+		window.forceClose();
+//		if(errCount > 0)
+//			addToReport("SAVE - failed\n", false);
+//		else
+//			addToReport("SAVE - successful", false);
+//		txaStatus.setText(report.toString());
 	}
 
 	private String[] makeConfigLines() {
@@ -251,9 +252,9 @@ public class LControlConfigWindow implements PConstants, LConstants {
 	MTextField txfFilename;
 	MTextArea txaStatus;
 
-	public LControlConfigWindow(PApplet papp, LDeviceSelectEntry entry){
+	public LDeviceConfigWindow(PApplet papp, LDeviceSelectEntry entry){
 		float px, py, pw;
-		filename = LSelectDeviceWindow.filename;
+//		filename = LSelectDeviceWindow.filename;
 		device = entry.device;
 		entry.device.open();
 		controlIO = entry.controlIO;

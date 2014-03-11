@@ -9,7 +9,6 @@ import org.game_controller.ControlDevice;
 import org.game_controller.ControlIO;
 
 import processing.core.PApplet;
-import processing.event.MouseEvent;
 
 
 /**
@@ -20,27 +19,27 @@ import processing.event.MouseEvent;
 public class LSelectDeviceWindow {
 
 	public static Configuration config;
-	public static String filename;
 	
 	MWindow window;
 	
 	PApplet app;
 	ControlIO controlIO;
-
+	MButton btnExit;
+	
 	List<LDeviceSelectEntry> deviceEntries =  new ArrayList<LDeviceSelectEntry>();
 	
 	
-	public LSelectDeviceWindow(PApplet app, String configFilename){
+	public LSelectDeviceWindow(PApplet app, Configuration config){
 		M4P.messagesEnabled(false);
 		this.app = app;
-		filename = configFilename;
-		LSelectDeviceWindow.config = Configuration.makeConfiguration(app, filename);
+
+		LSelectDeviceWindow.config = config;
+		
 		String title = "Select device for " + LSelectDeviceWindow.config.usage;
 		this.controlIO = ControlIO.getInstance(app);
 		window = new MWindow(app, title, 80, 40, 500, 400, false, PApplet.JAVA2D);
 		window.setResizable(false);
 		window.addDrawHandler(this, "draw");
-		window.addMouseHandler(this, "mouse");
 		
 		createSelectionInterface(window.papplet);
 
@@ -48,22 +47,47 @@ public class LSelectDeviceWindow {
 		// Add entries for devices added
 		for(ControlDevice d : devices){
 			if(d.available && !d.getTypeName().equalsIgnoreCase("keyboard"))
-				deviceEntries.add(new LDeviceSelectEntry(window.papplet, controlIO, d));
+				deviceEntries.add(new LDeviceSelectEntry(window, controlIO, d));
 		}
 		// Sort entries and reposition on screen
-		Collections.sort(deviceEntries);
+//		Collections.sort(deviceEntries);
 		for(int i = 0; i < deviceEntries.size(); i++)
 			deviceEntries.get(i).setIndex(i);
-
 	}
+	
+//	public LSelectDeviceWindow(PApplet app, String configFilename){
+//		M4P.messagesEnabled(false);
+//		this.app = app;
+//		filename = configFilename;
+//		LSelectDeviceWindow.config = Configuration.makeConfiguration(app, filename);
+//		String title = "Select device for " + LSelectDeviceWindow.config.usage;
+//		this.controlIO = ControlIO.getInstance(app);
+//		window = new MWindow(app, title, 80, 40, 500, 400, false, PApplet.JAVA2D);
+//		window.setResizable(false);
+//		window.addDrawHandler(this, "draw");
+//		
+//		createSelectionInterface(window.papplet);
+//
+//		List<ControlDevice> devices = controlIO.getDevices();
+//		// Add entries for devices added
+//		for(ControlDevice d : devices){
+//			if(d.available && !d.getTypeName().equalsIgnoreCase("keyboard"))
+//				deviceEntries.add(new LDeviceSelectEntry(window.papplet, controlIO, d));
+//		}
+//		// Sort entries and reposition on screen
+////		Collections.sort(deviceEntries);
+////		for(int i = 0; i < deviceEntries.size(); i++)
+////			deviceEntries.get(i).setIndex(i);
+//	}
+	
 	public void createSelectionInterface(PApplet wapp){
 		MLabel lblControls = new MLabel(wapp, 0, 0, wapp.width, 20);
 		lblControls.setText("Control devices");
 		lblControls.setOpaque(true);
 		lblControls.setTextBold();
-	}
-	
-	synchronized public void mouse(MWinApplet appc, MWinData data, MouseEvent mevent) {
+		btnExit = new MButton(wapp, wapp.width - 105, wapp.height-28, 100, 24);
+		btnExit.setText("Exit Tool");
+		btnExit.addEventHandler(this, "exitClick");
 	}
 
 	synchronized public void draw(MWinApplet appc, MWinData data) {
@@ -75,5 +99,7 @@ public class LSelectDeviceWindow {
 			appc.rect(0,y,appc.width,20);
 			y += 40;
 		}
+		appc.fill(200,255,200);
+		appc.rect(0,appc.height-30,appc.width,30);
 	}
 }

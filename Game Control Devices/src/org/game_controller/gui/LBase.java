@@ -5,7 +5,7 @@ import processing.core.PConstants;
 
 public abstract class LBase implements  PConstants, LConstants {
 
-	protected LControlConfigWindow ccw;
+	protected LDeviceConfigWindow ccw;
 	protected final PApplet app;
 
 	String name;
@@ -23,7 +23,7 @@ public abstract class LBase implements  PConstants, LConstants {
 	
 	boolean isOver = false;
 	
-	LBase(LControlConfigWindow ccw, float x, float y, int nbr_connects){
+	LBase(LDeviceConfigWindow ccw, float x, float y, int nbr_connects){
 		this.ccw = ccw;
 		app = ccw.window.papplet;
 		UI_HEIGHT = ccw.desc_UI_height;

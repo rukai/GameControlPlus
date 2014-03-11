@@ -19,13 +19,13 @@ public class LDeviceSelectEntry implements Comparable<LDeviceSelectEntry> {
 	// GUI stuff
 	public final MLabel displayName;
 	public final MButton btnGoConfig;
-	public LControlConfigWindow winCofig = null;
+	public LDeviceConfigWindow winCofig = null;
 
-	public LDeviceSelectEntry(PApplet papp, ControlIO controlIO, ControlDevice dev){
-		this.app = papp;
+	public LDeviceSelectEntry(MWindow window, ControlIO controlIO, ControlDevice dev){
+		this.app = window.papplet;
 		this.controlIO = controlIO;
 		this.device = dev;
-		displayName = new MLabel(papp, 36, 20, app.width-36, 20);
+		displayName = new MLabel(app, 36, 20, app.width-36, 20);
 		displayName.setText(device.getName() + "  [" + device.getTypeName() + "]");
 		displayName.setTextAlign(MAlign.LEFT, null);
 		btnGoConfig = new MButton(app, 4, 24, 24, 14);
@@ -39,7 +39,7 @@ public class LDeviceSelectEntry implements Comparable<LDeviceSelectEntry> {
 
 	public void configClick(MButton source, MEvent event) {
 		if(winCofig == null) {
-			winCofig = new LControlConfigWindow(app, this);
+			winCofig = new LDeviceConfigWindow(app, this);
 			source.setVisible(false);
 		}
 	}
