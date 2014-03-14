@@ -28,8 +28,6 @@ import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -39,10 +37,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.swing.JColorChooser;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.filechooser.FileFilter;
 
 import processing.core.PApplet;
@@ -106,9 +102,9 @@ class M4P implements MConstants, PConstants {
 	// Determines how position and size parameters are interpreted when
 	// a control is created
 	// Introduced V3.0
-	static MControlMode control_mode = MControlMode.CORNER;
+//	static MControlMode control_mode = MControlMode.CORNER;
 
-	static LinkedList<G4Pstyle> styles = new LinkedList<G4Pstyle>();
+	static LinkedList<M4Pstyle> styles = new LinkedList<M4Pstyle>();
 
 	static JColorChooser chooser = null;
 	static Color lastColor = Color.white; // White
@@ -304,18 +300,18 @@ class M4P implements MConstants, PConstants {
 	 * 
 	 * @param mode illegal values are ignored leaving the mode unchanged
 	 */
-	public static void setCtrlMode(MControlMode mode){
-		if(mode != null)
-			control_mode = mode;
-	}
-
-	/**
-	 * Get the control creation mode @see ctrlMode(int mode)
-	 * @return the current control mode
-	 */
-	public static MControlMode getCtrlMode(){
-		return control_mode;
-	}
+//	public static void setCtrlMode(MControlMode mode){
+//		if(mode != null)
+//			control_mode = mode;
+//	}
+//
+//	/**
+//	 * Get the control creation mode @see ctrlMode(int mode)
+//	 * @return the current control mode
+//	 */
+//	public static MControlMode getCtrlMode(){
+//		return control_mode;
+//	}
 
 	/**
 	 * G4P has a range of support messages eg <br>if you create a GUI component 
@@ -396,8 +392,7 @@ class M4P implements MConstants, PConstants {
 	 * cause a memory leakage.
 	 */
 	static void pushStyle(){
-		G4Pstyle s = new G4Pstyle();
-		s.ctrlMode = control_mode;
+		M4Pstyle s = new M4Pstyle();
 		s.showMessages = showMessages;
 		// Now save the style for later
 		styles.addLast(s);
@@ -408,8 +403,7 @@ class M4P implements MConstants, PConstants {
 	 * There should be a matching pushStyle otherwise the program will crash.
 	 */
 	static void popStyle(){
-		G4Pstyle s = styles.removeLast();
-		control_mode = s.ctrlMode;
+		M4Pstyle s = styles.removeLast();
 		showMessages = s.showMessages;
 	}
 
@@ -420,8 +414,7 @@ class M4P implements MConstants, PConstants {
 	 * @author Peter
 	 *
 	 */
-	static class G4Pstyle {
-		MControlMode ctrlMode;
+	static class M4Pstyle {
 		boolean showMessages;
 	}
 
@@ -474,55 +467,6 @@ class M4P implements MConstants, PConstants {
 			return false;
 	}
 	
-	/**
-	 * This will open a version of the Java Swing color chooser dialog. The dialog's
-	 * UI is dependent on the OS and JVM implementation running. <br>
-	 * 
-	 * If you click on Cancel then it returns the last color previously selected.
-	 * 
-	 * @return the ARGB colour as a 32 bit integer (as used in Processing). 
-	 */
-	public static int selectColor(){
-		Frame owner = (sketchApplet == null) ? null : sketchApplet.frame;
-		if(chooser == null){
-			chooser = new JColorChooser();
-			AbstractColorChooserPanel[] oldPanels = chooser.getChooserPanels();
-			// Do not assume what panels are present
-			LinkedList<AbstractColorChooserPanel> panels = new LinkedList<AbstractColorChooserPanel>();	
-			for(AbstractColorChooserPanel p : oldPanels){
-				String displayName = p.getDisplayName().toLowerCase();
-				if(displayName.equals("swatches"))
-					panels.addLast(p);
-				else if(displayName.equals("rgb"))
-					panels.addFirst(p);
-				else if(displayName.startsWith("hs"))
-					panels.addFirst(p);
-			}
-			AbstractColorChooserPanel[] newPanels;
-			newPanels = panels.toArray(new AbstractColorChooserPanel[panels.size()]);
-			chooser.setChooserPanels(newPanels);
-			MColorPreviewPanel pp = new MColorPreviewPanel(lastColor);
-			chooser.getSelectionModel().addChangeListener(pp);
-			chooser.setPreviewPanel(pp);
-		}
-		// Set the preview color
-		((MColorPreviewPanel)chooser.getPreviewPanel()).setPrevColor(lastColor);
-		// Use the last color selected to start it off
-		chooser.setColor(lastColor);
-		JDialog dialog = JColorChooser.createDialog(owner,
-				"Color picker", 
-				true, 
-				chooser, 
-				new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lastColor = chooser.getColor();
-			}
-		}, 
-		null);
-		dialog.setVisible(true);
-		return lastColor.getRGB();
-	}
-
 	/**
 	 * Select a folder from the local file system.
 	 * 

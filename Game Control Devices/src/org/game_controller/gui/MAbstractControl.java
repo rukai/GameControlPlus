@@ -36,7 +36,6 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PGraphicsJava2D;
-import processing.core.PImage;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
@@ -227,23 +226,9 @@ public abstract class MAbstractControl implements PConstants, MConstants, MConst
 	 * 
 	 */
 	private void setPositionAndSize(float n0, float n1, float n2, float n3){
-		switch(M4P.control_mode){
-		case CORNER:	// (x,y,w,h)
-			x = n0; y = n1; width = n2; height = n3;
-			halfWidth = width/2; halfHeight = height/2;
-			cx = x + halfWidth; cy = y + halfHeight;
-			break;			
-		case CORNERS:	// (x0,y0,x1,y1)
-			x = n0; y = n1; width = n2 - n0; height = n3 - n1;
-			halfWidth = width/2; halfHeight = height/2;
-			cx = x + halfWidth; cy = y + halfHeight;
-			break;
-		case CENTER:	// (cx,cy,w,h)
-			cx = n0; cy = n1; width = n2; height = n3;
-			halfWidth = width/2; halfHeight = height/2;
-			x = cx - halfWidth; y = cy - halfHeight;
-			break;
-		}
+		x = n0; y = n1; width = n2; height = n3;
+		halfWidth = width/2; halfHeight = height/2;
+		cx = x + halfWidth; cy = y + halfHeight;
 	}
 
 	/**
@@ -257,23 +242,7 @@ public abstract class MAbstractControl implements PConstants, MConstants, MConst
 		height = h;
 		halfWidth = width/2; 
 		halfHeight = height/2;
-		switch(M4P.control_mode){
-		case CORNER:	// (x,y,w,h)
-		case CORNERS:	// (x0,y0,x1,y1)
-//			width = w; 
-//			height = h;
-//			halfWidth = width/2; 
-//			halfHeight = height/2;
-			cx = x + halfWidth; cy = y + halfHeight;
-			break;			
-		case CENTER:	// (cx,cy,w,h)
-//			width = w; 
-//			height = h;
-//			halfWidth = width/2; 
-//			halfHeight = height/2;
-			x = cx - halfWidth; y = cy - halfHeight;
-			break;
-		}
+		cx = x + halfWidth; cy = y + halfHeight;
 	}
 	
 	/*
@@ -538,48 +507,6 @@ public abstract class MAbstractControl implements PConstants, MConstants, MConst
 		}		
 	}
 
-	/**
-	 * Set the rotation to apply when displaying this control. The center of 
-	 * rotation is determined by the control_mode attribute.
-	 * 
-	 * @param angle clockwise angle in radians
-	 */
-	public void setRotation(float angle){
-		setRotation(angle, M4P.control_mode);
-	}
-	
-	/**
-	 * Set the rotation to apply when displaying this control. The center of 
-	 * rotation is determined by the mode parameter parameter.
-	 * 
-	 * @param angle clockwise angle in radians
-	 * @param mode PApplet.CORNER / CORNERS / CENTER
-	 */
-	public void setRotation(float angle, MControlMode mode){	
-		rotAngle = angle;
-		AffineTransform aff = new AffineTransform();
-		aff.setToRotation(angle);
-		switch(mode){
-		case CORNER:
-		case CORNERS:
-			// Rotate about top corner
-			temp[0] = halfWidth;
-			temp[1] = halfHeight;
-			aff.transform(temp, 0, temp, 0, 1);
-			cx = (float)temp[0] + x;// - halfWidth;
-			cy = (float)temp[1] + y;// - halfHeight;
-			break;
-		case CENTER:
-		default:
-			// Rotate about centre
-			temp[0] = -halfWidth;
-			temp[1] = -halfHeight;
-			aff.transform(temp, 0, temp, 0, 1);
-			x = cx + (float)temp[0];
-			y = cy + (float)temp[1];  			// should this be minus?? I don't think so
-			break;
-		}		
-	}
 
 	/**
 	 * Move the control to the given position based on the mode. <br>
@@ -593,45 +520,17 @@ public abstract class MAbstractControl implements PConstants, MConstants, MConst
 	 * @param py the vertical position to move to
 	 */
 	public void moveTo(float px, float py){
-		moveTo(px, py, M4P.control_mode);
-	}
-
-	/**
-	 * Move the control to the given position based on the mode. <br>
-	 * 
-	 * Unlike when dragged the position is not constrained to the 
-	 * screen area. <br>
-	 * 
-	 * The mode determines whether we move the corner or the center 
-	 * of the control to px,py <br>
-	 * 
-	 * @param px the horizontal position to move to
-	 * @param py the vertical position to move to
-	 * @param mode the control mode 
-	 */
-	public void moveTo(float px, float py, MControlMode mode){
 		MAbstractControl p = parent;
 		if(p != null){
 			px -= p.width/2;
 			py -= p.height/2;
 		}
-		switch(mode){
-		case CORNER:
-		case CORNERS:
-			cx += (px - x);
-			cy += (py - y);
-			x = cx - width/2;
-			y = cy - height/2;
-			break;
-		case CENTER:
-			cx = px;
-			cy = py;
-			x = cx - width/2;
-			y = cy - height/2;
-			break;
-		}
+		cx += (px - x);
+		cy += (py - y);
+		x = cx - width/2;
+		y = cy - height/2;
 	}
-	
+
 	/**
 	 * Get the left position of the control. <br>
 	 * If the control is on a panel then the value returned is relative to the 
@@ -879,31 +778,15 @@ public abstract class MAbstractControl implements PConstants, MConstants, MConst
 		 * the added control (c) added being measured relative to the centre of  
 		 * this control.
 		 */
-		switch(M4P.control_mode){
-		case CORNER:
-		case CORNERS:
-			// Rotate about top corner
-			c.x = x; c.y = y;
-			c.temp[0] = c.halfWidth;
-			c.temp[1] = c.halfHeight;
-			aff.transform(c.temp, 0, c.temp, 0, 1);
-			c.cx = (float)c.temp[0] + x - halfWidth;
-			c.cy = (float)c.temp[1] + y - halfHeight;
-			c.x = c.cx - c.halfWidth;
-			c.y = c.cy - c.halfHeight;
-			break;
-		case CENTER:
-			// Rotate about centre
-			c.cx = x; c.cy = y;
-			c.temp[0] = -c.halfWidth;
-			c.temp[1] = -c.halfHeight;
-			aff.transform(c.temp, 0, c.temp, 0, 1);
-			c.x = c.cx + (float)c.temp[0] - halfWidth;
-			c.y = c.cy - (float)c.temp[1] - halfHeight;
-			c.cx -= halfWidth;
-			c.cy -= halfHeight;
-			break;
-		}		
+		// Rotate about top corner
+		c.x = x; c.y = y;
+		c.temp[0] = c.halfWidth;
+		c.temp[1] = c.halfHeight;
+		aff.transform(c.temp, 0, c.temp, 0, 1);
+		c.cx = (float)c.temp[0] + x - halfWidth;
+		c.cy = (float)c.temp[1] + y - halfHeight;
+		c.x = c.cx - c.halfWidth;
+		c.y = c.cy - c.halfHeight;
 		c.rotAngle = angle;
 		// Add to parent
 		c.parent = this;
@@ -937,30 +820,13 @@ public abstract class MAbstractControl implements PConstants, MConstants, MConst
 	 */
 	public void addControl(MAbstractControl c){
 		if(children == null) return;
-		switch(M4P.control_mode){
-		case CORNER:
-		case CORNERS:
-			addControl(c, c.x, c.y, c.rotAngle);
-			break;
-		case CENTER:
-			addControl(c, c.cx, c.cy, c.rotAngle);
-			break;
-		}		
+		addControl(c, c.x, c.y, c.rotAngle);
 	}
 	
 	public void addControls(MAbstractControl... controls){
 		if(children == null) return;
-		for(MAbstractControl c : controls){
-			switch(M4P.control_mode){
-			case CORNER:
-			case CORNERS:
-				addControl(c, c.x, c.y, c.rotAngle);
-				break;
-			case CENTER:
-				addControl(c, c.cx, c.cy, c.rotAngle);
-				break;
-			}	
-		}
+		for(MAbstractControl c : controls)
+			addControl(c, c.x, c.y, c.rotAngle);
 	}
 
 	/**

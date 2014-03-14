@@ -117,7 +117,6 @@ public class MTextField extends MEditableTextControl {
 
 		z = Z_STICKY;
 
-		M4P.control_mode = MControlMode.CORNER;
 		if((scrollbarPolicy & SCROLLBAR_HORIZONTAL) != 0){
 			hsb = new MScrollbar(theApplet, 0, 0, tw, 10);
 			addControl(hsb, tx, ty + th + 2, 0);

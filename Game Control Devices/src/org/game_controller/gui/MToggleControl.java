@@ -23,13 +23,12 @@
 
 package org.game_controller.gui;
 
-import org.game_controller.gui.MHotSpot.HSrect;
-import org.game_controller.gui.MStyledString.TextLayoutInfo;
-
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
 import java.util.LinkedList;
+
+import org.game_controller.gui.MStyledString.TextLayoutInfo;
 
 import processing.core.PApplet;
 import processing.core.PGraphicsJava2D;

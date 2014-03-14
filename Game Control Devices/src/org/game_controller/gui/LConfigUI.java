@@ -26,6 +26,8 @@ public class LConfigUI implements PConstants, LConstants {
 
 	final ControlIO controlIO;
 
+	final PApplet app;
+	
 	final Configuration config;
 
 	private boolean active = false;
@@ -130,7 +132,7 @@ public class LConfigUI implements PConstants, LConstants {
 		//==================================================================================================
 		File file = new File(config.filename);
 		String[] lines = makeConfigLines();
-		PApplet.saveStrings(file, lines);
+		app.saveStrings(app.dataPath("") +"/" + config.filename, lines);
 		return true;
 //		if(errCount > 0)
 //			addToReport("SAVE - failed\n", false);
@@ -271,6 +273,7 @@ public class LConfigUI implements PConstants, LConstants {
 
 	public LConfigUI(PApplet papp, LSelectEntry entry){
 		float px, py, pw;
+		app = papp;
 		device = entry.device;
 		entry.device.open();
 		controlIO = entry.controlIO;

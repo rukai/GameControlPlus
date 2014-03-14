@@ -20,7 +20,7 @@ public class Configuration implements GCConstants {
 	public final String usage;
 	public final InputConfig[] gameInputs;
 	
-	private Configuration(PApplet app, String[] lines, String filename){
+	public Configuration(PApplet app, String[] lines, String filename){
 		List<InputConfig> inputConfigs = new ArrayList<InputConfig>();
 		this.filename = filename;
 		usage = lines[0];

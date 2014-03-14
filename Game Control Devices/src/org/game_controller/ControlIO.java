@@ -21,6 +21,7 @@ Boston, MA  02111-1307  USA
 
 package org.game_controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -223,34 +224,44 @@ public class ControlIO implements Runnable {
 		throw new RuntimeException("There is no device with the name " + i_deviceName + ".");
 	}
 
-
-	public ControlDevice getMatchedDevice(final Configuration config){
-		if(config != null){
-			for(ControlDevice cd : devices){
-				if(cd.available && cd.matches(config)){
-					System.out.println("Matched with \t\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
-					configuredDevice = cd;
-					configuredDevice.available = false;
-					configurating = false;
-					return cd;
-				}
-			}
-			// We have scanned the control devices and not found a match
-			configurating = true;
-			configuredDevice = null;
-			new LSelectUI(parent, config);
-			while(configurating){
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			ControlDevice selected = configuredDevice;
-			configuredDevice = null;            
-			return selected;	
+	public ControlDevice getMatchedDevice(final String filename){
+		// Get file and make a configuration object
+		File file = new File(parent.dataPath(filename));
+		String[] configLines = PApplet.loadStrings(file);
+		if(configLines == null){
+			System.out.println("Unable to find configuration file " + filename);
+			return null;
 		}
-		return null;
+		// File found create configuration
+		Configuration config =  new Configuration(parent, configLines, filename);
+		return getMatchedDevice(config);
+	}
+	
+	public ControlDevice getMatchedDevice(final Configuration config){
+
+		for(ControlDevice cd : devices){
+			if(cd.available && cd.matches(config)){
+				System.out.println("Matched with \t\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
+				configuredDevice = cd;
+				configuredDevice.available = false;
+				configurating = false;
+				return cd;
+			}
+		}
+		// We have scanned the control devices and not found a match
+		configurating = true;
+		configuredDevice = null;
+		new LSelectUI(parent, config);
+		while(configurating){
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		ControlDevice selected = configuredDevice;
+		configuredDevice = null;            
+		return selected;	
 	}
 
 	public void finishedConfig(ControlDevice dev){

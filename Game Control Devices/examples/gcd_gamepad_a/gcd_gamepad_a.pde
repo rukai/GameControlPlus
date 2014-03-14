@@ -1,5 +1,6 @@
 import org.game_controller.*;
 import net.java.games.input.*;
+import org.game_controller.gui.*;
 
 
 ControlIO control;
