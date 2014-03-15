@@ -1,0 +1,4 @@
+Ball position controller
+X	Move horizontally	3	SLIDER	x	0	1.0	0
+Y	Move Vertically	3	SLIDER	yyy	0	1.0	0
+FIRE	Leave shadow	1	BUTTON	1	0	0.0	0.0
