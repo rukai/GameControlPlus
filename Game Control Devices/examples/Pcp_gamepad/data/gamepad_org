@@ -1,0 +1,9 @@
+Eye movement using gamepad
+LEFTX	Left stick horizontal	3	SLIDER	x	0	1.0	0.15
+LEFTY	Left stick vertical	3	SLIDER	y	0	1.0	0.15
+RIGHTX	Right stick horizontal	3	SLIDER	rx	0	1.0	0.15
+RIGHTY	Right stick vertical	3	SLIDER	ry	0	1.0	0.15
+LEFTLID	Left size	3	SLIDER	z	0	1.0	0.0
+RIGHTLID	Right size	3	SLIDER	rz	0	1.0	0.0
+LEFTB	Left button	1	BUTTON	4	0	0.0	0.0
+RIGHTB	Right button	1	BUTTON	5	0	0.0	0.0
