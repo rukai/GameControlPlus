@@ -200,40 +200,6 @@ public class ControlCoolieHat extends ControlButton {
 		return y;
 	}
 	
-	private float multiplier = 1;
-	
-	/**
-	 * Pressing a cooliehat causes a change by 1 in the according direction.
-	 * With the multiplier you can increase and decrease this value. Use this 
-	 * method to get the actual multiplier. By default this value is 1.0.
-	 * @return float, the actual multiplier for the cooliehat
-	 * @example procontrol_cooliehat
-	 * @usage application
-	 * @shortdesc Use this method to get the actual multiplier.
-	 * @related ControllCoolieHat
-	 * @related setMultiplier ( )
-	 */
-	public float getMultiplier(){
-		return multiplier;
-	}
-	
-	/**
-	 * Pressing a cooliehat causes a change by 1 in the according direction.
-	 * With the multiplier you can increase and decrese this range. Use this 
-	 * method to set the actual multiplier. By default this value is 1.0.
-	 * @param i_multiplier float, the new multiplier for a CrossButton
-	 * @example procontrol_cooliehat
-	 * @usage application
-	 * @shortdesc Use this method to set the actual multiplier.
-	 * @related ControllCoolieHat
-	 * @related getMultiplier ( )
-	 */
-	public void setMultiplier(final float i_multiplier){
-		multiplier = i_multiplier;
-		change = multiplier;
-		diagonalChange = DIAGONAL_FACTOR * i_multiplier;
-	}
-	
 	/**
 	 * <p>
 	 * Plug is a handy method to handle incoming button events. To create a plug

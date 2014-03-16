@@ -167,12 +167,15 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 			// Get the input with the given device name
 			ControlInput input = inputNameMap.get(ic.deviceInputName);
 			// If it is the same type remember it
-			if(input != null && input.inputType == ic.type)
+			if(input != null && input.inputType == ic.type){
 				matchedInputs.put(ic.key, input);
+				input.setMultiplier(ic.multiplier);
+				input.setTolerance(ic.tolerance);
+			}
 			else 
 				return false;
 		}
-		// Match found
+		// Match found so add keys
 		inputNameMap.putAll(matchedInputs);
 		available = false;
 		open();

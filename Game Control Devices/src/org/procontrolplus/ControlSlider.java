@@ -46,20 +46,7 @@ public class ControlSlider extends ControlInput{
 	 * The total Value of the slider
 	 */
 	protected float totalValue = 0f;
-	
-	/**
-	 * Tolerance is minimum under which the input is set to
-	 * zero.
-	 */
-	protected float tolerance = 0f;
-	
-	/**
-	 * The value of a slider is a relative value between
-	 * -1.0f und 1.0f with the multiplier you can increase 
-	 * and decrease this range.
-	 */
-	protected float multiplier = 1f;
-		
+
 	/**
 	 * Initializes a new Slider.
 	 * @param i_component
@@ -98,68 +85,6 @@ public class ControlSlider extends ControlInput{
 	}
 	
 	/**
-	 * If you not want a slider to react upto a certain value you can set 
-	 * a tolerance value. Use this method to retrieve the set tolerance.
-	 * By default this value is set to 0.
-	 * @return float, the tolerance of the slider
-	 * @example procontrol_multiplier
-	 * @usage application
-	 * @shortdesc Use this method to get the actual tolerance
-	 * @related ControllSlider
-	 * @related setTolerance ( )
-	 */
-	public float getTolerance(){
-		return tolerance;
-	}
-	
-	/**
-	 * If you not want a slider to react upto a certain value you can set 
-	 * a tolerance value. Use this method to set the tolerance.
-	 * By default this value is set to 0.
-	 * @param i_tolerance float, the new tolerance for the slider
-	 * @example procontrol
-	 * @usage application
-	 * @shortdesc Use this method to set the tolerance.
-	 * @related ControllSlider
-	 * @related getTolerance ( )
-	 */
-	public void setTolerance(final float i_tolerance){
-		tolerance = i_tolerance;
-	}
-	
-	/**
-	 * The value of a slider is a relative value between
-	 * -1.0f und 1.0f with the multiplier you can increase 
-	 * and decrese this range. Use this method to get the
-	 * actual multiplier. By default this value is 1.0.
-	 * @return float, the actual multiplier for the slider
-	 * @example procontrol_multiplier
-	 * @usage application
-	 * @shortdesc Use this method to get the actual multiplier.
-	 * @related ControllSlider
-	 * @related setMultiplier ( )
-	 */
-	public float getMultiplier(){
-		return multiplier;
-	}
-	
-	/**
-	 * The value of a slider is a relative value between
-	 * -1.0f und 1.0f with the multiplier you can increase 
-	 * and decrese this range. Use this method to set the
-	 * actual multiplier. By default this value is 1.0.
-	 * @param i_multiplier float, the new multiplier for a Slider
-	 * @example procontrol_multiplier
-	 * @usage application
-	 * @shortdesc Use this method to set the actual multiplier.
-	 * @related ControllSlider
-	 * @related getMultiplier ( )
-	 */
-	public void setMultiplier(final float i_multiplier){
-		multiplier = i_multiplier;
-	}
-	
-	/**
 	 * Use this method to see if a slider is relative. A relative sliders
 	 * value represents always the change between the current state and the last state.
 	 * @return boolean, true if the slider is relative
@@ -182,6 +107,5 @@ public class ControlSlider extends ControlInput{
 	}
 	
 	void updateRelative(){
-		
 	}
 }
