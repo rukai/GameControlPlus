@@ -224,7 +224,7 @@ public class ControlCoolieHat extends ControlButton {
 		final String i_methodName,
 		final int i_eventType
 	){
-		List plugList;
+		List<Plug> plugList;
 		Plug plug = new Plug(i_object,i_methodName,true);
 		switch(i_eventType){
 			case ControlIO.ON_PRESS:
@@ -242,9 +242,9 @@ public class ControlCoolieHat extends ControlButton {
 		plugList.add(plug);
 	}
 	
-	protected void callPlugs(final List i_plugList){
+	protected void callPlugs(final List<Plug> i_plugList){
 		for(int i = 0; i < i_plugList.size();i++){
-			Plug plug = (Plug)i_plugList.get(i);
+			Plug plug = i_plugList.get(i);
 			plug.call(x,y);
 		}
 	}

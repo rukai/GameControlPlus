@@ -131,7 +131,7 @@ public class ControlButton extends ControlInput{
 	
 	protected void callPlugs(final List<Plug> i_plugList){
 		for(int i = 0; i < i_plugList.size();i++){
-			Plug plug = (Plug)i_plugList.get(i);
+			Plug plug = i_plugList.get(i);
 			plug.call();
 		}
 	}

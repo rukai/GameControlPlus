@@ -21,7 +21,6 @@ Boston, MA  02111-1307  USA
 
 package org.procontrolplus;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,9 +125,8 @@ public class ControlIO implements Runnable {
 	 * @related ControllIO
 	 */
 	static public ControlIO getInstance(final PApplet i_parent){
-		if (instance == null){
+		if (instance == null)
 			instance = new ControlIO(i_parent);
-		}
 		return instance;
 	}
 

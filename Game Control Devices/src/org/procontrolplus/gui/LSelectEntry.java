@@ -1,6 +1,5 @@
 package org.procontrolplus.gui;
 
-import org.procontrolplus.Configuration;
 import org.procontrolplus.ControlDevice;
 import org.procontrolplus.ControlIO;
 

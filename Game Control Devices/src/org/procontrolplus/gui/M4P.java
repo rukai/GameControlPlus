@@ -51,7 +51,7 @@ import processing.core.PConstants;
  * @author Peter Lager
  *
  */
-class M4P implements MConstants, PConstants {
+public class M4P implements MConstants, PConstants {
 
 	static PApplet sketchApplet = null;
 
