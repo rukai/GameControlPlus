@@ -4,11 +4,11 @@ package org.procontrolplus.gui;
 //import g4p_controls.GEvent;
 //import g4p_controls.GTextField;
 
-import org.procontrolplus.ControlCoolieHat;
+import org.procontrolplus.ControlHat;
 
 public class LCoolieHat extends LBaseInput {
 
-	ControlCoolieHat button;
+	ControlHat button;
 
 	protected float value = 0, multiplier = 1;
 	protected float x, y;
@@ -17,7 +17,7 @@ public class LCoolieHat extends LBaseInput {
 	final String[] itext = { "left", "right", "up", "down" };
 
 
-	public LCoolieHat(LConfigUI ccw, ControlCoolieHat pbutton, float x, float y) {
+	public LCoolieHat(LConfigUI ccw, ControlHat pbutton, float x, float y) {
 		super(ccw, x, y, 1, 5);
 		uiType = UI_COOLIEHAT;
 		inputTypeName = "HAT";

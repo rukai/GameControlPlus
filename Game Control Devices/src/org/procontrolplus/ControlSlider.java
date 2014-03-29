@@ -108,4 +108,13 @@ public class ControlSlider extends ControlInput{
 	
 	void updateRelative(){
 	}
+	
+	public String toText(String tab){
+		String name = (actualName.length() > 20 ) ?
+				actualName.substring(0, 17) + "..." : (actualName + "                    ").substring(0,  20);
+		String mult = (String.valueOf(multiplier) + "            ").substring(0,15);
+		String tol = (String.valueOf(tolerance) + "            ").substring(0,15);
+		String type = isRelative() ? "(relative)" : ("absolute");
+		return tab + "hat       " + name + mult + tol + type;
+	}
 }

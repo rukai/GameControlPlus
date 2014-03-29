@@ -1,6 +1,6 @@
 package org.procontrolplus;
 
-public interface GCConstants {
+public interface PCPconstants {
 
 	int BUTTON_TYPE		= 1;
 	int HAT_TYPE		= 2;

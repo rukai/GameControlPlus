@@ -28,7 +28,6 @@ public void setup() {
   size(400, 240);
   // Initialise the ControlIO
   control = ControlIO.getInstance(this);
-  control.printDevices();
   // Find a device that matches the configuration file
   gpad = control.getMatchedDevice("gamepad_eyes");
   if (gpad == null) {

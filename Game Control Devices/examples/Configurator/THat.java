@@ -2,13 +2,13 @@ import g4p_controls.G4P;
 import g4p_controls.GEvent;
 import g4p_controls.GTextField;
 
-import org.procontrolplus.ControlCoolieHat;
+import org.procontrolplus.ControlHat;
 
 
 
-public class TCoolieHat extends TBaseInput {
+public class THat extends TBaseInput {
 
-  ControlCoolieHat button;
+  ControlHat button;
   GTextField txfMultiplier;
 
   float x, y, value, multiplier = 1;
@@ -19,7 +19,7 @@ public class TCoolieHat extends TBaseInput {
   };
 
 
-  public TCoolieHat(TConfigUI ccw, ControlCoolieHat pbutton, float x, float y) {
+  public THat(TConfigUI ccw, ControlHat pbutton, float x, float y) {
     super(ccw, x, y, 1, 5);
     uiType = UI_COOLIEHAT;
     inputTypeName = "HAT";

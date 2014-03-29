@@ -1,5 +1,5 @@
 import org.procontrolplus.ControlButton;
-import org.procontrolplus.ControlCoolieHat;
+import org.procontrolplus.ControlHat;
 import org.procontrolplus.ControlInput;
 import org.procontrolplus.ControlSlider;
 
@@ -8,8 +8,8 @@ public abstract class TBaseInput extends TBase {
 
   public static TBaseInput makeInputUI(TConfigUI ccw, ControlInput input, float x, float y) {
     TBaseInput obj = null;
-    if (input instanceof ControlCoolieHat)
-      obj = new TCoolieHat(ccw, (ControlCoolieHat) input, x, y);
+    if (input instanceof ControlHat)
+      obj = new THat(ccw, (ControlHat) input, x, y);
     else  if (input instanceof ControlButton)
       obj = new TButton(ccw, (ControlButton) input, x, y);
     else  if (input instanceof ControlSlider)

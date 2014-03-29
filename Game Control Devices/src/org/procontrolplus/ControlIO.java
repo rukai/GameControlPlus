@@ -139,24 +139,37 @@ public class ControlIO implements Runnable {
 	}
 
 	/**
-	 * Lists the available Devices in the console window. This method
-	 * is usefull at startup to see if all devices are proper connected
-	 * and o get the name of the desired device.
-	 * @shortdesc Lists the available Devices in the console window.
-	 * @example procontrol_printDevices
-	 * @usage application
-	 * @related ControllIO
-	 * @related ControllDevice
-	 * @related getNumberOfDevices ( )
-	 * @related getDevice ( )
+	 * Creates a formatted text string listing the devices available to the the sketch.
+	 * @param tab the indentation string
 	 */
-	public void printDevices(){
-		System.out.println("\n<<< available procontrol devices: >>>\n");
+	public String deviceListToText(String tab){
+		StringBuilder s = new StringBuilder();
+		s.append(tab + "##############################################################################################\n");
+		s.append(tab + "                   ProControl Plus  - available devices\n");
+		s.append(tab + "                   ------------------------------------\n");
 		for (int i = 0; i < devices.size(); i++){
-			System.out.print("     "+i+": ");
-			System.out.println(devices.get(i).getName() + "  [" + devices.get(i).getTypeName() + "]" + "  [" + devices.get(i).getPortTypeName() + "]");
+			String id = String.valueOf(i + "    ").substring(0,3);
+			s.append(tab + devices.get(i).toListText("  " + id) + "\n");
 		}
-		System.out.println("\n<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		s.append(tab + "##############################################################################################\n");
+		return s.toString();
+	}
+
+	/**
+	 * Creates a formatted string of all available devices detailing all input controls (buttons, hats and sliders)
+	 * for each device. 
+	 * @param tab the indentation string
+	 */
+	public String devicesToText(String tab){
+		StringBuilder s = new StringBuilder();
+		s.append(tab + "##############################################################################################\n");
+		s.append(tab + "                   ProControl Plus  - available devices\n");
+		s.append(tab + "                   ------------------------------------\n");
+		for (int i = 0; i < devices.size(); i++){
+			s.append(devices.get(i).toText(tab + "  "));
+		}
+		s.append(tab + "##############################################################################################\n");
+		return s.toString();
 	}
 
 	/**

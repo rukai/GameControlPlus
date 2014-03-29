@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.procontrolplus.Configuration;
 import org.procontrolplus.ControlButton;
-import org.procontrolplus.ControlCoolieHat;
+import org.procontrolplus.ControlHat;
 import org.procontrolplus.ControlDevice;
 import org.procontrolplus.ControlIO;
 import org.procontrolplus.ControlInput;
@@ -242,16 +242,16 @@ public class LConfigUI implements PConstants, LConstants {
 			ui.draw();
 	}
 
-	public void printDevice(int id,  ControlDevice device){
-		System.out.println("========================================================================");
-		System.out.println("Device number  " + id + " is called '" + device.getName() + "' and has");
-		System.out.println("\t" + device.getNumberOfButtons() + " buttons");
-		System.out.println("\t" + device.getNumberOfSliders() + " sliders");
-		System.out.println("\t" + device.getNumberOfRumblers() + " rumblers");
-		device.printButtons();
-		device.printSliders();
-		System.out.println("------------------------------------------------------------------------\n\n");		
-	}
+//	public void printDevice(int id,  ControlDevice device){
+//		System.out.println("========================================================================");
+//		System.out.println("Device number  " + id + " is called '" + device.getName() + "' and has");
+//		System.out.println("\t" + device.getNumberOfButtons() + " buttons");
+//		System.out.println("\t" + device.getNumberOfSliders() + " sliders");
+//		System.out.println("\t" + device.getNumberOfRumblers() + " rumblers");
+//		device.printButtons();
+//		device.printSliders();
+//		System.out.println("------------------------------------------------------------------------\n\n");		
+//	}
 
 	// Widow GUI stuff
 	MWindow window;
@@ -270,7 +270,7 @@ public class LConfigUI implements PConstants, LConstants {
 
 		// Scan through controls to calculate the window height needed
 		for(ControlInput input : device.getInputs()){
-			if(input instanceof ControlCoolieHat){
+			if(input instanceof ControlHat){
 				spaceForInputs += 5 * INPUT_UI_HEIGHT + ELEMENT_UI_GAP + 2;
 			}
 			else  if(input instanceof ControlButton){

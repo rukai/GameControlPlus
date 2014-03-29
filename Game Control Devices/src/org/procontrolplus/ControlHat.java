@@ -25,7 +25,6 @@ import java.util.List;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
-
 import net.java.games.input.Component;
 
 /**
@@ -38,7 +37,7 @@ import net.java.games.input.Component;
  * @related ControllStick
  * @related ControllDevice
  */
-public class ControlCoolieHat extends ControlButton {
+public class ControlHat extends ControlButton {
 	
 	/**
     * Standard value for center HAT position
@@ -92,7 +91,7 @@ public class ControlCoolieHat extends ControlButton {
 	 * Initializes a new ControllCrossButton.
 	 * @param i_component
 	 */
-	ControlCoolieHat(final Component i_component, final PApplet i_parent){
+	ControlHat(final Component i_component, final PApplet i_parent){
 		super(i_component,i_parent);
 		inputType = HAT_TYPE;
 	}
@@ -198,6 +197,13 @@ public class ControlCoolieHat extends ControlButton {
 	 */
 	public float getY(){
 		return y;
+	}
+	
+	public String toText(String tab){
+		String name = (actualName.length() > 20 ) ?
+				actualName.substring(0, 17) + "..." : (actualName + "                    ").substring(0,  20);
+		String mult = (String.valueOf(multiplier) + "            ").substring(0,15);
+		return tab + "hat       " + name + mult;
 	}
 	
 	/**

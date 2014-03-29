@@ -135,4 +135,10 @@ public class ControlButton extends ControlInput{
 			plug.call();
 		}
 	}
+	
+	public String toText(String tab){
+		String name = (actualName.length() > 20 ) ?
+				actualName.substring(0, 17) + "..." : (actualName + "                    ").substring(0,  20);
+		return tab + "button    " + name + "-";
+	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import processing.core.PApplet;
 
-public class Configuration implements GCConstants {
+public class Configuration implements PCPconstants {
 
 	// If zero then we are inside Eclipse anything else we are inside Processing
 	public static final int ECLIPSE = 0;

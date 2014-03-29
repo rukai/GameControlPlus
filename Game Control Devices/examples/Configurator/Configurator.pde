@@ -16,7 +16,7 @@
  file is included if you export the sketch as an application.
  
  The sketch cannot be used to edit existing configuration files so if you
- make a mistake you either have to start over or rdit the configuration 
+ make a mistake you either have to start over or edit the configuration 
  file in a text editor.
  
  created by Peter Lager 2014
@@ -44,9 +44,9 @@ List<TSelectEntry> deviceEntries =  new ArrayList<TSelectEntry>();
 
 public void setup() {
   controlIO = ControlIO.getInstance(this);
-  panelHeight = 100;
+  panelHeight = 40;
   int appHeight = controlIO.getNumberOfDevices() *20 + 40 + panelHeight;
-  size(600, appHeight);
+  size(800, appHeight);
   G4P.messagesEnabled(true);                                                                             
   G4P.setGlobalColorScheme(GCScheme.GREEN_SCHEME);
   if (frame != null)

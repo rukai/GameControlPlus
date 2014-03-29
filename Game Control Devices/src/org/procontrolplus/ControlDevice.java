@@ -48,7 +48,7 @@ import processing.core.PApplet;
  * @related ControllButton
  * @related ControllStick
  */
-public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
+public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 
 	/**
 	 * The JInput controller instance for this device
@@ -133,7 +133,7 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 				sliders.add((ControlSlider)input);
 			} else {
 				if(components[i].getIdentifier() == Component.Identifier.Axis.POV){
-					input = new ControlCoolieHat(components[i],parent);
+					input = new ControlHat(components[i],parent);
 				}else{
 					input = new ControlButton(components[i],parent);
 				}
@@ -236,53 +236,44 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 				sliders.get(i).updateRelative();
 		}
 	}
-
-	/**
-	 * Lists the available slider of a device in the console window. This method
-	 * is useful at startup to get the name of the different sliders.
-	 * @shortdesc Lists the available sliders of a device.
-	 * @example procontrol_printDevices
-	 * @related ControllDevice
-	 * @related ControllSlider
-	 * @related printButtons ( )
-	 * @related printSticks ( )
-	 */
-	public void printSliders(){
-		if(sliders.size() > 0){
-			System.out.println("\n\t<<< Available sliders for "+ name + " >>>\n");
-			for (int i = 0; i < sliders.size(); i++){
-				ControlSlider slider = sliders.get(i);
-				System.out.print("\t" + i + ":\t");
-				System.out.print("'" + slider.getName() + "'");
-				if(slider.isRelative()){
-					System.out.println(" (relative)");
-				}else{
-					System.out.println(" (absolute)");
-				}
-			}
-			System.out.println();
-		}
+	
+	public String toListText(String tab){
+		return tab + name + "     [" + getTypeName() + "]  on  [" + getPortTypeName() + "]";
+	}
+	
+	public String toText(String tab){
+		StringBuilder s = new StringBuilder(tab + "============================================================================\n" );
+		s.append(tab + "NAME :     " + name + "\n");
+		s.append(tab + "Type :     " + getTypeName() +"\n");
+		s.append(tab + "Port :     " + getPortTypeName() +"\n");
+		s.append(buttonsToText(tab));
+		s.append(slidersToText(tab));
+		s.append(tab + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+		return s.toString();
 	}
 
-	/**
-	 * Lists the available button of a device in the console window. This method
-	 * is usefull at startup to get the name of the different buttons.
-	 * @shortdesc Lists the available buttons of a device.
-	 * @example procontrol_printDevices
-	 * @related ControllDevice
-	 * @related ControllButton
-	 * @related printSliders ( )
-	 * @related printSticks ( )
-	 */
-	public void printButtons(){
+	public String buttonsToText(String tab){
+		StringBuilder s = new StringBuilder();
 		if(buttons.size() > 0){
-			System.out.println("\n\t<<< Available buttons for "+ name + " >>>\n");
-			for (int i = 0; i < buttons.size(); i++){
-				System.out.print("\t" + i + ":\t");
-				System.out.println("'" + buttons.get(i).getName() + "'");
+			s.append(tab + "  Buttons ("+buttons.size()+")\n");
+			s.append(tab + "  Type     Name                 Multiplier\n");
+			for(int i = 0; i < buttons.size(); i++){
+				s.append(buttons.get(i).toText(tab + "    ") + "\n");
 			}
-			System.out.println();
 		}
+		return s.toString();		
+	}
+	
+	public String slidersToText(String tab){
+		StringBuilder s = new StringBuilder();
+		if(sliders.size() > 0){
+			s.append(tab + "  Sliders ("+sliders.size()+")\n");
+			s.append(tab + "  Type     Name                 Multiplier     Tolerance\n");
+			for(int i = 0; i < sliders.size(); i++){
+				s.append(sliders.get(i).toText(tab + "    ") + "\n");
+			}
+		}
+		return s.toString();
 	}
 	
 	public List<ControlInput> getInputs(){
@@ -402,16 +393,16 @@ public class ControlDevice implements Comparable<ControlDevice>, GCConstants {
 	 * @related getStick ( )
 	 * @related getButton ( )
 	 */ 
-	public ControlCoolieHat getCoolieHat(final int i_coolieHatNumb){ 
-		return (ControlCoolieHat)buttons.get(i_coolieHatNumb); 
+	public ControlHat getCoolieHat(final int i_coolieHatNumb){ 
+		return (ControlHat)buttons.get(i_coolieHatNumb); 
 	} 
 
 	/**
 	 *  @param i_buttonName String, name of the button to return
 	 */
-	public ControlCoolieHat getCoolieHat(final String i_buttonName){
+	public ControlHat getCoolieHat(final String i_buttonName){
 		try{
-			return(ControlCoolieHat)inputNameMap.get(i_buttonName);
+			return(ControlHat)inputNameMap.get(i_buttonName);
 		}catch (ClassCastException e){
 		}
 		throw new RuntimeException("There is no button with the name " + i_buttonName + ".");

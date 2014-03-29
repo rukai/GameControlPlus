@@ -1,7 +1,7 @@
 package org.procontrolplus.gui;
 
 import org.procontrolplus.ControlButton;
-import org.procontrolplus.ControlCoolieHat;
+import org.procontrolplus.ControlHat;
 import org.procontrolplus.ControlInput;
 import org.procontrolplus.ControlSlider;
 
@@ -10,8 +10,8 @@ public abstract class LBaseInput extends LBase {
 
 	public static LBaseInput makeInputUI(LConfigUI ccw, ControlInput input, float x, float y) {
 		LBaseInput obj = null;
-		if(input instanceof ControlCoolieHat)
-			obj = new LCoolieHat(ccw, (ControlCoolieHat) input, x, y);
+		if(input instanceof ControlHat)
+			obj = new LCoolieHat(ccw, (ControlHat) input, x, y);
 		else  if(input instanceof ControlButton)
 			obj = new LButton(ccw, (ControlButton) input, x, y);
 		else  if(input instanceof ControlSlider)
