@@ -1,3 +1,5 @@
+import java.awt.Font;
+
 import org.procontrolplus.gui.*;
 import org.procontrolplus.*;
 import net.java.games.input.*;
@@ -13,19 +15,23 @@ GLabel label2;
 GTextArea txaListing; 
 GTextArea txaDetails; 
 
+Font font = new Font("Monospaced", Font.PLAIN, 12);
+
 public void setup() {
   size(800, 600, JAVA2D);
   createGUI();
+  txaListing.setFont(font);
+  txaDetails.setFont(font);
   // Initialise the IO control
   controlIO = ControlIO.getInstance(this);
   // Get a list of available devices, save to file and display
   String listing = controlIO.deviceListToText("");
   saveStrings("listing.txt", split(listing, '\n'));
-  txaListing.setText(listing);
+  txaListing.setText(listing + "\n ");
   // Get a details of available devices, save to file and display
   String details = controlIO.devicesToText("");
   saveStrings("details.txt", split(details, '\n'));
-  txaDetails.setText(details);
+  txaDetails.setText(details + "\n ");
 }
 
 public void draw() {
@@ -52,4 +58,3 @@ public void createGUI() {
   txaDetails = new GTextArea(this, 0, 200, 800, 400, G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
   txaDetails.setOpaque(true);
 }
-

@@ -144,14 +144,14 @@ public class ControlIO implements Runnable {
 	 */
 	public String deviceListToText(String tab){
 		StringBuilder s = new StringBuilder();
-		s.append(tab + "##############################################################################################\n");
+		s.append(tab + "##########################################################################################\n");
 		s.append(tab + "                   ProControl Plus  - available devices\n");
 		s.append(tab + "                   ------------------------------------\n");
 		for (int i = 0; i < devices.size(); i++){
 			String id = String.valueOf(i + "    ").substring(0,3);
 			s.append(tab + devices.get(i).toListText("  " + id) + "\n");
 		}
-		s.append(tab + "##############################################################################################\n");
+		s.append(tab + "##########################################################################################\n");
 		return s.toString();
 	}
 
@@ -162,13 +162,13 @@ public class ControlIO implements Runnable {
 	 */
 	public String devicesToText(String tab){
 		StringBuilder s = new StringBuilder();
-		s.append(tab + "##############################################################################################\n");
+		s.append(tab + "##########################################################################################\n");
 		s.append(tab + "                   ProControl Plus  - available devices\n");
 		s.append(tab + "                   ------------------------------------\n");
 		for (int i = 0; i < devices.size(); i++){
 			s.append(devices.get(i).toText(tab + "  "));
 		}
-		s.append(tab + "##############################################################################################\n");
+		s.append(tab + "##########################################################################################\n");
 		return s.toString();
 	}
 

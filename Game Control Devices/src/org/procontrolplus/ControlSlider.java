@@ -115,6 +115,6 @@ public class ControlSlider extends ControlInput{
 		String mult = (String.valueOf(multiplier) + "            ").substring(0,15);
 		String tol = (String.valueOf(tolerance) + "            ").substring(0,15);
 		String type = isRelative() ? "(relative)" : ("absolute");
-		return tab + "hat       " + name + mult + tol + type;
+		return tab + "slider    " + name + mult + tol + type;
 	}
 }

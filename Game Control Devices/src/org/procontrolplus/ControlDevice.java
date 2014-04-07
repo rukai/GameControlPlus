@@ -242,13 +242,13 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 	}
 	
 	public String toText(String tab){
-		StringBuilder s = new StringBuilder(tab + "============================================================================\n" );
+		StringBuilder s = new StringBuilder(tab + "========================================================================\n" );
 		s.append(tab + "NAME :     " + name + "\n");
 		s.append(tab + "Type :     " + getTypeName() +"\n");
 		s.append(tab + "Port :     " + getPortTypeName() +"\n");
 		s.append(buttonsToText(tab));
 		s.append(slidersToText(tab));
-		s.append(tab + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+		s.append(tab + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		return s.toString();
 	}
 
@@ -256,7 +256,7 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		StringBuilder s = new StringBuilder();
 		if(buttons.size() > 0){
 			s.append(tab + "  Buttons ("+buttons.size()+")\n");
-			s.append(tab + "  Type     Name                 Multiplier\n");
+			s.append(tab + "    Type     Name               Multiplier\n");
 			for(int i = 0; i < buttons.size(); i++){
 				s.append(buttons.get(i).toText(tab + "    ") + "\n");
 			}
@@ -268,7 +268,7 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		StringBuilder s = new StringBuilder();
 		if(sliders.size() > 0){
 			s.append(tab + "  Sliders ("+sliders.size()+")\n");
-			s.append(tab + "  Type     Name                 Multiplier     Tolerance\n");
+			s.append(tab + "    Type     Name               Multiplier     Tolerance\n");
 			for(int i = 0; i < sliders.size(); i++){
 				s.append(sliders.get(i).toText(tab + "    ") + "\n");
 			}

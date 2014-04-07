@@ -62,7 +62,7 @@ public class LSelectUI {
 		lblControls.setOpaque(true);
 		lblControls.setTextBold();
 		MButton btnExit = new MButton(wapp, wapp.width - 105, wapp.height-28, 100, 24);
-		btnExit.setText("Exit Tool");
+		btnExit.setText("Exit Game");
 		btnExit.addEventHandler(this, "exitClick");
 	}
 

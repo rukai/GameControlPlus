@@ -37,7 +37,7 @@ public void setup() {
 }
 
 public void draw() {
-  background(200, 255, 200);
+  background(255, 200, 255);
   // Either button will dilate pupils
   boolean dilated = gpad.getButton("PUPILSIZE1").pressed() || gpad.getButton("PUPILSIZE2").pressed();
   pupilSize = dilated ? irisSize * 0.6f : irisSize * 0.45f; 
@@ -72,7 +72,7 @@ public void drawEye(int x, int y) {
   // draw eye lid
   stroke(0, 96, 0);
   strokeWeight(4);
-  fill(180, 240, 180);
+  fill(220, 160, 220);
   arc(0, 0, eyeSize, eyeSize, 1.5f*PI-lidPos, 1.5f*PI+lidPos, CHORD);
   // Draw eyebrow
   stroke(100, 100, 10);
