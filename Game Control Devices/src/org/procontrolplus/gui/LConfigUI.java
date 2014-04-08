@@ -55,7 +55,6 @@ public class LConfigUI implements PConstants, LConstants {
 				devInpKeys.put(ui.name, ui);
 			}
 		}
-
 		// Create and add descriptors to UI 
 		px = 10;
 		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForDescs) / 2; 
@@ -72,6 +71,9 @@ public class LConfigUI implements PConstants, LConstants {
 				uiConnections.add(c);
 	}
 
+	/**
+	 * Make existing connections between game inputs and device inputs based on type and name.
+	 */
 	private void makeExistingConnections(){
 		for(Configuration.InputConfig iconfig : config.gameInputs){
 			LBaseInput di = devInpKeys.get(iconfig.deviceInputName);

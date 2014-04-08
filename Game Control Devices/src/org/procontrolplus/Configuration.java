@@ -6,8 +6,9 @@ import java.util.List;
 
 import processing.core.PApplet;
 
-public class Configuration implements PCPconstants {
 
+public class Configuration implements PCPconstants {
+	
 	// If zero then we are inside Eclipse anything else we are inside Processing
 	public static final int ECLIPSE = 0;
 	public static final int PROCESSING = 1;
@@ -24,15 +25,15 @@ public class Configuration implements PCPconstants {
 		return new Configuration(app, configLines, filename);
 	}
 
-	public static Configuration makeConfiguration(PApplet app, String pathToSketch, String filename){
-		File file = (IDE == ECLIPSE) ? new File(filename) : new File(pathToSketch +"/data/" + filename);
-		String[] configLines = PApplet.loadStrings(file);
-		if(configLines == null){
-			System.out.println("Unable to find configuration file " + filename);
-			return null;
-		}
-		return new Configuration(app, configLines, filename);
-	}
+//	public static Configuration makeConfiguration(PApplet app, String pathToSketch, String filename){
+//		File file = (IDE == ECLIPSE) ? new File(filename) : new File(pathToSketch +"/data/" + filename);
+//		String[] configLines = PApplet.loadStrings(file);
+//		if(configLines == null){
+//			System.out.println("Unable to find configuration file " + filename);
+//			return null;
+//		}
+//		return new Configuration(app, configLines, filename);
+//	}
 
 
 	public static void saveConfiguration(PApplet app, Configuration config){
@@ -75,8 +76,8 @@ public class Configuration implements PCPconstants {
 		public String typeName;
 		public String deviceInputName;
 		public int inputConNo;
-		public float multiplier;
-		public float tolerance;
+		public float multiplier = 1;
+		public float tolerance = 0;
 
 		public InputConfig(String line){
 			String[] part = PApplet.split(line, SEPARATOR);
@@ -86,8 +87,10 @@ public class Configuration implements PCPconstants {
 			typeName = part[3];
 			deviceInputName = part[4];
 			inputConNo = Integer.parseInt(part[5]);
-			multiplier = Float.parseFloat(part[6]);
-			tolerance = Float.parseFloat(part[7]);
+			if(part.length > 6)
+				multiplier = Float.parseFloat(part[6]);
+			if(part.length > 7)
+				tolerance = Float.parseFloat(part[7]);
 		}
 
 		public String toString(){
