@@ -47,12 +47,13 @@ public void setup() {
   panelHeight = 40;
   int appHeight = controlIO.getNumberOfDevices() *20 + 40 + panelHeight;
   size(800, appHeight);
-  G4P.messagesEnabled(true);                                                                             
+  G4P.messagesEnabled(false);                                                                             
   G4P.setGlobalColorScheme(GCScheme.GREEN_SCHEME);
   if (frame != null)
     frame.setTitle("Game Input Device Configurator");
   registerMethod("dispose", this);
   createSelectionInterface();
+  TConfigUI.pathToSketch = sketchPath("");
   List<ControlDevice> devices = controlIO.getDevices();
   // Add entries for devices added
   for (ControlDevice d : devices) {
@@ -78,7 +79,6 @@ private void createSelectionInterface() {
   lblPath.setLocalColorScheme(G4P.PURPLE_SCHEME);
   lblPath.setOpaque(true);
   lblPath.setText(sketchPath(""));
-  TConfigUI.pathToSketch = sketchPath("");
   lblPath.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
 
   lblSketch = new GLabel(this, 100, 20, width-100, 20);
