@@ -78,6 +78,7 @@ private void createSelectionInterface() {
   lblPath.setLocalColorScheme(G4P.PURPLE_SCHEME);
   lblPath.setOpaque(true);
   lblPath.setText(sketchPath(""));
+  TConfigUI.pathToSketch = sketchPath("");
   lblPath.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
 
   lblSketch = new GLabel(this, 100, 20, width-100, 20);
