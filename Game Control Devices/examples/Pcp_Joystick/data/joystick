@@ -1,4 +1,5 @@
-Ball position controller
-X	Move horizontally	3	SLIDER	x	0	1.0	0
-Y	Move Vertically	3	SLIDER	y	0	1.0	0
-FIRE	Leave shadow	1	BUTTON	0	0	0.0	0.0
+Shadow maker
+X	X position	3	SLIDER	x	0	1.0	0.0
+Y	Y position	3	SLIDER	y	0	1.0	0.0
+SHADOW	Drop shadow	1	BUTTON	0	0	0.0	0.0
+TRAIL	Leave trail	1	BUTTON	1	0	0.0	0.0
