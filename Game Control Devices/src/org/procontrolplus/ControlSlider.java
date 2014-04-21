@@ -1,23 +1,35 @@
 /*
-Part of the procontrol lib - http://texone.org/procontrol
-
-Copyright (c) 2005 Christian Riekoff
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-Boston, MA  02111-1307  USA
-*/
+ * Part of the ProControl Plus library - http://www.lagers.org.uk/procontrol
+ * 
+ * Copyright (c) 2014 Peter Lager
+ * <quark(a)lagers.org.uk> http:www.lagers.org.uk
+ * 
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it freely,
+ * subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented;
+ * you must not claim that you wrote the original software.
+ * If you use this software in a product, an acknowledgment in the product
+ * documentation would be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such,
+ * and must not be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source distribution.
+ * 
+ * 
+ * ---------------------------------------------------------------------------------
+ * Updated and enhanced from the proCONTROLL library [http://texone.org/procontrol], 
+ * copyright (c) 2005 Christian Riekoff which was released under the terms of the GNU 
+ * Lesser General Public License (version 2.1 or later) as published by the Free 
+ * Software Foundation.
+ * ---------------------------------------------------------------------------------
+ */
 
 package org.procontrolplus;
 
@@ -34,10 +46,8 @@ import processing.core.PApplet;
  * For the total value the actual values for each frame are add.
  * If you not want a slider to react upto a certain value you can set 
  * a tolerance value.
- * @example procontrol
- * @usage application
- * @related ControllDevice
- * @related ControllButton
+ * 
+ * @author Christian Riekoff minor mods by Peter Lager
  */
 public class ControlSlider extends ControlInput{
 
@@ -60,12 +70,6 @@ public class ControlSlider extends ControlInput{
 	 * For the total value the values for each frame are add.
 	 * Use this method to get the total value of a slider.
 	 * @return float, the total value of a slider
-	 * @example procontrol_getTotalValue
-	 * @usage application
-	 * @shortdesc Use this method to get the total value of a slider.
-	 * @related ControllSlider
-	 * @related getValue ( )
-	 * @related reset ( )
 	 */
 	public float getTotalValue(){
 		return totalValue;
@@ -74,11 +78,6 @@ public class ControlSlider extends ControlInput{
 	/**
 	 * For the total value the actual values for each frame are add.
 	 * Use this method to set the totalvalue to 0.
-	 * @example procontrol_getTotalValue
-	 * @usage application
-	 * @shortdesc Use this method to set the totalvalue to 0.
-	 * @related ControllSlider
-	 * @related getTotalValue ( )
 	 */
 	public void reset(){
 		totalValue = 0;
@@ -106,9 +105,13 @@ public class ControlSlider extends ControlInput{
 		totalValue += actualValue;
 	}
 	
-	void updateRelative(){
-	}
+	void updateRelative(){	}
 	
+	/**
+	 * Get a text description of this slider
+	 * @param tab
+	 * @return
+	 */
 	public String toText(String tab){
 		String name = (actualName.length() > 20 ) ?
 				actualName.substring(0, 17) + "..." : (actualName + "                    ").substring(0,  20);

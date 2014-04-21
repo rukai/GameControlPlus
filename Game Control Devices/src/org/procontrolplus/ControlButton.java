@@ -1,23 +1,35 @@
 /*
-Part of the procontrol lib - http://texone.org/procontrol
-
-Copyright (c) 2005 Christian Riekoff
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-Boston, MA  02111-1307  USA
-*/
+ * Part of the ProControl Plus library - http://www.lagers.org.uk/procontrol
+ * 
+ * Copyright (c) 2014 Peter Lager
+ * <quark(a)lagers.org.uk> http:www.lagers.org.uk
+ * 
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it freely,
+ * subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented;
+ * you must not claim that you wrote the original software.
+ * If you use this software in a product, an acknowledgment in the product
+ * documentation would be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such,
+ * and must not be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source distribution.
+ * 
+ * 
+ * ---------------------------------------------------------------------------------
+ * Updated and enhanced from the proCONTROLL library [http://texone.org/procontrol], 
+ * copyright (c) 2005 Christian Riekoff which was released under the terms of the GNU 
+ * Lesser General Public License (version 2.1 or later) as published by the Free 
+ * Software Foundation.
+ * ---------------------------------------------------------------------------------
+ */
 
 package org.procontrolplus;
 
@@ -32,11 +44,8 @@ import net.java.games.input.Component;
  * This class represents a button of a device. You can use the pressed() 
  * method to see if a button is pressed or use the plug method to 
  * handle events.
- * @example procontrol
- * @usage application
- * @related ControllSlider
- * @related ControllStick
- * @related ControllDevice
+ * 
+ * @author Peter Lager & Christian Riekoff
  */
 public class ControlButton extends ControlInput{
 	
@@ -44,12 +53,12 @@ public class ControlButton extends ControlInput{
 	private boolean oldPressed = false;
 	
 	/**
-	 * Instance to the PApplet where procontrol is running
+	 * Instance to the PApplet where ProControl Plus is running
 	 */
 	private final PApplet parent;
 		
 	/**
-	 * Initializes a new Slider.
+	 * Initializes a new Button.
 	 * @param i_component
 	 */
 	ControlButton(final Component i_component, final PApplet i_parent){
@@ -64,7 +73,6 @@ public class ControlButton extends ControlInput{
 	void update(){
 		actualValue = component.getPollData()*8;
 		pressed = actualValue>0f;
-		
 		if(pressed && oldPressed){
 			callPlugs(whilePressPlugs);
 		}else if(pressed && !oldPressed){
@@ -97,7 +105,6 @@ public class ControlButton extends ControlInput{
 	 * @param i_object Object: the object with the method to plug
 	 * @param i_methodName String: the name of the method that has to be plugged
 	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
-	 * @shortdesc Plugs a method to handle incoming button events.
 	 */
 	public void plug(
 		final Object i_object, 
@@ -122,6 +129,14 @@ public class ControlButton extends ControlInput{
 		plugList.add(plug);
 	}
 	
+	/**
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give a button the method name and the event type you want to react on.
+	 * If your method is inside a class you have to give the plug a reference to it.
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
+	 */
 	public void plug(
 		final String i_methodName,
 		final int i_eventType
@@ -129,6 +144,10 @@ public class ControlButton extends ControlInput{
 		plug(parent, i_methodName, i_eventType);
 	}
 	
+	/**
+	 * Call all plugs for this button
+	 * @param i_plugList
+	 */
 	protected void callPlugs(final List<Plug> i_plugList){
 		for(int i = 0; i < i_plugList.size();i++){
 			Plug plug = i_plugList.get(i);
@@ -136,6 +155,10 @@ public class ControlButton extends ControlInput{
 		}
 	}
 	
+	/**
+	 * Get a text description for this button
+	 * @param tab
+	 */
 	public String toText(String tab){
 		String name = (actualName.length() > 20 ) ?
 				actualName.substring(0, 17) + "..." : (actualName + "                    ").substring(0,  20);

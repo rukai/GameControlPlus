@@ -1,22 +1,34 @@
 /*
-Part of the procontrol lib - http://texone.org/procontrol
-
-Copyright (c) 2005 Christian Riekoff
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-Boston, MA  02111-1307  USA
+ * Part of the ProControl Plus library - http://www.lagers.org.uk/procontrol
+ * 
+ * Copyright (c) 2014 Peter Lager
+ * <quark(a)lagers.org.uk> http:www.lagers.org.uk
+ * 
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it freely,
+ * subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented;
+ * you must not claim that you wrote the original software.
+ * If you use this software in a product, an acknowledgment in the product
+ * documentation would be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such,
+ * and must not be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source distribution.
+ * 
+ * 
+ * ---------------------------------------------------------------------------------
+ * Updated and enhanced from the proCONTROLL library [http://texone.org/procontrol], 
+ * copyright (c) 2005 Christian Riekoff which was released under the terms of the GNU 
+ * Lesser General Public License (version 2.1 or later) as published by the Free 
+ * Software Foundation.
+ * ---------------------------------------------------------------------------------
  */
 
 package org.procontrolplus; 
@@ -42,11 +54,8 @@ import processing.core.PApplet;
  * To react on button events you can plug methods, that are called when
  * a button is pressed, released or while a button is pressed.
  * </p>
- * @example procontrol
- * @related ControllIO
- * @related ControllSlider
- * @related ControllButton
- * @related ControllStick
+ * 
+ * @author Peter Lager & Christian Riekoff
  */
 public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 
@@ -237,10 +246,18 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		}
 	}
 	
+	/**
+	 * Get a short text description for this device
+	 * @param tab
+	 */
 	public String toListText(String tab){
 		return tab + name + "     [" + getTypeName() + "]  on  [" + getPortTypeName() + "]";
 	}
 	
+	/**
+	 * Get a detailed text description for this device
+	 * @param tab
+	 */
 	public String toText(String tab){
 		StringBuilder s = new StringBuilder(tab + "========================================================================\n" );
 		s.append(tab + "NAME :     " + name + "\n");
@@ -252,6 +269,10 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		return s.toString();
 	}
 
+	/**
+	 * Get a text description of the buttons on this device
+	 * @param tab
+	 */
 	public String buttonsToText(String tab){
 		StringBuilder s = new StringBuilder();
 		if(buttons.size() > 0){
@@ -264,6 +285,10 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		return s.toString();		
 	}
 	
+	/**
+	 * Get a text description of the sliders on this device
+	 * @param tab
+	 */
 	public String slidersToText(String tab){
 		StringBuilder s = new StringBuilder();
 		if(sliders.size() > 0){
@@ -276,44 +301,38 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		return s.toString();
 	}
 	
+	/**
+	 * Get a list of all inputs for this device
+	 */
 	public List<ControlInput> getInputs(){
 		return inputs;
 	}
 
 	/**
 	 * Returns the number of sliders of the device.
-	 * @return int, the number of sliders available for a device
-	 * @example procontrol_printDevices
-	 * @related ControllDevice
-	 * @related ControllSlider
-	 * @related getNumberOfButtons ( )
-	 * @related getNumberOfSticks ( )
-	 * @related getSlider ( )
+	 * @return the number of sliders on this device
 	 */
 	public int getNumberOfSliders(){
 		return sliders.size();
 	}
 
 	/**
-	 * Use this method to get a Slider. You can get a slider by its name or its
-	 * number. Use printSliders to see what sliders are available for a device.
+	 * Use this method to get a Slider based on its position in the list of inputs. Use
+	 * printSliders to see what sliders are available for a device.
 	 * @param i_sliderNumb int, the number of the slider to return
-	 * @return ControllSlider, the Slider coresponding to the given number or String
-	 * @example procontrol
-	 * @shortdesc Use this method to get a Slider.
-	 * @related ControllDevice
-	 * @related ControllSlider
-	 * @related getNumberOfSliders ( )
-	 * @related getButton ( )
-	 * @related getStick ( )
+	 * @return ControllSlider, the Slider corresponding to the given number
 	 */ 
 	public ControlSlider getSlider(final int i_sliderNumb){ 
 		return (ControlSlider)sliders.get(i_sliderNumb); 
 	} 
 
 	/**
-	 * @param i_sliderName String, name of the slider to return
-	 */
+	 * Use this method to get a Slider based on its name. The name could be the system-dependent name or 
+	 * the name specified in a device configuration.
+	 * Use printSliders to see what sliders are available for a device.
+	 * @param i_sliderName String, the name of the slider to return
+	 * @return ControllSlider, the Slider corresponding to the given name or null if not found.
+	 */ 
 	public ControlSlider getSlider(final String i_sliderName){
 		try{
 			return(ControlSlider)inputNameMap.get(i_sliderName);
@@ -327,51 +346,37 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 	 * Tolerance is minimum under which the input is set to zero.
 	 * Use this method to set the tolerance for all sliders of the device.
 	 * @param i_tolerance float, the new tolerance for the device
-	 * @example procontrol
-	 * @shortdesc Use this method to set the tolerance for all sliders of the device.
-	 * @related ControllDevice
-	 * @related ControllSlider
 	 */
 	public void setTolerance(final float i_tolerance){
 		for (int i = 0; i < sliders.size(); i++)
 			((ControlSlider) sliders.get(i)).setTolerance(i_tolerance);
-		;
 	}
 
 	/**
 	 * Returns the number of buttons of the device.
 	 * @return int, the number of buttons available for a device
-	 * @example procontrol_printDevices
-	 * @related ControllDevice
-	 * @related ControllButton
-	 * @related getNumberOfSliders ( )
-	 * @related getNumberOfSticks ( )
-	 * @related getButton ( )
 	 */
 	public int getNumberOfButtons(){
 		return buttons.size();
 	}
 
 	/**
-	 * Use this method to get a Button. You can get a Button by its name or its
-	 * number. Use printButtons to see what buttons are available for a device.
-	 * @param i_buttonNumb int, the number of the button to return
-	 * @return ControllButton, the button coresponding to the given number or name
-	 * @example procontrol
-	 * @shortdesc Use this method to get a Button.
-	 * @related ControllDevice
-	 * @related ControllButton
-	 * @related getSlider ( )
-	 * @related getStick ( )
-	 * @related getCoolieHat ( )
+	 * Use this method to get a Button based on its position in the list of inputs. Use
+	 * the buttonsToText method to see what buttons are available for a device.
+	 * @param i_buttonName int, the number of the button to return
+	 * @return ControlButton, the Button corresponding to the given number
 	 */ 
 	public ControlButton getButton(final int i_buttonNumb){ 
 		return buttons.get(i_buttonNumb); 
 	} 
 
 	/**
-	 *  @param i_sliderName String, name of the button to return
-	 */
+	 * Use this method to get a Button based on its name. The name could be the system-dependent name or 
+	 * the name specified in a device configuration. Use the buttonsToText method to see what buttons 
+	 * are available for a device.
+	 * @param i_buttonName String, the name of the button to return
+	 * @return ControlButton, the Button corresponding to the given name or null if not found.
+	 */ 
 	public ControlButton getButton(final String i_buttonName){
 		try{
 			return (ControlButton)inputNameMap.get(i_buttonName);
@@ -381,39 +386,34 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 	}
 
 	/**
-	 * Use this method to get a cooliehat. You can get a cooliehat by its name or its
-	 * number. Use printButtons to see what buttons are a cooliehat.
-	 * @param i_coolieHatNumb int, the number of the cooliehat to return
-	 * @return ControllCoolieHat, the cooliehat coresponding to the given number or name
-	 * @example procontrol_cooliehat
-	 * @shortdesc Use this method to get a Button.
-	 * @related ControllDevice
-	 * @related ControllCoolieHat
-	 * @related getSlider ( )
-	 * @related getStick ( )
-	 * @related getButton ( )
+	 * Use this method to get a Hat based on its position in the list of inputs. Use the buttonsToText 
+	 * method to see what hats are available for a device.
+	 * @param i_buttonName String, the name of the button to return
+	 * @return ControlHat, the Hat corresponding to the given name or null if not found.
 	 */ 
-	public ControlHat getCoolieHat(final int i_coolieHatNumb){ 
-		return (ControlHat)buttons.get(i_coolieHatNumb); 
+	public ControlHat getHat(final int i_hatNumb){ 
+		return (ControlHat)buttons.get(i_hatNumb); 
 	} 
 
 	/**
-	 *  @param i_buttonName String, name of the button to return
-	 */
-	public ControlHat getCoolieHat(final String i_buttonName){
+	 * Use this method to get a Hat based on its name. The name could be the system-dependent name or 
+	 * the name specified in a device configuration. Use the buttonsToText method to see what hats 
+	 * are available for a device.
+	 * @param i_hatName String, the name of the hat to return
+	 * @return ControlHat, the Hat corresponding to the given name or null if not found.
+	 */ 
+	public ControlHat getHat(final String i_hatName){
 		try{
-			return(ControlHat)inputNameMap.get(i_buttonName);
+			return(ControlHat)inputNameMap.get(i_hatName);
 		}catch (ClassCastException e){
 		}
-		throw new RuntimeException("There is no button with the name " + i_buttonName + ".");
+		throw new RuntimeException("There is no hat with the name " + i_hatName + ".");
 	}
 
 	/**
 	 * Use this method to open a device. A device is automatically opened by
 	 * default, so you only need to call this when you have closed it with the
 	 * close method.
-	 * @shortdesc Use this method to open a device.
-	 * @related ControllDevice
 	 */
 	public void open(){
 		open = true;
@@ -422,13 +422,16 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 	/**
 	 * Use this method to close a device. A closed device does not to be updated
 	 * to get values.
-	 * @shortdesc Use this method to close a device.
-	 * @related ControllDevice
 	 */
 	public void close(){
 		open = false;
 	}
 
+	/*
+	 * JInput doesn't appear to detail any rumblers.
+	 * 
+	 * So these methods are not documented.
+	 */
 	public int getNumberOfRumblers(){
 		return rumblers.length;
 	}
@@ -452,7 +455,6 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 	 * @param i_methodName String: the name of the method that has to be plugged
 	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
 	 * @param i_input int: the number of the button that triggers the plug
-	 * @shortdesc Plugs a method to handle incoming button events.
 	 */
 	public void plug(
 			final Object i_object, 
@@ -464,6 +466,16 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		getButton(i_input).plug(i_object,i_methodName,i_eventType);
 	}
 
+	/**
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give a device the method name, the event type you want to react on and
+	 * the button. If your method is inside a class you have to give the plug
+	 * a reference to it.
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
+	 * @param i_input int: the number of the button that triggers the plug
+	 */
 	public void plug(
 			final String i_methodName, 
 			final int i_eventType,
@@ -474,8 +486,15 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 	}
 
 	/**
-	 * 
-	 * i_intputDevice String: the name of the device that triggers the plug
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give a device the method name, the event type you want to react on and
+	 * the button. If your method is inside a class you have to give the plug
+	 * a reference to it.
+	 * @param i_object Object: the object with the method to plug
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
+	 * @param i_input String: the name of the button that triggers the plug
 	 */
 	public void plug(
 			final Object i_object, 
@@ -487,6 +506,16 @@ public class ControlDevice implements Comparable<ControlDevice>, PCPconstants {
 		getButton(i_input).plug(i_object,i_methodName,i_eventType);
 	}
 
+	/**
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give a device the method name, the event type you want to react on and
+	 * the button. If your method is inside a class you have to give the plug
+	 * a reference to it.
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
+	 * @param i_input String: the name of the button that triggers the plug
+	 */
 	public void plug(
 			final String i_methodName, 
 			final int i_eventType,

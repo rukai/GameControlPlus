@@ -36,7 +36,7 @@ public class LSelectUI {
 		this.controlIO = ControlIO.getInstance(app);
 		List<ControlDevice> devices = controlIO.getDevices();
 
-		String title = "Select device for " + LSelectUI.config.usage;
+		String title = "Select device for " + LSelectUI.config.getUsgae();
 		window = new MWindow(app, title, 80, 40, 500, 20*(devices.size() + 3), false, PApplet.JAVA2D);
 		window.setResizable(false);
 		window.addDrawHandler(this, "draw");

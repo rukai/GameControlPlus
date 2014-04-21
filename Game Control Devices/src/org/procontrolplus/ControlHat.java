@@ -1,23 +1,36 @@
 /*
-Part of the procontrol lib - http://texone.org/procontrol
+ * Part of the ProControl Plus library - http://www.lagers.org.uk/procontrol
+ * 
+ * Copyright (c) 2014 Peter Lager
+ * <quark(a)lagers.org.uk> http:www.lagers.org.uk
+ * 
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it freely,
+ * subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented;
+ * you must not claim that you wrote the original software.
+ * If you use this software in a product, an acknowledgment in the product
+ * documentation would be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such,
+ * and must not be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source distribution.
+ * 
+ * 
+ * ---------------------------------------------------------------------------------
+ * Updated and enhanced from the proCONTROLL library [http://texone.org/procontrol], 
+ * copyright (c) 2005 Christian Riekoff which was released under the terms of the GNU 
+ * Lesser General Public License (version 2.1 or later) as published by the Free 
+ * Software Foundation.
+ * ---------------------------------------------------------------------------------
+ */
 
-Copyright (c) 2005 Christian Riekoff
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-Boston, MA  02111-1307  USA
-*/
 
 package org.procontrolplus;
 
@@ -28,14 +41,11 @@ import processing.core.PConstants;
 import net.java.games.input.Component;
 
 /**
- * A cooliehat is a special button, that can be found on joypads
- * for example. It is not only on or of but does also have a 
+ * A ControlHat is a special button, that can be found on joypads and the top
+ * of joysticks for example. It is not only on or off but does also has a 
  * direction.
- * @example procontrol_cooliehat
- * @usage application
- * @related ControllSlider
- * @related ControllStick
- * @related ControllDevice
+ * 
+ * @author Peter Lager & Christian Riekoff
  */
 public class ControlHat extends ControlButton {
 	
@@ -159,45 +169,59 @@ public class ControlHat extends ControlButton {
 		return "cooliehat: " + super.getName();
 	}
 	
+	/**
+	 * See if the hat is press in the up direction
+	 */
 	public boolean up(){
 		return up;
 	}
 	
+	/**
+	 * See if the hat is press in the down direction
+	 */
 	public boolean down(){
 		return down;
 	}
 	
+	/**
+	 * See if the hat is press in the left direction
+	 */
 	public boolean left(){
 		return left;
 	}
 	
+	/**
+	 * See if the hat is press in the right direction
+	 */
 	public boolean right(){
 		return right;
 	}
 	
 	/**
-	 * The current x value of the cooliehat.
-	 * @return float, the x value of the cooliehat
-	 * @example procontrol_cooliehat
-	 * @related ControllCoolieHat
-	 * @related getY ( )
-	 * @usage application
+	 * Get position value <br/>
+	 * 1 - NW, 2 - N, 3 - NE, 4 - E, 5 - SE, 6 - S, 7 - SW, 8 - W and 0 at rest.
+	 * @return
+	 */
+	public int getPos(){
+		return Math.round(actualValue);
+	}
+	
+	/**
+	 * The current x value of the hat.
+	 * @return float, the x value of the hat
 	 */
 	public float getX(){
 		return x;
 	}
 	
 	/**
-	 * The current y value of the cooliehat.
-	 * @return float, the y value of the cooliehat
-	 * @example procontrol_cooliehat
-	 * @related ControllCoolieHat
-	 * @related getY ( )
-	 * @usage application
+	 * The current y value of the hat.
+	 * @return float, the y value of the hat
 	 */
 	public float getY(){
 		return y;
 	}
+	
 	
 	public String toText(String tab){
 		String name = (actualName.length() > 20 ) ?
@@ -211,19 +235,17 @@ public class ControlHat extends ControlButton {
 	 * Plug is a handy method to handle incoming button events. To create a plug
 	 * you have to implement a method that reacts on the events. To plug a method you
 	 * need to give a button the method name and the event type you want to react on.
-	 *  If your method is inside a class you have to give the plug a reference to it.
-	 *  </p>
-	 *  <p>
-	 *  If you want to handle the events of a simple button, you only have to implement a
-	 * method without parameters. To react on the events of a cooliehat you method needs to
-	 * receive two float values, so that procontrol can send you the x and y values of the
-	 * cooliehat.
+	 * If your method is inside a class you have to give the plug a reference to it.
+	 * </p>
+	 * <p>
+	 * If you want to handle the events of a simple button, you only have to implement a
+	 * method without parameters. To react on the events of a hat you method needs to
+	 * receive two float values, so that ProControl Plus can send you the x and y values 
+	 * of the hat.
 	 *  </p>
 	 * @param i_object Object: the object with the method to plug
 	 * @param i_methodName String: the name of the method that has to be plugged
 	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
-	 * @shortdesc Plugs a method to handle incoming button events.
-	 * @related ControllCoolieHat
 	 */
 	public void plug(
 		final Object i_object, 
@@ -247,6 +269,7 @@ public class ControlHat extends ControlButton {
 		}		
 		plugList.add(plug);
 	}
+	
 	
 	protected void callPlugs(final List<Plug> i_plugList){
 		for(int i = 0; i < i_plugList.size();i++){

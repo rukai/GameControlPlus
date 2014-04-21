@@ -58,7 +58,7 @@ public class LConfigUI implements PConstants, LConstants {
 		// Create and add descriptors to UI 
 		px = 10;
 		py = ELEMENT_UI_GAP + (spaceNeeded - spaceForDescs) / 2; 
-		for(Configuration.InputConfig iconfig : config.gameInputs){
+		for(Configuration.InputConfig iconfig : config.getGameInputs()){
 			LDescriptor ui = new LDescriptor(this, px, py, iconfig);
 			uiElements.add(ui);
 			descriptors.put(ui.name, ui);
@@ -75,7 +75,7 @@ public class LConfigUI implements PConstants, LConstants {
 	 * Make existing connections between game inputs and device inputs based on type and name.
 	 */
 	private void makeExistingConnections(){
-		for(Configuration.InputConfig iconfig : config.gameInputs){
+		for(Configuration.InputConfig iconfig : config.getGameInputs()){
 			LBaseInput di = devInpKeys.get(iconfig.deviceInputName);
 			if(di != null && iconfig.type == di.uiType && iconfig.inputConNo < di.getNbrOfConnectors()){
 				LDescriptor descUI = descriptors.get(iconfig.key);
@@ -99,7 +99,7 @@ public class LConfigUI implements PConstants, LConstants {
 	 */
 	private boolean verifyConfig(boolean chain){
 		report = new StringBuffer();
-		for(Configuration.InputConfig iconfig : config.gameInputs){
+		for(Configuration.InputConfig iconfig : config.getGameInputs()){
 			LDescriptor descUI = descriptors.get(iconfig.key);
 			LConnector con = descUI.connectors[0].conTo;
 			if(con != null){
@@ -322,7 +322,7 @@ public class LConfigUI implements PConstants, LConstants {
 		px = window.papplet.width - PANEL_WIDTH + 10;
 		pw = PANEL_WIDTH - 20;
 		py = 10;
-		MLabel lblFilenamePrompt = new MLabel(window.papplet, px, py, pw, 20, "Config. for: " + config.usage);
+		MLabel lblFilenamePrompt = new MLabel(window.papplet, px, py, pw, 20, "Config. for: " + config.getUsgae());
 		lblFilenamePrompt.setTextAlign(MAlign.LEFT, null);
 		lblFilenamePrompt.setLocalColorScheme(M4P.GREEN_SCHEME);
 		lblFilenamePrompt.setTextBold();

@@ -1,22 +1,34 @@
 /*
-Part of the procontrol lib - http://texone.org/procontrol
-
-Copyright (c) 2005 Christian Riekoff
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-Boston, MA  02111-1307  USA
+ * Part of the ProControl Plus library - http://www.lagers.org.uk/procontrol
+ * 
+ * Copyright (c) 2014 Peter Lager
+ * <quark(a)lagers.org.uk> http:www.lagers.org.uk
+ * 
+ * This software is provided 'as-is', without any express or implied warranty.
+ * In no event will the authors be held liable for any damages arising from
+ * the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it freely,
+ * subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented;
+ * you must not claim that you wrote the original software.
+ * If you use this software in a product, an acknowledgment in the product
+ * documentation would be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such,
+ * and must not be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source distribution.
+ * 
+ * 
+ * ---------------------------------------------------------------------------------
+ * Updated and enhanced from the proCONTROLL library [http://texone.org/procontrol], 
+ * copyright (c) 2005 Christian Riekoff which was released under the terms of the GNU 
+ * Lesser General Public License (version 2.1 or later) as published by the Free 
+ * Software Foundation.
+ * ---------------------------------------------------------------------------------
  */
 
 package org.procontrolplus;
@@ -36,30 +48,17 @@ import processing.core.PApplet;
  * ControllIO is the base class for using controllers in Processing.
  * It provides methods to retrieve information about the connected 
  * devices and to get the input data from them.<br>
- * To get a ControllIO object you to use the getInstance() Method. As
- * a startup you should use the printDevices() to see if all Controllers
- * are connected and correctly found.
+ * To get a ControllIO object you to use the getInstance() Method. To
+ * get started you should use the deviceListToText(...) or the
+ * devicesToText(...) to see if what control devices you have attached 
+ * and their details.
  * </p>
  * <p>
  * To react on button events you can plug methods, that are called when
  * a button is pressed, released or while a button is pressed.
- * @example procontrol
- * @related ControllDevice
- * @usage application
+ * </p>
  */
-public class ControlIO implements Runnable {
-	/**
-	 * @invisible
-	 */
-	public static final int ON_PRESS = 0;
-	/**
-	 * @invisible
-	 */
-	public static final int ON_RELEASE = 1;
-	/**
-	 * @invisible
-	 */
-	public static final int WHILE_PRESS = 2;
+public class ControlIO implements Runnable, PCPconstants {
 
 	/**
 	 * Ensures that there only exists one instance of ControllIO
@@ -67,12 +66,13 @@ public class ControlIO implements Runnable {
 	static private ControlIO instance;
 
 	/**
-	 * 
+	 * Used internally to identify the configured device
 	 */
 	public static ControlDevice configuredDevice = null;
 
 	/**
-	 * 
+	 * True when the library is being used to configure a device. Set
+	 * to false when done.
 	 */
 	public static boolean configurating = false;
 
@@ -82,7 +82,7 @@ public class ControlIO implements Runnable {
 	public final ControllerEnvironment environment;
 
 	/**
-	 * Instance to the PApplet where procontrol is running
+	 * Instance to the PApplet where ProControl Plus is running
 	 */
 	private final PApplet parent;
 
@@ -91,13 +91,35 @@ public class ControlIO implements Runnable {
 	 */
 	private final List<ControlDevice> devices = new ArrayList<ControlDevice>();
 
+	/**
+	 * Thread to keep the devices updated and process any plugs created.
+	 */
 	private final Thread thread;
 
+	/**
+	 * Indicates whether the thread is active.
+	 */
 	private boolean active = true;
 
+	/**
+	 * Use this method to get a ControllIO instance. <br/>
+	 * This must be called from the setup method immediately after the call to size(...)
+	 * 
+	 * @param i_parent PApplet, the application ProControl Plus is running in
+	 * @return ControllIO, an instance of ControllIO
+	 * @example ProControl Plus
+	 * @usage application
+	 * @related ControllIO
+	 */
+	static public ControlIO getInstance(final PApplet i_parent){
+		if (instance == null)
+			instance = new ControlIO(i_parent);
+		return instance;
+	}
 
 	/**
-	 * Initialise the ControllIO instance
+	 * Private constructor for singleton class. <br/>
+	 * Initialises the ControllIO instance
 	 * @param i_parent
 	 */
 	private ControlIO(final PApplet i_parent){
@@ -116,23 +138,9 @@ public class ControlIO implements Runnable {
 		thread.start();
 	}
 
-	/**
-	 * Use this method to get a ControllIO instance.
-	 * @param i_parent PApplet, the application procontrol is running in
-	 * @return ControllIO, an instance of ControllIO
-	 * @example procontrol
-	 * @usage application
-	 * @related ControllIO
-	 */
-	static public ControlIO getInstance(final PApplet i_parent){
-		if (instance == null)
-			instance = new ControlIO(i_parent);
-		return instance;
-	}
 
 	/**
 	 * dispose method called by PApplet after closing. The update thread is deactivated here
-	 * @invisible
 	 */
 	public void dispose(){
 		active = false;
@@ -174,12 +182,7 @@ public class ControlIO implements Runnable {
 
 	/**
 	 * Returns the number of available Devices
-	 * @return int, the number of available devices
-	 * @example procontrol_printDevices
-	 * @related ControllIO
-	 * @related ControllDevice
-	 * @related getDevice ( )
-	 * @usage application
+	 * @return the number of available devices
 	 */
 	public int getNumberOfDevices(){
 		return devices.size();
@@ -201,13 +204,6 @@ public class ControlIO implements Runnable {
 	 * 
 	 * @param i_deviceNumber int, number of the device to open
 	 * @return ControllDevice, the device corresponding to the given number or name
-	 * @example procontrol
-	 * @related ControllIO
-	 * @related ControllDevice
-	 * @related getNumberOfDevices ( )
-	 * @related printDevices ( )
-	 * @shortdesc Use this method to get a device.
-	 * @usage application
 	 */
 	public ControlDevice getDevice(final int i_deviceNumber){
 		if (i_deviceNumber >= getNumberOfDevices()){
@@ -235,15 +231,29 @@ public class ControlIO implements Runnable {
 		throw new RuntimeException("There is no device with the name " + i_deviceName + ".");
 	}
 
+	/**
+	 * Find and return the ControlDevice that matches the configuration described in the 
+	 * specified file. <br/>
+	 * If an exact match can't be found give the user an option to configure another device. <br/>
+	 * 
+	 * @param filename the name of the configuration file
+	 * @return the device or null if no device is configured.
+	 */
 	public ControlDevice getMatchedDevice(final String filename){
 		Configuration config = Configuration.makeConfiguration(parent, filename);
 		return getMatchedDevice(config);
 	}
-	
+
+	/**
+	 * Find and return the ControlDevice that matches the specified configuration. <br/>
+	 * If an exact match can't be found give the user an option to configure another device. <br/>
+	 * 
+	 * @param config the configuration to match
+	 * @return the device or null if no device is configured.
+	 */
 	public ControlDevice getMatchedDevice(final Configuration config){
 		for(ControlDevice cd : devices){
 			if(cd.available && cd.matches(config)){
-//				System.out.println("Matched with \t\t"+cd.getName() + "  [" + cd.getTypeName() + "]" + "  [" + cd.getPortTypeName() + "]");
 				configuredDevice = cd;
 				configuredDevice.available = false;
 				configurating = false;
@@ -266,16 +276,19 @@ public class ControlIO implements Runnable {
 		return selected;	
 	}
 
+	/**
+	 * Used internally to signal when a configuration has finished.
+	 * @param dev the configured device or null if the configuration was cancelled.
+	 */
 	public void finishedConfig(ControlDevice dev){
 		configuredDevice = dev;
 		configurating = false;
 	}
-	
-	
+
+
 	/**
 	 * Updates the devices, to get the actual data before a new
 	 * frame is drawn
-	 * @invisible
 	 */
 	public void pre(){
 		for (int i = 0; i < devices.size(); i++)
@@ -285,11 +298,9 @@ public class ControlIO implements Runnable {
 	/**
 	 * Controllers are now polled in a separate thread to get independent from
 	 * the framerate of the sketch
-	 * @invisible
 	 */
 	public void run(){
 		while (active){
-			//			System.out.println("ControlIO run() " + devices.size());
 			for (int i = 0; i < devices.size(); i++)
 				devices.get(i).update();
 			try {
@@ -308,17 +319,15 @@ public class ControlIO implements Runnable {
 	 * </p>
 	 * <p>
 	 * If you want to handle the events of a simple button, you only have to implement a
-	 * method without parameters. To react on the events of a cooliehat you method needs to
-	 * receive two float values, so that procontrol can send you the x and y values of the
-	 * cooliehat.
+	 * method without parameters. To react on the events of a hat you method needs to
+	 * receive two float values, so that ProControl Plus can send you the x and y values of the
+	 * hat.
 	 * </p>
 	 * @param i_object Object: the object with the method to plug
 	 * @param i_methodName String: the name of the method that has to be plugged
 	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
 	 * @param i_intputDevice int: the number of the device that triggers the plug
 	 * @param i_input int: the number of the button that triggers the plug
-	 * @example procontrol
-	 * @shortdesc Plugs a method to handle button events.
 	 */
 	public void plug(
 			final Object i_object, 
@@ -331,6 +340,25 @@ public class ControlIO implements Runnable {
 		device.plug(i_object,i_methodName,i_eventType,i_input);
 	}
 
+	/**
+	 * <p>
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give ControllIO the method name, the event type you want to react on and
+	 * the device and button. If your method is inside a class you have to give ControllIO
+	 * a reference to it.
+	 * </p>
+	 * <p>
+	 * If you want to handle the events of a simple button, you only have to implement a
+	 * method without parameters. To react on the events of a hat you method needs to
+	 * receive two float values, so that ProControl Plus can send you the x and y values of the
+	 * hat.
+	 * </p>
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
+	 * @param i_intputDevice int: the number of the device that triggers the plug
+	 * @param i_input int: the number of the button that triggers the plug
+	 */
 	public void plug(
 			final String i_methodName, 
 			final int i_eventType,
@@ -341,9 +369,24 @@ public class ControlIO implements Runnable {
 	}
 
 	/**
-	 * 
+	 * <p>
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give ControllIO the method name, the event type you want to react on and
+	 * the device and button. If your method is inside a class you have to give ControllIO
+	 * a reference to it.
+	 * </p>
+	 * <p>
+	 * If you want to handle the events of a simple button, you only have to implement a
+	 * method without parameters. To react on the events of a hat you method needs to
+	 * receive two float values, so that ProControl Plus can send you the x and y values of the
+	 * hat.
+	 * </p>
+	 * @param i_object Object: the object with the method to plug
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
 	 * @param i_intputDevice String: the name of the device that triggers the plug
-	 * @param i_input int: the name of the button that triggers the plug
+	 * @param i_input String: the name of the input that triggers the plug. Can be system name or name from the configuration file.
 	 */
 	public void plug(
 			final Object i_object, 
@@ -356,6 +399,25 @@ public class ControlIO implements Runnable {
 		device.plug(i_object,i_methodName,i_eventType,i_input);
 	}
 
+	/**
+	 * <p>
+	 * Plug is a handy method to handle incoming button events. To create a plug
+	 * you have to implement a method that reacts on the events. To plug a method you
+	 * need to give ControllIO the method name, the event type you want to react on and
+	 * the device and button. If your method is inside a class you have to give ControllIO
+	 * a reference to it.
+	 * </p>
+	 * <p>
+	 * If you want to handle the events of a simple button, you only have to implement a
+	 * method without parameters. To react on the events of a hat you method needs to
+	 * receive two float values, so that ProControl Plus can send you the x and y values of the
+	 * hat.
+	 * </p>
+	 * @param i_methodName String: the name of the method that has to be plugged
+	 * @param i_eventType constant: can be ControllIO.ON_PRESS, ControllIO.ON_RELEASE or ControllIO.WHILE_PRESS
+	 * @param i_intputDevice String: the name of the device that triggers the plug
+	 * @param i_input String: the name of the input that triggers the plug. Can be system name or name from the configuration file.
+	 */
 	public void plug(
 			final String i_methodName, 
 			final int i_eventType,
