@@ -1,5 +1,4 @@
-import processing.core.PApplet;
-import processing.core.PConstants;
+import processing.core.*;
 
 public class TConnector implements PConstants, TConstants {
 

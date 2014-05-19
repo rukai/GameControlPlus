@@ -1,8 +1,6 @@
-import g4p_controls.G4P;
-import g4p_controls.GEvent;
-import g4p_controls.GTextField;
+import g4p_controls.*;
 
-import org.procontrolplus.ControlSlider;
+import org.gamecontrolplus.*;
 
 import processing.core.PApplet;
 

@@ -17,16 +17,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.procontrolplus.ControlButton;
-import org.procontrolplus.ControlHat;
-import org.procontrolplus.ControlDevice;
-import org.procontrolplus.ControlIO;
-import org.procontrolplus.ControlInput;
-import org.procontrolplus.ControlSlider;
+import org.gamecontrolplus.ControlButton;
+import org.gamecontrolplus.ControlDevice;
+import org.gamecontrolplus.ControlHat;
+import org.gamecontrolplus.ControlIO;
+import org.gamecontrolplus.ControlInput;
+import org.gamecontrolplus.ControlSlider;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.event.MouseEvent;
+
 
 public class TConfigUI implements PConstants, TConstants {
 

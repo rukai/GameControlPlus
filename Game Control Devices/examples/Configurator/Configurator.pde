@@ -22,11 +22,12 @@
  created by Peter Lager 2014
  */
 
-import g4p_controls.*;
-
-import org.procontrolplus.gui.*;
-import org.procontrolplus.*;
-import net.java.games.input.*;
+import g4p_controls.G4P;
+import g4p_controls.GAlign;
+import g4p_controls.GButton;
+import g4p_controls.GCScheme;
+import g4p_controls.GEvent;
+import g4p_controls.GLabel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +35,10 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+
+import org.gamecontrolplus.Configuration;
+import org.gamecontrolplus.ControlDevice;
+import org.gamecontrolplus.ControlIO;
 
 ControlIO controlIO;
 int panelHeight;

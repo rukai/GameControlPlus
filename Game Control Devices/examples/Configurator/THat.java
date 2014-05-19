@@ -1,8 +1,6 @@
-import g4p_controls.G4P;
-import g4p_controls.GEvent;
-import g4p_controls.GTextField;
+import g4p_controls.*;
 
-import org.procontrolplus.ControlHat;
+import org.gamecontrolplus.*;
 
 
 

@@ -1,12 +1,8 @@
-import g4p_controls.GAlign;
-import g4p_controls.GButton;
-import g4p_controls.GEvent;
-import g4p_controls.GLabel;
+import g4p_controls.*;
 
-import org.procontrolplus.ControlDevice;
-import org.procontrolplus.ControlIO;
+import org.gamecontrolplus.*;
 
-import processing.core.PApplet;
+import processing.core.*;
 
 public class TSelectEntry implements Comparable<TSelectEntry> {
   public final PApplet app;

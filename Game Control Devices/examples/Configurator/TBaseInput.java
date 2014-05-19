@@ -1,7 +1,4 @@
-import org.procontrolplus.ControlButton;
-import org.procontrolplus.ControlHat;
-import org.procontrolplus.ControlInput;
-import org.procontrolplus.ControlSlider;
+import org.gamecontrolplus.*;
 
 public abstract class TBaseInput extends TBase {
 

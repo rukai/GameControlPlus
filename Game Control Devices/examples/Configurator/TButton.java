@@ -1,4 +1,4 @@
-import org.procontrolplus.ControlButton;
+import org.gamecontrolplus.*;
 
 public class TButton extends TBaseInput {
 

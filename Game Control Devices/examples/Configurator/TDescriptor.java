@@ -1,7 +1,4 @@
-import g4p_controls.G4P;
-import g4p_controls.GCScheme;
-import g4p_controls.GEvent;
-import g4p_controls.GTextField;
+import g4p_controls.*;
 
 public class TDescriptor extends TBase {
 
