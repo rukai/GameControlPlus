@@ -44,7 +44,7 @@ public void createGUI() {
   G4P.setGlobalColorScheme(GCScheme.PURPLE_SCHEME);
   G4P.setCursor(ARROW);
   if (frame != null)
-    frame.setTitle("ProControl Plus - show available input devices");
+    frame.setTitle("Game Control Plus - show available input devices");
   label1 = new GLabel(this, 0, 0, 800, 20);
   label1.setText("Available Devices");
   label1.setTextBold();

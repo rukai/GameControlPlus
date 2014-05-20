@@ -1,9 +1,9 @@
 /**
- If you are creating your own sketches that need the ProControl Plus library,
+ If you are creating your own sketches that need the Game Control Plus library,
  then you can use this sketch to create the input device configuration file.
  
  This sketch requires the G$P library which you can add using the 
- Import Libray | All Library menu option in the PDE.
+ Import Library | All Library menu option in the PDE.
  
  The game input device MUST be connected before launching this sketch
  otherwise it will not find it.

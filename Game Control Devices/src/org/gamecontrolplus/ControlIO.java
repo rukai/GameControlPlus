@@ -153,8 +153,8 @@ public class ControlIO implements Runnable, PCPconstants {
 	public String deviceListToText(String tab){
 		StringBuilder s = new StringBuilder();
 		s.append(tab + "##########################################################################################\n");
-		s.append(tab + "                   ProControl Plus  - available devices\n");
-		s.append(tab + "                   ------------------------------------\n");
+		s.append(tab + "                   Game Control Plus  - available devices\n");
+		s.append(tab + "                   --------------------------------------\n");
 		for (int i = 0; i < devices.size(); i++){
 			String id = String.valueOf(i + "    ").substring(0,3);
 			s.append(tab + devices.get(i).toListText("  " + id) + "\n");
@@ -171,8 +171,8 @@ public class ControlIO implements Runnable, PCPconstants {
 	public String devicesToText(String tab){
 		StringBuilder s = new StringBuilder();
 		s.append(tab + "##########################################################################################\n");
-		s.append(tab + "                   ProControl Plus  - available devices\n");
-		s.append(tab + "                   ------------------------------------\n");
+		s.append(tab + "                   Game Control Plus  - available devices\n");
+		s.append(tab + "                   --------------------------------------\n");
 		for (int i = 0; i < devices.size(); i++){
 			s.append(devices.get(i).toText(tab + "  "));
 		}
@@ -215,7 +215,7 @@ public class ControlIO implements Runnable, PCPconstants {
 	}
 
 	/**
-	 * Use this method to get a Device based on its number. This method will 'open'
+	 * Use this method to get a Device based on its name. This method will 'open'
 	 * the device so that you can use it. <br>
 	 * Use printDevices to see what devices are available on your system.
 	 * @param i_deviceName String, name of the device to open

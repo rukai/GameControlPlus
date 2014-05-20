@@ -1,5 +1,5 @@
 /**
-Example of using ProControlPlus in a game.
+Example of using Game Control Plus in a game.
 
 Although I am using a joystick to control the tank, any device 
 with 2 sliders and 5 buttons will work.
