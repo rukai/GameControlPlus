@@ -316,7 +316,7 @@ public class LConfigUI implements PConstants, LConstants {
 		window.addPreHandler(this, "pre");
 		window.papplet.noLoop();
 		tabManager = new MTabManager();
-		M4P.setCursor(CROSS, window);	
+		M4P.setCursor(CROSS);	
 
 		// Create the control panel
 		px = window.papplet.width - PANEL_WIDTH + 10;
@@ -349,7 +349,7 @@ public class LConfigUI implements PConstants, LConstants {
 		py += 22;
 		txaStatus = new MTextArea(window.papplet, px, py, pw, 140, M4P.SCROLLBARS_VERTICAL_ONLY);
 		txaStatus.setLocalColorScheme(M4P.GREEN_SCHEME);
-		txaStatus.setDefaultText("Verify / save status report");
+		txaStatus.setPromptText("Verify / save status report");
 		py += txaStatus.getHeight() + 4;
 		MButton btnQuit = new MButton(window.papplet, px, py, pw, 20);
 		btnQuit.setLocalColorScheme(M4P.RED_SCHEME);

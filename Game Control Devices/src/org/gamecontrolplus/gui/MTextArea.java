@@ -165,12 +165,12 @@ public class MTextArea extends MEditableTextControl {
 	 * displayed in italic whenever it is empty. It will also be wrapped to the control size.
 	 * @param dtext
 	 */
-	public void setDefaultText(String dtext){
+	public void setPromptText(String dtext){
 		if(dtext == null || dtext.length() == 0)
-			defaultText = null;
+			promptText = null;
 		else {
-			defaultText = new MStyledString(dtext, wrapWidth);
-			defaultText.addAttribute(M4P.POSTURE, M4P.POSTURE_OBLIQUE);
+			promptText = new MStyledString(dtext, wrapWidth);
+			promptText.addAttribute(M4P.POSTURE, M4P.POSTURE_OBLIQUE);
 		}
 		bufferInvalid = true;
 	}
@@ -347,8 +347,8 @@ public class MTextArea extends MEditableTextControl {
 			Graphics2D g2d = buffer.g2;
 			// Get the latest lines of text
 			LinkedList<TextLayoutInfo> lines = stext.getLines(g2d);
-			if(lines.isEmpty() && defaultText != null)
-				lines = defaultText.getLines(g2d);
+			if(lines.isEmpty() && promptText != null)
+				lines = promptText.getLines(g2d);
 
 			bufferInvalid = false;
 

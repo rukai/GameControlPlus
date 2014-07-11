@@ -466,8 +466,8 @@ public class MTextField extends MEditableTextControl {
 			Graphics2D g2d = buffer.g2;
 			// Get the latest lines of text
 			LinkedList<TextLayoutInfo> lines = stext.getLines(g2d);	
-			if(lines.isEmpty() && defaultText != null)
-				lines = defaultText.getLines(g2d);
+			if(lines.isEmpty() && promptText != null)
+				lines = promptText.getLines(g2d);
 
 			bufferInvalid = false;
 			TextLayoutHitInfo startSelTLHI = null, endSelTLHI = null;

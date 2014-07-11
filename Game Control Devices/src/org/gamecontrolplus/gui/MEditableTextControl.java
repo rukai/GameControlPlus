@@ -49,7 +49,7 @@ public abstract class MEditableTextControl extends MTextBase {
 
 	MTabManager tabManager = null;
 
-	protected MStyledString defaultText = null;
+	protected MStyledString promptText = null;
 	// The width to break a line
 	protected int wrapWidth = Integer.MAX_VALUE;
 
@@ -169,14 +169,14 @@ public abstract class MEditableTextControl extends MTextBase {
 	/**
 	 * Set the default text for this control. If provided this text will be 
 	 * displayed in italic whenever it is empty.
-	 * @param dtext
+	 * @param ptext
 	 */
-	public void setDefaultText(String dtext){
-		if(dtext == null || dtext.length() == 0)
-			defaultText = null;
+	public void setPromptText(String ptext){
+		if(ptext == null || ptext.length() == 0)
+			promptText = null;
 		else {
-			defaultText = new MStyledString(dtext, wrapWidth);
-			defaultText.addAttribute(M4P.POSTURE, M4P.POSTURE_OBLIQUE);
+			promptText = new MStyledString(ptext, wrapWidth);
+			promptText.addAttribute(M4P.POSTURE, M4P.POSTURE_OBLIQUE);
 		}
 		bufferInvalid = true;
 	}
@@ -199,8 +199,8 @@ public abstract class MEditableTextControl extends MTextBase {
 	 * Get the default text for this control
 	 * @return the default text without styling
 	 */
-	public String getDefaultText(){
-		return defaultText.getPlainText();
+	public String getPromptText(){
+		return promptText.getPlainText();
 	}
 
 	/**

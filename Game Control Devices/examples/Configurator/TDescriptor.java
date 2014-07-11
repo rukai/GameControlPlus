@@ -30,7 +30,7 @@ public class TDescriptor extends TBase {
     txfKey = new GTextField(app, x + HGAP, y + ccw.textfield_gap, klen, fieldHeight, G4P.SCROLLBARS_NONE);
     txfKey.setFont(ccw.font);
     txfKey.setLocalColorScheme(GCScheme.GOLD_SCHEME);
-    txfKey.setDefaultText("Key name");
+    txfKey.setPromptText("Key name");
     txfKey.setText(key);
     txfKey.addEventHandler(this, "key_set");
     ccw.tabManager.addControl(txfKey);
@@ -38,7 +38,7 @@ public class TDescriptor extends TBase {
     txfDescription = new GTextField(app, x + 3 * HGAP + klen, y + HGAP/2, dlen, fieldHeight, G4P.SCROLLBARS_NONE);
     txfDescription.setFont(ccw.font);
     txfDescription.setLocalColorScheme(GCScheme.GREEN_SCHEME);
-    txfDescription.setDefaultText("Description");
+    txfDescription.setPromptText("Description");
     txfDescription.setText(desc);
     txfDescription.addEventHandler(this, "description_set");
     ccw.tabManager.addControl(txfDescription);

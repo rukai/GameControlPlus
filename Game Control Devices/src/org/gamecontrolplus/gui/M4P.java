@@ -186,14 +186,14 @@ public class M4P implements MConstants, PConstants {
 	 * 
 	 * @param alpha value in the range 0 (transparent) to 255 (opaque)
 	 */
-	public static void setGlobalAlpha(int alpha){
-		alpha = Math.abs(alpha) % 256; // Force into valid range
-		if(globalAlpha != alpha){
-			globalAlpha = alpha;
-			for(MWindowInfo winfo : windows.values())
-				winfo.setAlpha(globalAlpha);
-		}
-	}
+//	public static void setGlobalAlpha(int alpha){
+//		alpha = Math.abs(alpha) % 256; // Force into valid range
+//		if(globalAlpha != alpha){
+//			globalAlpha = alpha;
+//			for(MWindowInfo winfo : windows.values())
+//				winfo.setAlpha(globalAlpha);
+//		}
+//	}
 
 	/**
 	 * Set the transparency level for all controls drawn by the given
@@ -204,12 +204,12 @@ public class M4P implements MConstants, PConstants {
 	 * @param app
 	 * @param alpha value in the range 0 (transparent) to 255 (opaque)
 	 */
-	public static void setWindowAlpha(PApplet app, int alpha){
-		alpha = Math.abs(alpha) % 256; // Force into valid range
-		MWindowInfo winfo = windows.get(app);
-		if(winfo != null)
-			winfo.setAlpha(alpha);
-	}
+//	public static void setWindowAlpha(PApplet app, int alpha){
+//		alpha = Math.abs(alpha) % 256; // Force into valid range
+//		MWindowInfo winfo = windows.get(app);
+//		if(winfo != null)
+//			winfo.setAlpha(alpha);
+//	}
 
 	/**
 	 * Set the transparency level for all controls drawn by the given
@@ -220,12 +220,12 @@ public class M4P implements MConstants, PConstants {
 	 * @param win apply to this window
 	 * @param alpha value in the range 0 (transparent) to 255 (opaque)
 	 */
-	public static void setWindowAlpha(MWindow win, int alpha){
-		alpha = Math.abs(alpha) % 256; // Force into valid range
-		MWindowInfo winfo = windows.get(win.papplet);
-		if(winfo != null)
-			winfo.setAlpha(alpha);
-	}
+//	public static void setWindowAlpha(MWindow win, int alpha){
+//		alpha = Math.abs(alpha) % 256; // Force into valid range
+//		MWindowInfo winfo = windows.get(win.papplet);
+//		if(winfo != null)
+//			winfo.setAlpha(alpha);
+//	}
 
 	/**
 	 * Register a GWindow object.
@@ -346,28 +346,10 @@ public class M4P implements MConstants, PConstants {
 	 * 
 	 * @deprecated use setCursor(int)
 	 */
-	@Deprecated
-	public static void setCursorOff(int cursorOff){
-		mouseOff = cursorOff;
-	}
-
 	public static void setCursor(int cursorOff){
 		mouseOff = cursorOff;
 		for(MWindowInfo winfo : windows.values())
 			winfo.app.cursor(cursorOff);
-	}
-
-	public static void setCursor(int cursorOff, MWindow window){
-		PApplet app = window.papplet;
-		setCursor(cursorOff, app);
-	}
-
-	public static void setCursor(int cursorOff, PApplet app){
-		MWindowInfo winfo = windows.get(app);
-		if(winfo != null){
-			mouseOff = cursorOff;
-			winfo.app.cursor(cursorOff);
-		}
 	}
 
 	/**
@@ -375,14 +357,6 @@ public class M4P implements MConstants, PConstants {
 	 * 
 	 */
 	public static int getCursor(){
-		return mouseOff;
-	}
-
-	/**
-	 * @deprecated use getCursor()
-	 */
-	@Deprecated
-	public static int getCursorOff(){
 		return mouseOff;
 	}
 

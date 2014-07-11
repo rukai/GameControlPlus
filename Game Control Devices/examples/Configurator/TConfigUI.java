@@ -339,7 +339,7 @@ public class TConfigUI implements PConstants, TConstants {
     window.addPreHandler(this, "pre");
     window.papplet.noLoop();
     tabManager = new GTabManager();
-    G4P.setCursor(CROSS, window);	
+    G4P.setCursor(CROSS);	
     nbrWindows++;
 
     // Create the control panel
@@ -354,7 +354,7 @@ public class TConfigUI implements PConstants, TConstants {
     py += 22;
     txfDeviceUsage = new GTextField(window.papplet, px, py, pw, 20);
     txfDeviceUsage.setLocalColorScheme(G4P.GREEN_SCHEME);
-    txfDeviceUsage.setDefaultText("How will this device be used?");
+    txfDeviceUsage.setPromptText("How will this device be used?");
     txfDeviceUsage.addEventHandler(this, "device_usage");
     py += 30;
     GLabel lblFilenamePrompt = new GLabel(window.papplet, px, py, pw, 20, "Filename for this configuration");
@@ -365,7 +365,7 @@ public class TConfigUI implements PConstants, TConstants {
     py += 22;
     txfFilename = new GTextField(window.papplet, px, py, pw, 20);
     txfFilename.setLocalColorScheme(G4P.GREEN_SCHEME);
-    txfFilename.setDefaultText("Enter a filename for this configuration");
+    txfFilename.setPromptText("Enter a filename for this configuration");
     py += 26;
     float bw = (pw - 20)/3;
     GButton btnClearStatus = new GButton(window.papplet, px, py, bw, 20);
@@ -390,7 +390,7 @@ public class TConfigUI implements PConstants, TConstants {
     py += 22;
     txaStatus = new GTextArea(window.papplet, px, py, pw, 140, G4P.SCROLLBARS_VERTICAL_ONLY);
     txaStatus.setLocalColorScheme(G4P.GREEN_SCHEME);
-    txaStatus.setDefaultText("Verify / save status report");
+    txaStatus.setPromptText("Verify / save status report");
     py += txaStatus.getHeight() + 2;
 
     // Create and add inputs to UI 
