@@ -751,43 +751,89 @@ class LinuxNativeTypesMap {
      * @return The jinput id
      */    
     public static Component.Identifier getRelAxisID(int nativeID) {
-        Component.Identifier retval = INSTANCE.relAxesIDs[nativeID];
-        if(retval == null) {
-            retval = Component.Identifier.Axis.SLIDER_VELOCITY;
-            INSTANCE.relAxesIDs[nativeID] = retval;
-        }
-        return retval;
+    	Component.Identifier retval = null;
+    	if(nativeID >=0 && nativeID < INSTANCE.relAxesIDs.length){
+    		retval = INSTANCE.relAxesIDs[nativeID];
+    		if(retval == null) {
+    			retval = Component.Identifier.Axis.SLIDER_VELOCITY;
+    			INSTANCE.relAxesIDs[nativeID] = retval;
+    		}
+    	}
+    	else {
+    		System.out.println("INSTANCE.relAxesIDs is only " + INSTANCE.relAxesIDs.length + " long, so " + nativeID + " not contained");  		
+    	}
+    	return retval;
     }
     
+//    public static Component.Identifier getRelAxisID(int nativeID) {
+//        Component.Identifier retval = INSTANCE.relAxesIDs[nativeID];
+//        if(retval == null) {
+//            retval = Component.Identifier.Axis.SLIDER_VELOCITY;
+//            INSTANCE.relAxesIDs[nativeID] = retval;
+//        }
+//        return retval;
+//    }
+  
     /** Gets the identifier for a absolute axis
      * @param nativeID The native axis type id
      * @return The jinput id
      */    
     public static Component.Identifier getAbsAxisID(int nativeID) {
-		Component.Identifier retval = null;
-		try {
-			retval = INSTANCE.absAxesIDs[nativeID];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("INSTANCE.absAxesIDs is only " + INSTANCE.absAxesIDs.length + " long, so " + nativeID + " not contained");
-			//ignore, pretend it was null
-		}
-        if(retval == null) {
-            retval = Component.Identifier.Axis.SLIDER;
-            INSTANCE.absAxesIDs[nativeID] = retval;
-        }
-        return retval;
+    	Component.Identifier retval = null;
+    	if(nativeID >= 0 && nativeID < INSTANCE.absAxesIDs.length){
+    		retval = INSTANCE.absAxesIDs[nativeID];
+    		if(retval == null) {
+    			retval = Component.Identifier.Axis.SLIDER;
+    			INSTANCE.absAxesIDs[nativeID] = retval;
+    		}
+    	}
+    	else {
+    		System.out.println("INSTANCE.absAxesIDs is only " + INSTANCE.absAxesIDs.length + " long, so " + nativeID + " not contained");  		
+    	}
+    	return retval;
     }
+
+//    public static Component.Identifier getAbsAxisID(int nativeID) {
+//		Component.Identifier retval = null;
+//		try {
+//			retval = INSTANCE.absAxesIDs[nativeID];
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			System.out.println("INSTANCE.absAxesIDs is only " + INSTANCE.absAxesIDs.length + " long, so " + nativeID + " not contained");
+//			//ignore, pretend it was null
+//		}
+//        if(retval == null) {
+//            retval = Component.Identifier.Axis.SLIDER;
+//            INSTANCE.absAxesIDs[nativeID] = retval;
+//        }
+//        return retval;
+//    }
     
     /** Gets the identifier for a button
      * @param nativeID The native button type id
      * @return The jinput id
      */    
     public static Component.Identifier getButtonID(int nativeID) {
-        Component.Identifier retval = INSTANCE.buttonIDs[nativeID];
-        if(retval == null) {
-            retval = Component.Identifier.Key.UNKNOWN;
-            INSTANCE.buttonIDs[nativeID] = retval;
-        }
-        return retval;
+    	Component.Identifier retval = null;
+    	if(nativeID >= 0 && nativeID < INSTANCE.buttonIDs.length){
+    		retval = INSTANCE.buttonIDs[nativeID];
+    		if(retval == null) {
+    			retval = Component.Identifier.Key.UNKNOWN;
+    			INSTANCE.buttonIDs[nativeID] = retval;
+    		}
+    	}
+    	else {
+    		System.out.println("INSTANCE.buttonIDs is only " + INSTANCE.buttonIDs.length + " long, so " + nativeID + " not contained");  		
+    	}
+    	return retval;
     }
+
+//    public static Component.Identifier getButtonID(int nativeID) {
+//        Component.Identifier retval = INSTANCE.buttonIDs[nativeID];
+//        if(retval == null) {
+//            retval = Component.Identifier.Key.UNKNOWN;
+//            INSTANCE.buttonIDs[nativeID] = retval;
+//        }
+//        return retval;
+//    }
+
 }
