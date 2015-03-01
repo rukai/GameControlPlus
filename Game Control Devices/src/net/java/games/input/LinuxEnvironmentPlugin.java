@@ -47,7 +47,6 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment {
 	private final static LinuxDeviceThread device_thread = new LinuxDeviceThread();
     
 	static {
-        System.out.println(System.getProperty("os.arch"));
         if(System.getProperty("os.arch").equals("amd64")){
             System.loadLibrary(LIBNAME + POSTFIX64BIT);
 		}
